@@ -3,7 +3,10 @@ import Head from 'next/head';
 
 const Home: NextPage = () => {
   return (
-    <div>IQ</div>
+    <>
+      <Head> <title>IQ</title> </Head>
+      <div>IQ</div>
+    </>
   );
 };
 
