@@ -9,8 +9,8 @@ export default NextAuth({
         }),
     ],
     callbacks: {
-        async redirect({ url, baseUrl }) {
-            return '/';
+        session({ session, token, user }) {
+            return session;
         },
     }
 }); 
