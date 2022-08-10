@@ -5,7 +5,7 @@ const userSchema = new mongoose.Schema({
     type: {
         type: String,
         enum: ['student', 'professor'],
-        required: true
+        required: [true, 'User type is required']
     },
     email: {
         type: String,
@@ -13,22 +13,16 @@ const userSchema = new mongoose.Schema({
             validator: isValidEmail,
             message: '{VALUE} is not a valid email',
         },
-        required: true,
+        required: [true, 'Email is required'],
         unique: true
     },
     name: {
         type: String,
-        required: true,
+        required: [true, 'Name is required'],
         minlength: [3, 'Name must be at least 3 characters long'],
     },
-    course: {
-        type: String || null,
-        required: true,
-    },
-    section: {
-        type: String || null,
-        required: true,
-    }
+    course: String || null,
+    section: String || null,
 });
 
 const User = mongoose.model('User', userSchema);
