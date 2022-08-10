@@ -1,15 +1,27 @@
 import mongoose from 'mongoose';
+import User from 'entities/user.entity';
 
-let mongoConnection: typeof mongoose | null = null;
+interface Database {
+    connection: typeof mongoose;
+    user: typeof User;
+}
 
-export default async function connectToDatabase() {
+let database: Database | null = null;
+
+export default async function connectToDatabase(): Promise<Database | null> {
     try {
-        if (mongoConnection) {
-            return mongoConnection;
+        if (database) {
+            return database;
         }
-        mongoConnection = await mongoose.connect(process.env.MONGODB_URI || '');
+        const connection = await mongoose.connect(process.env.MONGODB_URI || '');
         console.log('connection created');
-        return mongoConnection;
+
+        database = {
+            connection,
+            user: User
+        };
+
+        return database;
     } catch (error) {
         console.error('Can not connect to database', error);
         return null;
