@@ -7,7 +7,8 @@ export default async function connectToDatabase() {
         if (mongoConnection) {
             return mongoConnection;
         }
-        mongoConnection = await mongoose.connect(process.env.MONGO_URI || '');
+        mongoConnection = await mongoose.connect(process.env.MONGODB_URI || '');
+        console.log('connection created');
         return mongoConnection;
     } catch (error) {
         console.error('Can not connect to database', error);
