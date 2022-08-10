@@ -1,5 +1,5 @@
 import io, { Socket } from "socket.io-client";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 
 let socket: Socket;
 
@@ -14,30 +14,33 @@ export default function Home() {
     const [message, setMessage] = useState("");
     const [messages, setMessages] = useState<Array<Message>>([]);
 
-    useEffect(() => {
-        socketInitializer();
-    }, []);
-
-    useEffect(() => {
-        console.log(messages);
-
-    }, [messages]);
-
-    const socketInitializer = async () => {
-        // We just call it because we don't need anything else out of it
+    const socketInitializer = useCallback(async () => {
         await fetch("/api/socket");
-
         socket = io();
-
         socket.on("newIncomingMessage", (msg) => {
             setMessages((currentMsg) => [
                 ...currentMsg,
                 { author: msg.author, message: msg.message },
             ]);
         });
-    };
+    }, []);
+
+    useEffect(() => {
+        socketInitializer().then(() => {
+            console.log('socket initialized');
+        });
+    }, [socketInitializer]);
+
+    useEffect(() => {
+        console.log(messages);
+    }, [messages]);
+
 
     const sendMessage = async () => {
+        setMessages((currentMsg) => [
+            ...currentMsg,
+            { author: chosenUsername, message }
+        ]);
         socket.emit("createdMessage", { author: chosenUsername, message });
         setMessage("");
     };
