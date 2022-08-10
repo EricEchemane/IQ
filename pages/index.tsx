@@ -19,7 +19,7 @@ const Home: NextPage = () => {
 
   return (
     <>
-      <Head> <title>IQ</title> </Head>
+      <Head> <title>DFCAM - IQ</title> </Head>
       <h1> {session?.user?.email} </h1>
       <button onClick={() => signOut()}> Sign out </button>
     </>

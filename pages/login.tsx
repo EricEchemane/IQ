@@ -1,4 +1,5 @@
 import { useSession, signIn, signOut } from "next-auth/react";
+import Head from "next/head";
 import { useRouter } from "next/router";
 
 export default function Login() {
@@ -9,6 +10,9 @@ export default function Login() {
     }
     return (
         <>
+            <Head>
+                <title> Login - DfCAM IQ </title>
+            </Head>
             Not signed in <br />
             <button onClick={() => signIn()}>Sign in</button>
         </>
