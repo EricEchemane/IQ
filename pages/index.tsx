@@ -1,11 +1,12 @@
 import Head from 'next/head';
-import { useSession, signOut } from "next-auth/react";
+import { useSession } from "next-auth/react";
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
 import useFetch from 'lib/hooks/useFetch';
 import Student from 'components/student';
 import Professor from 'components/professor';
 import { UserStateProvider } from 'lib/user-context/student';
+import { ProfessorStateProvider } from 'lib/user-context/professor';
 
 const Home = () => {
   const router = useRouter();
@@ -33,13 +34,17 @@ const Home = () => {
   else if (login.data) {
     if (login.data.data.type === 'student')
       return <>
-        <Head> <title> Ayq </title> </Head>
+        <Head> <title> Ayq | Student </title> </Head>
         <UserStateProvider>
           <Student data={login.data.data} />
         </UserStateProvider>;
       </>;
-    else
-      return <Professor data={login.data.data} />;
+    else return <>
+      <Head> <title> Ayq  | admin </title> </Head>
+      <ProfessorStateProvider>
+        <Professor data={login.data.data} />
+      </ProfessorStateProvider>
+    </>;
   }
 };
 
