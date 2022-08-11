@@ -50,7 +50,10 @@ export default function Student({ data }: any) {
                     <Tabs
                         mt={'lg'}
                         value={activeTab}
-                        onTabChange={setActiveTab}
+                        onTabChange={val => {
+                            setActiveTab(val);
+                            setOpened(false);
+                        }}
                         orientation='vertical'>
                         <Tabs.List style={{ width: '100%' }}>
                             <Tabs.Tab
