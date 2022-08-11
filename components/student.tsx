@@ -13,13 +13,19 @@ import {
     useMantineTheme,
     Group,
     Button,
+    Tabs,
 } from '@mantine/core';
 import AppHeader from './AppHeader';
+import NavBar from './NavBar';
+import { IconBallpen, IconUserCircle, IconUsers } from '@tabler/icons';
+import Contents from './Contents';
 
 export default function Student({ data }: any) {
     const { dispatch, state }: UserStateType = useUserState();
     const theme = useMantineTheme();
     const [opened, setOpened] = useState(false);
+    const [activeTab, setActiveTab] = useState<string | null>('quizes');
+
     useEffect(() => {
         dispatch({
             type: UserActions.set_user,
@@ -39,7 +45,25 @@ export default function Student({ data }: any) {
             asideOffsetBreakpoint="sm"
             navbar={
                 <Navbar p="md" hiddenBreakpoint="sm" hidden={!opened} width={{ sm: 200, lg: 300 }}>
-                    Navbar
+                    <NavBar {...state} />
+
+                    <Tabs
+                        mt={'lg'}
+                        value={activeTab}
+                        onTabChange={setActiveTab}
+                        orientation='vertical'>
+                        <Tabs.List style={{ width: '100%' }}>
+                            <Tabs.Tab
+                                icon={<IconBallpen strokeWidth={1} />}
+                                value="quizes"> Quizes </Tabs.Tab>
+                            <Tabs.Tab
+                                icon={<IconUsers strokeWidth={1} />}
+                                value="participants"> Participants </Tabs.Tab>
+                            <Tabs.Tab
+                                icon={<IconUserCircle strokeWidth={1} />}
+                                value="account"> Edit account </Tabs.Tab>
+                        </Tabs.List>
+                    </Tabs>
                 </Navbar>
             }
             aside={
@@ -74,7 +98,7 @@ export default function Student({ data }: any) {
                 </Header>
             }
         >
-            <Text>Resize app to see responsive navbar in action</Text>
+            <Contents activeTab={activeTab} />
         </AppShell>
     );
 }

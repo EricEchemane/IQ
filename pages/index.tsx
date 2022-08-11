@@ -32,9 +32,12 @@ const Home = () => {
   }
   else if (login.data) {
     if (login.data.data.type === 'student')
-      return <UserStateProvider>
-        <Student data={login.data.data} />
-      </UserStateProvider>;
+      return <>
+        <Head> <title> Ayq </title> </Head>
+        <UserStateProvider>
+          <Student data={login.data.data} />
+        </UserStateProvider>;
+      </>;
     else
       return <Professor data={login.data.data} />;
   }
