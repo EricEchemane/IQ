@@ -40,7 +40,12 @@ export default async function handler(
                 if (adminPasscode !== process.env.ADMIN_PASSCODE) {
                     throw new Error('Invalid admin passcode');
                 }
-                const professor = await db?.models.User.create({ email, type });
+                const professor = await db?.models.User.create({
+                    email,
+                    type,
+                    name,
+                    image
+                });
                 res.status(200).json(OkResponse(professor));
                 break;
             default:

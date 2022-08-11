@@ -2,6 +2,7 @@ import '../styles/globals.css';
 import type { AppProps } from 'next/app';
 import { SessionProvider } from "next-auth/react";
 import { MantineProvider } from '@mantine/core';
+import { NotificationsProvider } from '@mantine/notifications';
 
 function MyApp({ Component, pageProps: { session, ...pageProps }, }: AppProps) {
   return (
@@ -14,7 +15,9 @@ function MyApp({ Component, pageProps: { session, ...pageProps }, }: AppProps) {
           colorScheme: 'light',
         }}
       >
-        <Component {...pageProps} />
+        <NotificationsProvider>
+          <Component {...pageProps} />
+        </NotificationsProvider>
       </MantineProvider>
     </SessionProvider>
   );

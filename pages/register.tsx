@@ -5,6 +5,7 @@ import { signOut, useSession } from 'next-auth/react';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 import React, { useEffect } from 'react';
+import { showNotification } from '@mantine/notifications';
 
 export default function Register() {
     const router = useRouter();
@@ -42,15 +43,20 @@ export default function Register() {
             router.replace('/');
             console.log(register.data);
         }
-        console.log(register.error);
-
+        if (register.error) {
+            showNotification({
+                title: 'Admin error',
+                message: register.error.message,
+                color: 'red'
+            });
+        }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [register.data, register.error]);
 
     const handleRegister = async (values: typeof form.values) => {
         await register.doFetch({
             method: 'POST',
-            body: JSON.stringify(form.values)
+            body: JSON.stringify(values)
         });
     };
 
