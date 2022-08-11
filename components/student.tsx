@@ -15,10 +15,10 @@ import {
     Button,
     Tabs,
 } from '@mantine/core';
-import AppHeader from './AppHeader';
-import NavBar from './NavBar';
+import AppHeader from './student/AppHeader';
+import NavBar from './student/NavBar';
 import { IconBallpen, IconUserCircle, IconUsers } from '@tabler/icons';
-import Contents from './Contents';
+import Contents from './student/Contents';
 
 export default function Student({ data }: any) {
     const { dispatch, state }: UserStateType = useUserState();
