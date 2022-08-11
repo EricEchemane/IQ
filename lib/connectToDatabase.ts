@@ -11,10 +11,10 @@ export default async function connectToDatabase(): Promise<typeof mongoose | nul
         if (database) {
             return database;
         }
-        mongoose.model('User', userSchema);
-        mongoose.model('Quiz', quizSchema);
-        mongoose.model('Question', questionSchema);
-        mongoose.model('QuizParticipant', quizParticipantSchema);
+        if (!mongoose.models.User) mongoose.model('User', userSchema);
+        if (!mongoose.models.Quiz) mongoose.model('Quiz', quizSchema);
+        if (!mongoose.models.Question) mongoose.model('Question', questionSchema);
+        if (!mongoose.models.QuizParticipant) mongoose.model('QuizParticipant', quizParticipantSchema);
         const connection = await mongoose.connect(process.env.MONGODB_URI || '');
 
         database = connection;

@@ -1,5 +1,6 @@
 import { Box, Button, Group, PasswordInput, Radio, Stack, TextInput, Title } from '@mantine/core';
 import { useForm } from '@mantine/form';
+import useFetch from 'lib/hooks/useFetch';
 import { useSession } from 'next-auth/react';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
@@ -16,27 +17,52 @@ export default function Register() {
     const form = useForm({
         initialValues: {
             email: session?.user?.email,
+            name: session?.user?.name,
+            image: session?.user?.image,
             type: 'student',
             course: '',
             section: '',
             adminPasscode: ''
         },
     });
+    const register = useFetch('/api/user/register');
 
     useEffect(() => {
         form.setValues(values => ({
             ...values,
-            email: session?.user?.email
+            email: session?.user?.email,
+            name: session?.user?.name,
+            image: session?.user?.image,
         }));
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [session?.user?.email]);
+    }, [session?.user]);
+
+    useEffect(() => {
+        if (register.data) {
+            router.replace('/');
+            console.log(register.data);
+        }
+        console.log(register.error);
+
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [register.data, register.error]);
+
+    const handleRegister = async (values: typeof form.values) => {
+        await register.doFetch({
+            method: 'POST',
+            body: JSON.stringify(form.values)
+        });
+    };
 
     return (
         <>
             <Head> <title> Register | Ayq </title> </Head>
+
             <Stack sx={{ maxWidth: 300 }} mx="auto" my='4rem'>
+
                 <Title align='center' order={2}> Register </Title>
-                <form onSubmit={form.onSubmit((values) => console.log(values))}>
+
+                <form onSubmit={form.onSubmit(handleRegister)}>
                     <TextInput
                         label={session?.user?.name || 'Email'}
                         placeholder="your@email.com"

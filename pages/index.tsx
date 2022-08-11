@@ -19,7 +19,7 @@ const Home = () => {
       login.doFetch({
         method: "POST",
         body: JSON.stringify({ email: data.user?.email })
-      });
+      }).then();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data]);
@@ -27,9 +27,9 @@ const Home = () => {
   if (login.error) {
     router.replace('/register');
   }
-  else {
+  else if (login.data) {
     return <>
-      <h1> {data?.user?.name} </h1>
+      <h1> {JSON.stringify(login.data, null, 4)} </h1>
     </>;
   }
 };
