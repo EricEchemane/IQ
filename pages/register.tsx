@@ -1,7 +1,7 @@
 import { Box, Button, Group, PasswordInput, Radio, Stack, TextInput, Title } from '@mantine/core';
 import { useForm } from '@mantine/form';
 import useFetch from 'lib/hooks/useFetch';
-import { useSession } from 'next-auth/react';
+import { signOut, useSession } from 'next-auth/react';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 import React, { useEffect } from 'react';
@@ -108,6 +108,10 @@ export default function Register() {
                     </Box>}
 
                     <Group position="right" mt="md">
+                        <Button onClick={(e: any) => {
+                            e.preventDefault();
+                            signOut();
+                        }} variant='outline'>Cancel</Button>
                         <Button type="submit">Submit</Button>
                     </Group>
                 </form>
