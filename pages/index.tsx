@@ -1,29 +1,37 @@
-import type { NextPage } from 'next';
 import Head from 'next/head';
-import { useSession, signIn, signOut } from "next-auth/react";
+import { useSession, signOut } from "next-auth/react";
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
+import useFetch from 'lib/hooks/useFetch';
 
-const Home: NextPage = () => {
-  const { data: session } = useSession();
+const Home = () => {
   const router = useRouter();
+  const { status, data } = useSession({
+    required: true,
+    onUnauthenticated() {
+      router.replace('/signin');
+    }
+  });
+  const login = useFetch('/api/user/login');
 
   useEffect(() => {
-    if (!session) {
-      router.replace('/login');
+    if (data) {
+      login.doFetch({
+        method: "POST",
+        body: JSON.stringify({ email: data.user?.email })
+      });
     }
-  }, [router, session]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [data]);
 
-  console.log(session);
-
-
-  return (
-    <>
-      <Head> <title>DFCAM - IQ</title> </Head>
-      <h1> {session?.user?.email} </h1>
-      <button onClick={() => signOut()}> Sign out </button>
-    </>
-  );
+  if (login.error) {
+    router.replace('/register');
+  }
+  else {
+    return <>
+      <h1> {data?.user?.name} </h1>
+    </>;
+  }
 };
 
 export default Home;

@@ -21,4 +21,4 @@ const quizParticipantSchema = new mongoose.Schema({
     }
 });
 
-export default mongoose.model("QuizParticipant", quizParticipantSchema);
+export default quizParticipantSchema;

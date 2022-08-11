@@ -1,35 +1,24 @@
 import mongoose from 'mongoose';
-import User from 'entities/user.entity';
-import Quiz from 'entities/quiz.entity';
-import Question from 'entities/question.entity';
-import QuizParticipant from 'entities/quiz-participant.entity';
+import userSchema from 'entities/user.entity';
+import quizSchema from 'entities/quiz.entity';
+import questionSchema from 'entities/question.entity';
+import quizParticipantSchema from 'entities/quiz-participant.entity';
 
+let database: typeof mongoose | null = null;
 
-interface Database {
-    connection: typeof mongoose;
-    user: typeof User;
-    quiz: typeof Quiz,
-    question: typeof Question,
-    quizParticipant: typeof QuizParticipant,
-}
-
-let database: Database | null = null;
-
-export default async function connectToDatabase(): Promise<Database | null> {
+export default async function connectToDatabase(): Promise<typeof mongoose | null> {
     try {
         if (database) {
             return database;
         }
+        mongoose.model('User', userSchema);
+        mongoose.model('Quiz', quizSchema);
+        mongoose.model('Question', questionSchema);
+        mongoose.model('QuizParticipant', quizParticipantSchema);
         const connection = await mongoose.connect(process.env.MONGODB_URI || '');
-        console.log('connection created');
 
-        database = {
-            connection,
-            user: User,
-            quiz: Quiz,
-            question: Question,
-            quizParticipant: QuizParticipant,
-        };
+        database = connection;
+        console.log('connection created');
 
         return database;
     } catch (error) {
