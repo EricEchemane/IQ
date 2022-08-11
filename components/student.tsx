@@ -11,6 +11,8 @@ import {
     MediaQuery,
     Burger,
     useMantineTheme,
+    Group,
+    Button,
 } from '@mantine/core';
 import AppHeader from './AppHeader';
 
@@ -49,7 +51,9 @@ export default function Student({ data }: any) {
             }
             footer={
                 <Footer height={60} p="md">
-                    Application footer
+                    <Group position='right'>
+                        <Button variant='subtle' onClick={() => signOut()}> Sign out </Button>
+                    </Group>
                 </Footer>
             }
             header={
