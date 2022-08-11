@@ -3,10 +3,13 @@ import { useSession, signOut } from "next-auth/react";
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
 import useFetch from 'lib/hooks/useFetch';
+import Student from 'components/student';
+import Professor from 'components/professor';
+import { UserStateProvider } from 'lib/user-context/student';
 
 const Home = () => {
   const router = useRouter();
-  const { status, data } = useSession({
+  const { data } = useSession({
     required: true,
     onUnauthenticated() {
       router.replace('/signin');
@@ -28,9 +31,12 @@ const Home = () => {
     router.replace('/register');
   }
   else if (login.data) {
-    return <>
-      <h1> {JSON.stringify(login.data, null, 4)} </h1>
-    </>;
+    if (login.data.data.type === 'student')
+      return <UserStateProvider>
+        <Student data={login.data.data} />
+      </UserStateProvider>;
+    else
+      return <Professor data={login.data.data} />;
   }
 };
 
