@@ -4,13 +4,13 @@ import React from 'react';
 export default function Contents({ activeTab }: { activeTab: string | null; }) {
     const { state, dispatch }: ProfessorStateType = useProfessirState();
 
-    if (activeTab === 'quizes') {
-        return <div>quizes</div>;
+    if (activeTab === 'view-quizes') {
+        return <div>view-quizes</div>;
     }
-    else if (activeTab === 'participants') {
-        return <div>participants</div>;
+    else if (activeTab === 'create-new-quiz') {
+        return <div>create-new-quiz</div>;
     }
     else {
-        return <div> edit account </div>;
+        return <div> students </div>;
     }
 }

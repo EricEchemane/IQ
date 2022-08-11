@@ -14,16 +14,17 @@ import {
     Group,
     Button,
     Tabs,
+    Title,
 } from '@mantine/core';
 import AppHeader from './professor/AppHeader';
-import { IconBallpen, IconUserCircle, IconUsers } from '@tabler/icons';
+import { IconList, IconPencilPlus, IconUsers } from '@tabler/icons';
 import Contents from './professor/Contents';
 
 export default function Student({ data }: any) {
     const { dispatch, state }: ProfessorStateType = useProfessorState();
     const theme = useMantineTheme();
     const [opened, setOpened] = useState(false);
-    const [activeTab, setActiveTab] = useState<string | null>('quizes');
+    const [activeTab, setActiveTab] = useState<string | null>('view-quizes');
 
     useEffect(() => {
         dispatch({
@@ -44,6 +45,8 @@ export default function Student({ data }: any) {
             asideOffsetBreakpoint="sm"
             navbar={
                 <Navbar p="md" hiddenBreakpoint="sm" hidden={!opened} width={{ sm: 200, lg: 300 }}>
+                    <Title order={6}>Professor</Title>
+
                     <Tabs
                         mt={'lg'}
                         value={activeTab}
@@ -54,14 +57,14 @@ export default function Student({ data }: any) {
                         orientation='vertical'>
                         <Tabs.List style={{ width: '100%' }}>
                             <Tabs.Tab
-                                icon={<IconBallpen strokeWidth={1} />}
-                                value="quizes"> Quizes </Tabs.Tab>
+                                icon={<IconList strokeWidth={1} />}
+                                value="view-quizes"> View quizes </Tabs.Tab>
+                            <Tabs.Tab
+                                icon={<IconPencilPlus strokeWidth={1} />}
+                                value="create-new-quiz"> Create new quiz </Tabs.Tab>
                             <Tabs.Tab
                                 icon={<IconUsers strokeWidth={1} />}
-                                value="participants"> Participants </Tabs.Tab>
-                            <Tabs.Tab
-                                icon={<IconUserCircle strokeWidth={1} />}
-                                value="account"> Edit account </Tabs.Tab>
+                                value="students"> My students </Tabs.Tab>
                         </Tabs.List>
                     </Tabs>
                 </Navbar>
