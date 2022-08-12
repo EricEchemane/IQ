@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-export interface IQuizParticipant extends mongoose.Document {
+export interface IQuizParticipant {
     student: mongoose.Schema.Types.ObjectId;
     quiz: mongoose.Schema.Types.ObjectId;
     date_finished?: Date;

@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-export interface IQuestion extends mongoose.Document {
+export interface IQuestion {
     question: string;
     timer: number | "inherit";
     choices: string[];

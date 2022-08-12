@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-export interface IQuiz extends mongoose.Document {
+export interface IQuiz {
     title: string;
     code: string;
     author: mongoose.Schema.Types.ObjectId;
