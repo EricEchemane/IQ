@@ -1,7 +1,20 @@
 import mongoose from "mongoose";
 import isValidEmail from "../emailValidator";
 
-const userSchema = new mongoose.Schema({
+export enum EUserType {
+    student = 'student',
+    professor = 'professor',
+}
+export interface IUser {
+    type: EUserType;
+    email: string;
+    name: string;
+    image: string;
+    course: string;
+    section: string;
+}
+
+const userSchema = new mongoose.Schema<IUser>({
     type: {
         type: String,
         enum: ['student', 'professor'],
