@@ -5,7 +5,7 @@ export enum EUserType {
     student = 'student',
     professor = 'professor',
 }
-export interface IUser {
+export interface IUser extends mongoose.Document {
     type: EUserType;
     email: string;
     name: string;
