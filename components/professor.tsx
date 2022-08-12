@@ -29,7 +29,10 @@ export default function Student({ data }: any) {
     useEffect(() => {
         dispatch({
             type: ProfessorActions.set_user,
-            payload: data
+            payload: {
+                ...data,
+                quizes: []
+            }
         });
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [data]);
