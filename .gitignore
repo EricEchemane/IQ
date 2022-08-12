@@ -3,6 +3,7 @@
 # dependencies
 /node_modules
 /.pnp
+__tests__
 .pnp.js
 _secrets
 
