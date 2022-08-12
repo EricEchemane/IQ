@@ -4,7 +4,7 @@ import useProfessorState, { ProfessorStateType } from 'lib/user-context/professo
 import Quiz from 'entities/quiz.entity';
 import React from 'react';
 
-const initialFormValues: Quiz = {
+const initialFormValues = {
     title: '',
     code: '',
     date_created: '',
