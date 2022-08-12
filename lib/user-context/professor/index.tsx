@@ -4,6 +4,7 @@ import reducer from "./reducer";
 import Quiz from 'entities/quiz.entity';
 
 export interface IProfessorState {
+    _id: string;
     email: string;
     name: string;
     image: string;
@@ -11,7 +12,8 @@ export interface IProfessorState {
 }
 
 export enum ProfessorActions {
-    set_user = 'set_user'
+    set_user = 'set_user',
+    create_new_quiz = 'create_new_quiz'
 }
 
 export interface ProfessorAction {

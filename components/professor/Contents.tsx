@@ -1,7 +1,8 @@
-import { Center, Stack, Text, Title } from '@mantine/core';
+import { Center, Stack, Text } from '@mantine/core';
 import useProfessirState, { ProfessorStateType } from 'lib/user-context/professor';
 import Image from 'next/image';
 import React from 'react';
+import CreateNewQuiz from './contents/CreateNewQuiz';
 
 export default function Contents({ activeTab }: { activeTab: string | null; }) {
     const { state, dispatch }: ProfessorStateType = useProfessirState();
@@ -20,7 +21,7 @@ export default function Contents({ activeTab }: { activeTab: string | null; }) {
         </>;
     }
     else if (activeTab === 'create-new-quiz') {
-        return <div>create-new-quiz</div>;
+        return <CreateNewQuiz />;
     }
     else {
         return <div> students </div>;
