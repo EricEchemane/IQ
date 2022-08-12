@@ -1,6 +1,14 @@
 import mongoose from "mongoose";
 
-const quizParticipantSchema = new mongoose.Schema({
+export interface IQuizParticipant extends mongoose.Document {
+    student: mongoose.Schema.Types.ObjectId;
+    quiz: mongoose.Schema.Types.ObjectId;
+    date_finished?: Date;
+    answers: string[];
+    final_score?: number;
+}
+
+const quizParticipantSchema = new mongoose.Schema<IQuizParticipant>({
     student: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "User",
