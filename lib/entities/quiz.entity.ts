@@ -1,6 +1,17 @@
 import mongoose from "mongoose";
 
-const quizSchema = new mongoose.Schema({
+export interface IQuiz extends mongoose.Document {
+    title: string;
+    code: string;
+    author: mongoose.Schema.Types.ObjectId;
+    date_created: Date;
+    questions: mongoose.Schema.Types.ObjectId[];
+    forSections: string[];
+    default_question_timer?: 5;
+    participants?: mongoose.Schema.Types.ObjectId[];
+}
+
+const quizSchema = new mongoose.Schema<IQuiz>({
     title: {
         type: String,
         required: [true, 'Title is required'],
@@ -34,7 +45,7 @@ const quizSchema = new mongoose.Schema({
     forSections: {
         type: [String],
         validate: {
-            validator: (value: String) => {
+            validator: (value: String[]) => {
                 return value.length > 0;
             },
             message: 'Requires atleast one section as the participant',
