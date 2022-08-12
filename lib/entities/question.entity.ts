@@ -1,6 +1,14 @@
 import mongoose from "mongoose";
 
-const questionSchema = new mongoose.Schema({
+export interface IQuestion extends mongoose.Document {
+    question: string;
+    timer: number | "inherit";
+    choices: string[];
+    correct_choice: string;
+    points?: number;
+}
+
+const questionSchema = new mongoose.Schema<IQuestion>({
     question: {
         type: String,
         required: [true, 'Question is required'],
@@ -14,7 +22,7 @@ const questionSchema = new mongoose.Schema({
         type: [String],
         required: [true, 'Choices are required'],
         validate: {
-            validator: (value: [String]) => {
+            validator: (value: String[]) => {
                 return value.length >= 2;
             },
             message: 'Requires atleast two choices',
