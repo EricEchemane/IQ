@@ -4,9 +4,9 @@ export interface IQuiz {
     title: string;
     code: string;
     author: mongoose.Schema.Types.ObjectId;
-    date_created: Date;
     questions: mongoose.Schema.Types.ObjectId[];
     forSections: string[];
+    date_created?: Date;
     default_question_timer?: 5;
     participants?: mongoose.Schema.Types.ObjectId[];
 }
