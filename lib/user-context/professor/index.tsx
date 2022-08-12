@@ -4,7 +4,7 @@ import reducer from "./reducer";
 import Quiz from 'entities/quiz.entity';
 
 export interface IProfessorState {
-    _id: string;
+    _id?: string;
     email: string;
     name: string;
     image: string;
