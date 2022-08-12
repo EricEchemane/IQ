@@ -11,11 +11,14 @@ export default async function connectToDatabase(): Promise<typeof mongoose | nul
         if (database) {
             return database;
         }
+        if (!process.env.MONGODB_URI) {
+            throw new Error('MONGODB_URI not set');
+        }
         if (!mongoose.models.User) mongoose.model('User', userSchema);
         if (!mongoose.models.Quiz) mongoose.model('Quiz', quizSchema);
         if (!mongoose.models.Question) mongoose.model('Question', questionSchema);
         if (!mongoose.models.QuizParticipant) mongoose.model('QuizParticipant', quizParticipantSchema);
-        const connection = await mongoose.connect(process.env.MONGODB_URI || '');
+        const connection = await mongoose.connect(process.env.MONGODB_URI);
 
         database = connection;
         console.log('connection created');

@@ -24,9 +24,14 @@ export default async function handler(
 
     try {
         const db = await connectToDatabase();
+        if (!db) {
+            throw new Error('Database not connected');
+        }
+        const { User } = db.models;
+
         switch (type) {
             case 'student':
-                const user = await db?.model('User').create({
+                const user = new User({
                     email,
                     course,
                     section,
@@ -34,18 +39,20 @@ export default async function handler(
                     image,
                     type
                 });
+                await user.save();
                 res.status(200).json(OkResponse(user));
                 break;
             case 'professor':
                 if (adminPasscode !== process.env.ADMIN_PASSCODE) {
                     throw new Error('Invalid admin passcode');
                 }
-                const professor = await db?.models.User.create({
+                const professor = new User({
                     email,
                     type,
                     name,
                     image
                 });
+                await professor.save();
                 res.status(200).json(OkResponse(professor));
                 break;
             default:
