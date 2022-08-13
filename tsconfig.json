@@ -21,7 +21,7 @@
     "baseUrl": ".",
     "paths": {
       "entities/*": [
-        "lib/entities/*"
+        "entities/*"
       ],
       "lib/*": [
         "lib/*"

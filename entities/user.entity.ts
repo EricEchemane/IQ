@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import isValidEmail from "../emailValidator";
+import isValidEmail from "lib/emailValidator";
 
 export enum EUserType {
     student = 'student',
