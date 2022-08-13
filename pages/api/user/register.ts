@@ -2,6 +2,7 @@ import { OkResponse } from 'lib/response';
 import connectToDatabase from 'db/connectToDatabase';
 import { BadResponse } from 'lib/response';
 import type { NextApiRequest, NextApiResponse } from "next";
+import { RegisterPayload } from 'http_adapters/user.adapter';
 
 export default async function handler(
     req: NextApiRequest,
@@ -20,7 +21,7 @@ export default async function handler(
         course,
         section,
         adminPasscode,
-    } = JSON.parse(req.body);
+    }: RegisterPayload = JSON.parse(req.body);
 
     try {
         const db = await connectToDatabase();
