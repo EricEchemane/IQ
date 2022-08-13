@@ -1,4 +1,5 @@
 import connectToDatabase from 'db/connectToDatabase';
+import { LoginPayload } from 'http_adapters/user.adapter';
 import { BadResponse, OkResponse } from "lib/response";
 import type { NextApiRequest, NextApiResponse } from "next";
 
@@ -11,7 +12,7 @@ export default async function handler(
         return;
     }
 
-    const { email } = JSON.parse(req.body);
+    const { email }: LoginPayload = JSON.parse(req.body);
 
     if (!email) {
         res.status(400).json(BadResponse("email is required"));
