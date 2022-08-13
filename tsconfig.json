@@ -35,6 +35,9 @@
       "http_adapters/*": [
         "http_adapters/*"
       ],
+      "state_providers/*": [
+        "state_providers/*"
+      ],
     }
   },
   "include": [
