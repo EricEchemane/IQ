@@ -1,5 +1,5 @@
 import { Center, Stack, Text } from '@mantine/core';
-import useProfessirState, { ProfessorStateType } from 'lib/user-context/professor';
+import useProfessirState, { ProfessorStateType } from 'state_providers/professor';
 import Image from 'next/image';
 import React from 'react';
 import CreateNewQuiz from './contents/CreateNewQuiz';

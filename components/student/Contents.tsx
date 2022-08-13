@@ -1,4 +1,4 @@
-import useUserState, { UserStateType } from 'lib/user-context/student';
+import useUserState, { UserStateType } from 'state_providers/student';
 import React from 'react';
 
 export default function Contents({ activeTab }: { activeTab: string | null; }) {

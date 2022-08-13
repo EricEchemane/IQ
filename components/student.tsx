@@ -1,4 +1,4 @@
-import useUserState, { UserActions, UserStateType } from 'lib/user-context/student';
+import useUserState, { UserActions, UserStateType } from 'state_providers/student';
 import { signOut } from 'next-auth/react';
 import { useEffect, useState } from 'react';
 import {

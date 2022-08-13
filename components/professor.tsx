@@ -1,4 +1,4 @@
-import useProfessorState, { ProfessorActions, ProfessorStateType } from 'lib/user-context/professor';
+import useProfessorState, { ProfessorActions, ProfessorStateType } from 'state_providers/professor';
 import { signOut } from 'next-auth/react';
 import { useEffect, useState } from 'react';
 import {

@@ -1,5 +1,5 @@
 import { OkResponse } from 'lib/response';
-import connectToDatabase from 'lib/connectToDatabase';
+import connectToDatabase from 'db/connectToDatabase';
 import { BadResponse } from 'lib/response';
 import type { NextApiRequest, NextApiResponse } from "next";
 

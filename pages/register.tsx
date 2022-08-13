@@ -1,6 +1,6 @@
 import { Box, Button, Group, PasswordInput, Radio, Stack, TextInput, Title } from '@mantine/core';
 import { useForm } from '@mantine/form';
-import useFetch from 'lib/hooks/useFetch';
+import useFetch from 'hooks/useFetch';
 import { signOut, useSession } from 'next-auth/react';
 import Head from 'next/head';
 import { useRouter } from 'next/router';

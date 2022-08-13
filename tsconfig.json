@@ -26,6 +26,9 @@
       "lib/*": [
         "lib/*"
       ],
+      "db/*": [
+        "db/*"
+      ],
       "components/*": [
         "components/*"
       ],

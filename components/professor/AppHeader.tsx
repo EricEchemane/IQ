@@ -1,5 +1,5 @@
 import { Avatar, Group, Stack, Title, Text } from "@mantine/core";
-import { IProfessorState } from "lib/user-context/professor";
+import { IProfessorState } from "state_providers/professor";
 
 export default function AppHeader({ data }: { data: IProfessorState; }) {
     return (

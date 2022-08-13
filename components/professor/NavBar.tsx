@@ -1,4 +1,4 @@
-import { Group, Paper, Stack, Text, Title } from '@mantine/core';
+import { Stack, Text, Title } from '@mantine/core';
 import React from 'react';
 
 interface Props {

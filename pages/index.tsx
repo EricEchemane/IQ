@@ -2,11 +2,11 @@ import Head from 'next/head';
 import { useSession } from "next-auth/react";
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
-import useFetch from 'lib/hooks/useFetch';
+import useFetch from 'hooks/useFetch';
 import Student from 'components/student';
 import Professor from 'components/professor';
-import { UserStateProvider } from 'lib/user-context/student';
-import { ProfessorStateProvider } from 'lib/user-context/professor';
+import { UserStateProvider } from 'state_providers/student';
+import { ProfessorStateProvider } from 'state_providers/professor';
 
 const Home = () => {
   const router = useRouter();

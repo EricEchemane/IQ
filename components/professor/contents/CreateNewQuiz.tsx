@@ -1,7 +1,5 @@
-import { TextInput, Checkbox, Button, Group, Box } from '@mantine/core';
 import { useForm } from '@mantine/form';
-import useProfessorState, { ProfessorStateType } from 'lib/user-context/professor';
-import Quiz from 'entities/quiz.entity';
+import useProfessorState, { ProfessorStateType } from 'state_providers/professor';
 import React from 'react';
 
 const initialFormValues = {
