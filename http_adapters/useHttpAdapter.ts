@@ -1,7 +1,7 @@
 import { useCallback, useState } from "react";
 import HttpAdapter from "./base.adapter";
 
-export default function useHttpAdapter(adapter: HttpAdapter) {
+export default function useHttpAdapter<PayloadType>(adapter: HttpAdapter) {
 
     const [loading, setLoading] = useState(false);
     const [response, setResponse] = useState<any>();
@@ -14,13 +14,16 @@ export default function useHttpAdapter(adapter: HttpAdapter) {
         success: boolean;
     } | null>();
 
-    const Fetch = useCallback(async () => {
+    const execute = useCallback(async (payload: PayloadType) => {
         setLoading(true);
         setError(null);
         setResponse(null);
         setData(null);
         try {
-            const response = await fetch(adapter.url, { ...adapter });
+            const response = await fetch(adapter.url, {
+                ...adapter,
+                body: JSON.stringify(payload)
+            });
             setResponse(response);
             if (response.ok) {
                 const data = await response.json();
@@ -40,6 +43,6 @@ export default function useHttpAdapter(adapter: HttpAdapter) {
     }, [adapter]);
 
     return {
-        loading, data, error, response, Fetch
+        loading, data, error, response, execute
     };
 }

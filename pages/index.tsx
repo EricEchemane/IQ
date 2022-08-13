@@ -2,11 +2,12 @@ import Head from 'next/head';
 import { useSession } from "next-auth/react";
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
-import useFetch from 'hooks/useFetch';
 import Student from 'components/student';
 import Professor from 'components/professor';
 import { UserStateProvider } from 'state_providers/student';
 import { ProfessorStateProvider } from 'state_providers/professor';
+import useHttpAdapter from 'http_adapters/useHttpAdapter';
+import UserAdapter, { LoginPayload } from 'http_adapters/user.adapter';
 
 const Home = () => {
   const router = useRouter();
@@ -16,33 +17,31 @@ const Home = () => {
       router.replace('/signin');
     }
   });
-  const login = useFetch('/api/user/login');
+  const userLoginAdapter = useHttpAdapter<LoginPayload>(UserAdapter.login);
 
   useEffect(() => {
     if (data) {
-      login.doFetch({
-        method: "POST",
-        body: JSON.stringify({ email: data.user?.email })
-      }).then();
+      if (!data.user?.email) return;
+      userLoginAdapter.execute({ email: data.user.email });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data]);
 
-  if (login.error) {
+  if (userLoginAdapter.error) {
     router.replace('/register');
   }
-  else if (login.data) {
-    if (login.data.data.type === 'student')
+  else if (userLoginAdapter.data) {
+    if (userLoginAdapter.data.data.type === 'student')
       return <>
         <Head> <title> Ayq | Student </title> </Head>
         <UserStateProvider>
-          <Student data={login.data.data} />
+          <Student data={userLoginAdapter.data.data} />
         </UserStateProvider>;
       </>;
     else return <>
       <Head> <title> Ayq  | admin </title> </Head>
       <ProfessorStateProvider>
-        <Professor data={login.data.data} />
+        <Professor data={userLoginAdapter.data.data} />
       </ProfessorStateProvider>
     </>;
   }

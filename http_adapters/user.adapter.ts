@@ -2,11 +2,12 @@ import HttpAdapter from "./base.adapter";
 
 export default class UserAdapter {
 
-    static login = (payload: { email: string; }) => {
-        return new HttpAdapter({
-            url: "/api/user/login",
-            body: payload,
-            method: "POST",
-        });
+    static login: HttpAdapter = {
+        url: "/api/user/login",
+        method: "POST",
     };
 }
+
+export type LoginPayload = {
+    email: string;
+};
