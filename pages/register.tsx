@@ -1,11 +1,12 @@
 import { Box, Button, Group, PasswordInput, Radio, Stack, TextInput, Title } from '@mantine/core';
 import { useForm } from '@mantine/form';
-import useFetch from 'hooks/useFetch';
 import { signOut, useSession } from 'next-auth/react';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 import React, { useEffect } from 'react';
 import { showNotification } from '@mantine/notifications';
+import useHttpAdapter from 'http_adapters/useHttpAdapter';
+import UserAdapter, { RegisterPayload } from 'http_adapters/user.adapter';
 
 export default function Register() {
     const router = useRouter();
@@ -26,7 +27,7 @@ export default function Register() {
             adminPasscode: ''
         },
     });
-    const register = useFetch('/api/user/register');
+    const registerAdapter = useHttpAdapter<RegisterPayload>(UserAdapter.register);
 
     useEffect(() => {
         form.setValues(values => ({
@@ -39,25 +40,22 @@ export default function Register() {
     }, [session?.user]);
 
     useEffect(() => {
-        if (register.data) {
+        if (registerAdapter.data) {
             router.replace('/');
-            console.log(register.data);
+            console.log(registerAdapter.data);
         }
-        if (register.error) {
+        if (registerAdapter.error) {
             showNotification({
                 title: 'Admin error',
-                message: register.error.message,
+                message: registerAdapter.error.message,
                 color: 'red'
             });
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [register.data, register.error]);
+    }, [registerAdapter.data, registerAdapter.error]);
 
-    const handleRegister = async (values: typeof form.values) => {
-        await register.doFetch({
-            method: 'POST',
-            body: JSON.stringify(values)
-        });
+    const handleRegister = async (values: any) => {
+        await registerAdapter.execute(values);
     };
 
     return (
