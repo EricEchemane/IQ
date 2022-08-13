@@ -29,8 +29,11 @@
       "components/*": [
         "components/*"
       ],
-      "api/*": [
-        "pages/api/*"
+      "hooks/*": [
+        "hooks/*"
+      ],
+      "http_adapters/*": [
+        "http_adapters/*"
       ],
     }
   },
