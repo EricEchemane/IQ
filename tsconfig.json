@@ -20,14 +20,14 @@
     "incremental": true,
     "baseUrl": ".",
     "paths": {
+      "entities/*": [
+        "lib/entities/*"
+      ],
       "lib/*": [
         "lib/*"
       ],
       "components/*": [
         "components/*"
-      ],
-      "entities/*": [
-        "lib/entities/*"
       ],
       "api/*": [
         "pages/api/*"
