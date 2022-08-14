@@ -31,8 +31,11 @@ async function handler(req: NextApiRequest, token: JWT) {
         author: user._id,
         forSections
     });
-    await quiz.save();
-
+    await quiz.save().catch((err: any) => {
+        if (err && err.code === 11000) {
+            throw new RequestError(400, 'Quiz with this title already exists');
+        }
+    });
     return quiz;
 }
 
