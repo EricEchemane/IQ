@@ -10,6 +10,5 @@ export default class QuizAdapter {
 
 export type CreateQuizPayload = {
     title: string;
-    code: string;
     forSections: string[];
 };
