@@ -4,7 +4,8 @@ import useHttpAdapter from 'http_adapters/useHttpAdapter';
 import QuizAdapter, { CreateQuizPayload } from 'http_adapters/adapters/quiz.adapter';
 import { ActionIcon, Badge, Button, Group, Paper, Stack, Text, TextInput, Title } from '@mantine/core';
 import { getHotkeyHandler } from '@mantine/hooks';
-import { IconX } from '@tabler/icons';
+import { IconCheck, IconX } from '@tabler/icons';
+import { showNotification } from '@mantine/notifications';
 
 export default function CreateNewQuiz() {
     const { state, dispatch }: ProfessorStateType = useProfessorState();
@@ -12,6 +13,24 @@ export default function CreateNewQuiz() {
     const [section, setSection] = useState<string>('');
     const [forSections, setForSections] = useState<string[]>([]);
     const newQuizAdapter = useHttpAdapter<CreateQuizPayload>(QuizAdapter.createNew);
+
+    useEffect(() => {
+        if (newQuizAdapter.error) {
+            showNotification({
+                message: newQuizAdapter.error.message,
+                title: 'Ooops!',
+                color: 'red'
+            });
+        }
+        if (newQuizAdapter.data) {
+            showNotification({
+                message: 'Successfully created. Please continue',
+                title: 'Great!',
+                color: 'green',
+                icon: <IconCheck />
+            });
+        }
+    }, [newQuizAdapter.data, newQuizAdapter.error]);
 
     const addSection = () => {
         if (section.trim().length <= 0) return;
