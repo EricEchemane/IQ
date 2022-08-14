@@ -1,18 +1,13 @@
 import { useCallback, useState } from "react";
 import HttpAdapter from "./base.adapter";
+import { RequestError, SuccessfulRequest } from "./response_normalizer";
 
 export default function useHttpAdapter<PayloadType>(adapter: HttpAdapter) {
 
     const [loading, setLoading] = useState(false);
     const [response, setResponse] = useState<any>();
-    const [error, setError] = useState<{
-        message: string;
-        code: number;
-    } | null>();
-    const [data, setData] = useState<{
-        data: any;
-        success: boolean;
-    } | null>();
+    const [error, setError] = useState<RequestError | null>();
+    const [data, setData] = useState<SuccessfulRequest | null>();
 
     const execute = useCallback(async (payload: PayloadType) => {
         setLoading(true);
@@ -25,18 +20,17 @@ export default function useHttpAdapter<PayloadType>(adapter: HttpAdapter) {
                 body: JSON.stringify(payload)
             });
             setResponse(response);
+
             if (response.ok) {
                 const data = await response.json();
                 setData(data);
             }
             else {
-                setError({
-                    message: response.statusText,
-                    code: response.status
-                });
+                const error = await response.json();
+                setError(error);
             }
         } catch (error: any) {
-            setError(error);
+            setError(new RequestError(500, error.message));
         } finally {
             setLoading(false);
         }
