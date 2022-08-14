@@ -1,6 +1,6 @@
 import connectToDatabase from 'db/connectToDatabase';
 import type { NextApiRequest } from "next";
-import { RegisterPayload } from 'http_adapters/user.adapter';
+import { RegisterPayload } from 'http_adapters/adapters/user.adapter';
 import normalize, { RequestError } from 'http_adapters/response_normalizer';
 
 async function handler(req: NextApiRequest) {

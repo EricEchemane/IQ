@@ -1,5 +1,5 @@
 import { IUser } from "entities/user.entity";
-import HttpAdapter from "./base.adapter";
+import HttpAdapter from "../base.adapter";
 
 export default class UserAdapter {
 

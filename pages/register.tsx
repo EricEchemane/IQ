@@ -6,7 +6,7 @@ import { useRouter } from 'next/router';
 import React, { useEffect } from 'react';
 import { showNotification } from '@mantine/notifications';
 import useHttpAdapter from 'http_adapters/useHttpAdapter';
-import UserAdapter, { RegisterPayload } from 'http_adapters/user.adapter';
+import UserAdapter, { RegisterPayload } from 'http_adapters/adapters/user.adapter';
 
 export default function Register() {
     const router = useRouter();

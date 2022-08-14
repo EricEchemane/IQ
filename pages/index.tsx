@@ -7,7 +7,7 @@ import Professor from 'components/professor';
 import { UserStateProvider } from 'state_providers/student';
 import { ProfessorStateProvider } from 'state_providers/professor';
 import useHttpAdapter from 'http_adapters/useHttpAdapter';
-import UserAdapter, { LoginPayload } from 'http_adapters/user.adapter';
+import UserAdapter, { LoginPayload } from 'http_adapters/adapters/user.adapter';
 
 const Home = () => {
   const router = useRouter();
