@@ -1,0 +1,15 @@
+import HttpAdapter from "../base.adapter";
+
+export default class QuizAdapter {
+
+    static createNew: HttpAdapter = {
+        url: '/api/quiz/create',
+        method: "POST",
+    };
+}
+
+export type CreateQuizPayload = {
+    title: string;
+    code: string;
+    forSections: string[];
+};
