@@ -35,7 +35,7 @@ export default function normalize(
             );
         }
 
-        const data = await handler(req)
+        const data = await handler(req, token)
             .catch((error: any) => {
                 console.error('\n\n==> Error from:', req.url);
                 console.error(error);
