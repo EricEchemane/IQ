@@ -18,12 +18,6 @@ const quizSchema = new mongoose.Schema<IQuiz>({
         required: [true, 'Title is required'],
         minlength: [3, 'Title must be at least 3 characters long'],
     },
-    code: {
-        type: String,
-        required: [true, 'Code is required'],
-        length: [6, 'Code must be at least 6 characters long'],
-        unique: true
-    },
     author: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User',
