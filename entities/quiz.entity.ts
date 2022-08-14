@@ -6,6 +6,7 @@ export interface IQuiz {
     author: mongoose.Schema.Types.ObjectId;
     questions: mongoose.Schema.Types.ObjectId[];
     forSections: string[];
+    published: boolean;
     date_created?: Date;
     default_question_timer?: 5;
     participants?: mongoose.Schema.Types.ObjectId[];
@@ -38,6 +39,10 @@ const quizSchema = new mongoose.Schema<IQuiz>({
     participants: {
         type: [mongoose.Schema.Types.ObjectId],
         ref: 'QuizParticipant',
+    },
+    published: {
+        type: Boolean,
+        default: false,
     },
     default_question_timer: { // seconds
         type: Number,
