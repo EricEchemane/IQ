@@ -34,7 +34,7 @@ export default function CreateNewQuiz() {
                 minLength={5}
                 onChange={(event) => setQuizTitle(event.currentTarget.value)} />
 
-            <Group align='flex-end'>
+            <Group align='flex-end' spacing={5}>
                 <TextInput
                     placeholder='enter sections here'
                     label='For Sections'
@@ -64,6 +64,12 @@ export default function CreateNewQuiz() {
                         onClick={() => removeSection(section)}
                     > {section} </Badge>;
                 })} </Text>
+
+                <Group position='right'>
+                    <Button
+                        disabled={quizTitle.trim().length <= 0 || forSections.length === 0}
+                        variant='light'> Continue </Button>
+                </Group>
             </Paper>
         </Stack>
     );
