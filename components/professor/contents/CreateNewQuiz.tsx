@@ -1,5 +1,5 @@
 import useProfessorState, { ProfessorStateType } from 'state_providers/professor';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import useHttpAdapter from 'http_adapters/useHttpAdapter';
 import QuizAdapter, { CreateQuizPayload } from 'http_adapters/adapters/quiz.adapter';
 import { ActionIcon, Badge, Button, Group, Paper, Stack, Text, TextInput, Title } from '@mantine/core';
@@ -20,6 +20,10 @@ export default function CreateNewQuiz() {
     };
     const removeSection = (section: string) => {
         setForSections(sections => sections.filter(s => s !== section));
+    };
+    const createNew = () => {
+        const payload: CreateQuizPayload = { forSections, title: quizTitle };
+        newQuizAdapter.execute(payload);
     };
 
     return (
@@ -67,6 +71,8 @@ export default function CreateNewQuiz() {
 
                 <Group position='right'>
                     <Button
+                        loading={newQuizAdapter.loading}
+                        onClick={createNew}
                         disabled={quizTitle.trim().length <= 0 || forSections.length === 0}
                         variant='light'> Continue </Button>
                 </Group>
