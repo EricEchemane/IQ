@@ -20,8 +20,7 @@ const Home = () => {
   const userLoginAdapter = useHttpAdapter<LoginPayload>(UserAdapter.login);
 
   useEffect(() => {
-    if (data) {
-      if (!data.user?.email) return;
+    if (data && data.user?.email) {
       userLoginAdapter.execute({ email: data.user.email });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps

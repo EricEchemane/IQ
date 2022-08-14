@@ -1,35 +1,28 @@
 import connectToDatabase from 'db/connectToDatabase';
+import normalize, { RequestError } from 'http_adapters/response_normalizer';
 import { LoginPayload } from 'http_adapters/user.adapter';
-import { BadResponse, OkResponse } from "lib/response";
-import type { NextApiRequest, NextApiResponse } from "next";
+import type { NextApiRequest } from "next";
 
-export default async function handler(
-    req: NextApiRequest,
-    res: NextApiResponse
-) {
+async function handler(req: NextApiRequest) {
     if (req.method !== "POST") {
-        res.status(405).json(BadResponse("Method not allowed"));
-        return;
+        throw new RequestError(405, "Method not allowed");
     }
 
     const { email }: LoginPayload = JSON.parse(req.body);
-
     if (!email) {
-        res.status(400).json(BadResponse("email is required"));
-        return;
+        throw new RequestError(400, "Email is required");
     }
 
-    const db = await connectToDatabase()
-        .catch(err => {
-            res.status(500).json(BadResponse(err.message, err));
-            return;
-        });
+    const db = await connectToDatabase();
+    if (!db) {
+        throw new RequestError(500, "Database connection failed");
+    }
 
-    const user = await db?.model('User').findOne({ email });
+    const user = await db.model('User').findOne({ email });
     if (!user) {
-        res.status(404).json(BadResponse("User not found"));
-        return;
+        throw new RequestError(400, "User not found");
     }
-
-    res.json(OkResponse(user));
+    return user;
 }
+
+export default normalize(handler, { protect: false });

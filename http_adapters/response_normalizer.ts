@@ -1,17 +1,12 @@
-import { BadResponse, OkResponse } from 'lib/response';
 import type { NextApiRequest, NextApiResponse } from "next";
 import { getToken } from "next-auth/jwt";
 
 export class RequestError {
     success = false;
     code: number;
-    error: {
-        message: string;
-    };
+    message: string;
     constructor(code: number, message: string) {
-        this.error = {
-            message
-        };
+        this.message = message;
         this.code = code;
     }
 }
@@ -25,10 +20,13 @@ export class SuccessfulRequest {
 }
 
 export default function normalize(
-    controller: Function,
+    handler: Function,
     options: { protect: boolean; } = { protect: true }
 ) {
-    return async function (req: NextApiRequest, res: NextApiResponse) {
+    return async function (
+        req: NextApiRequest,
+        res: NextApiResponse<SuccessfulRequest | RequestError>) {
+
         const token = await getToken({ req });
 
         if (options.protect === true && !token) {
@@ -37,15 +35,17 @@ export default function normalize(
             );
         }
 
-        controller(req, res)
-            .then((data: any) => {
-                res.status(200).json(new SuccessfulRequest(data));
-            })
+        const data = await handler(req)
             .catch((error: any) => {
+                console.error('\n\n==> Error from:', req.url);
+                console.error(error);
+
                 if (error instanceof RequestError) {
-                    res.status(error.code).json(error);
+                    return res.status(error.code).json(error);
                 }
-                else res.status(500).json(new RequestError(500, error.message));
+                return res.status(500).json(new RequestError(500, error.message));
             });
+
+        return res.status(200).json(new SuccessfulRequest(data));
     };
 }
