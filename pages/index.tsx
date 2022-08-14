@@ -25,22 +25,24 @@ const Home = () => {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data]);
+  console.log(userLoginAdapter);
+
 
   if (userLoginAdapter.error) {
     router.replace('/register');
   }
   else if (userLoginAdapter.data) {
-    if (userLoginAdapter.data.data.type === 'student')
+    if (userLoginAdapter.data.type === 'student')
       return <>
         <Head> <title> Ayq | Student </title> </Head>
         <UserStateProvider>
-          <Student data={userLoginAdapter.data.data} />
+          <Student data={userLoginAdapter.data} />
         </UserStateProvider>;
       </>;
     else return <>
       <Head> <title> Ayq  | admin </title> </Head>
       <ProfessorStateProvider>
-        <Professor data={userLoginAdapter.data.data} />
+        <Professor data={userLoginAdapter.data} />
       </ProfessorStateProvider>
     </>;
   }

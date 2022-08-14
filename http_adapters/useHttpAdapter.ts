@@ -7,7 +7,7 @@ export default function useHttpAdapter<PayloadType>(adapter: HttpAdapter) {
     const [loading, setLoading] = useState(false);
     const [response, setResponse] = useState<any>();
     const [error, setError] = useState<RequestError | null>();
-    const [data, setData] = useState<SuccessfulRequest | null>();
+    const [data, setData] = useState<any | null>();
 
     const execute = useCallback(async (payload: PayloadType) => {
         setLoading(true);
@@ -23,7 +23,7 @@ export default function useHttpAdapter<PayloadType>(adapter: HttpAdapter) {
 
             if (response.ok) {
                 const data = await response.json();
-                setData(data);
+                setData(data.data);
             }
             else {
                 const error = await response.json();
