@@ -46,7 +46,7 @@ export default function CreateNewQuiz() {
                         ['enter', addSection]
                     ])}
                 />
-                <Button variant='filled' onClick={addSection}>Add</Button>
+                <Button variant='filled' disabled={section.trim().length === 0} onClick={addSection}>Add</Button>
             </Group>
 
             <Paper p='sm' radius={7} shadow='sm'>
