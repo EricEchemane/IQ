@@ -2,7 +2,6 @@ import mongoose from "mongoose";
 
 export interface IQuiz {
     title: string;
-    code: string;
     author: mongoose.Schema.Types.ObjectId;
     questions: mongoose.Schema.Types.ObjectId[];
     forSections: string[];
