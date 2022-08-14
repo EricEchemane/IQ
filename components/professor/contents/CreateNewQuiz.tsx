@@ -26,20 +26,6 @@ export default function CreateNewQuiz() {
         <Stack>
             <Title order={4}> Create New Quiz </Title>
 
-            <Paper p='sm' radius={7} shadow='sm'>
-                <Text color='dimmed' mb='sm'>Title: {quizTitle} </Text>
-                <Text color='dimmed'>For Sections: {forSections.map((section, index) => {
-                    return <Badge
-                        key={index}
-                        ml='xs'
-                        px='xs'
-                        size='lg'
-                        rightSection={removeButton}
-                        onClick={() => removeSection(section)}
-                    > {section} </Badge>;
-                })} </Text>
-            </Paper>
-
             <TextInput
                 placeholder='enter your quiz title here'
                 label='Quiz Title'
@@ -62,6 +48,23 @@ export default function CreateNewQuiz() {
                 />
                 <Button variant='filled' onClick={addSection}>Add</Button>
             </Group>
+
+            <Paper p='sm' radius={7} shadow='sm'>
+                <Group align='flex-start'>
+                    <Text color='dimmed' mb='sm'>Title: </Text>
+                    <Text weight='bold'> {quizTitle} </Text>
+                </Group>
+                <Text color='dimmed'>For Sections: {forSections.map((section, index) => {
+                    return <Badge
+                        key={index}
+                        ml='xs'
+                        px='xs'
+                        size='lg'
+                        rightSection={removeButton}
+                        onClick={() => removeSection(section)}
+                    > {section} </Badge>;
+                })} </Text>
+            </Paper>
         </Stack>
     );
 }
