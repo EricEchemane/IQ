@@ -3,11 +3,12 @@ import useProfessirState, { ProfessorStateType } from 'state_providers/professor
 import Image from 'next/image';
 import React from 'react';
 import CreateNewQuiz from './contents/CreateNewQuiz';
+import { professorTabs } from 'components/professor';
 
 export default function Contents({ activeTab }: { activeTab: string | null; }) {
     const { state, dispatch }: ProfessorStateType = useProfessirState();
 
-    if (activeTab === 'view-quizes') {
+    if (activeTab === professorTabs.view_quizes) {
         if (state.quizes.length === 0) return <>
             <Center style={{ height: '100%' }}>
                 <Stack align={'center'}>
@@ -20,7 +21,7 @@ export default function Contents({ activeTab }: { activeTab: string | null; }) {
             <div> display the quizes </div>
         </>;
     }
-    else if (activeTab === 'create-new-quiz') {
+    else if (activeTab === professorTabs.create_new_quiz) {
         return <CreateNewQuiz />;
     }
     else {

@@ -20,6 +20,6 @@ export default function CreateNewQuiz() {
     });
 
     return (
-        <div>CreateNewQuiz</div>
+        <div>CreateNewQuiz asds</div>
     );
 }

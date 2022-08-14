@@ -20,11 +20,17 @@ import AppHeader from './professor/AppHeader';
 import { IconList, IconPencilPlus, IconUsers } from '@tabler/icons';
 import Contents from './professor/Contents';
 
+export const professorTabs = Object.freeze({
+    view_quizes: 'view_quizes',
+    create_new_quiz: 'create_new_quiz',
+    my_students: 'my_students',
+});
+
 export default function Student({ data }: any) {
     const { dispatch, state }: ProfessorStateType = useProfessorState();
     const theme = useMantineTheme();
     const [opened, setOpened] = useState(false);
-    const [activeTab, setActiveTab] = useState<string | null>('view-quizes');
+    const [activeTab, setActiveTab] = useState<string | null>(professorTabs.create_new_quiz);
 
     useEffect(() => {
         dispatch({
@@ -61,13 +67,13 @@ export default function Student({ data }: any) {
                         <Tabs.List style={{ width: '100%' }}>
                             <Tabs.Tab
                                 icon={<IconList strokeWidth={1} />}
-                                value="view-quizes"> View quizes </Tabs.Tab>
+                                value={professorTabs.view_quizes}> View quizes </Tabs.Tab>
                             <Tabs.Tab
                                 icon={<IconPencilPlus strokeWidth={1} />}
-                                value="create-new-quiz"> Create new quiz </Tabs.Tab>
+                                value={professorTabs.create_new_quiz}> Create new quiz </Tabs.Tab>
                             <Tabs.Tab
                                 icon={<IconUsers strokeWidth={1} />}
-                                value="students"> My students </Tabs.Tab>
+                                value={professorTabs.my_students}> My students </Tabs.Tab>
                         </Tabs.List>
                     </Tabs>
                 </Navbar>
