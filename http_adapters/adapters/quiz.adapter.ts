@@ -19,6 +19,7 @@ export type CreateQuizPayload = {
     forSections: string[];
 };
 
-export type AddQuestionPayload = IQuestion & {
+export type AddQuestionPayload = {
     quizId: string;
+    questions: IQuestion[];
 };
