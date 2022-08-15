@@ -6,6 +6,7 @@ import { ActionIcon, Badge, Button, Group, Paper, Stack, Text, TextInput, Title 
 import { getHotkeyHandler } from '@mantine/hooks';
 import { IconCheck, IconX } from '@tabler/icons';
 import { showNotification } from '@mantine/notifications';
+import AddQuestions from './AddQuestions';
 
 export default function CreateNewQuiz() {
     const { state, dispatch }: ProfessorStateType = useProfessorState();
@@ -54,6 +55,9 @@ export default function CreateNewQuiz() {
         const payload: CreateQuizPayload = { forSections, title: quizTitle };
         newQuizAdapter.execute(payload);
     };
+    const saveQuestions = async () => {
+        console.log('saveQuestions called');
+    };
 
     return (
         <Stack>
@@ -98,14 +102,16 @@ export default function CreateNewQuiz() {
                     > {section} </Badge>;
                 })} </Text>
 
-                <Group position='right'>
+                {!newQuizAdapter.data && <Group position='right'>
                     <Button
                         loading={newQuizAdapter.loading}
                         onClick={createNew}
                         disabled={quizTitle.trim().length <= 0 || forSections.length === 0}
                         variant='light'> Continue </Button>
-                </Group>
+                </Group>}
             </Paper>
+
+            <AddQuestions quiz={newQuizAdapter.data} onSave={saveQuestions} />
         </Stack>
     );
 }
