@@ -8,7 +8,6 @@ import { UserStateProvider } from 'state_providers/student';
 import { ProfessorStateProvider } from 'state_providers/professor';
 import useHttpAdapter from 'http_adapters/useHttpAdapter';
 import UserAdapter, { LoginPayload } from 'http_adapters/adapters/user.adapter';
-import { useLogger } from '@mantine/hooks';
 
 const Home = () => {
   const router = useRouter();
@@ -19,7 +18,6 @@ const Home = () => {
     }
   });
   const userLoginAdapter = useHttpAdapter<LoginPayload>(UserAdapter.login);
-  useLogger('userLoginAdapter', [{ userLoginAdapter }]);
 
   useEffect(() => {
     if (data && data.user?.email && !userLoginAdapter.data) {
