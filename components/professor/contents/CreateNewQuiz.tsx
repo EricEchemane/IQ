@@ -23,6 +23,8 @@ export default function CreateNewQuiz() {
             });
         }
         if (newQuizAdapter.data) {
+            console.log(newQuizAdapter.data);
+
             showNotification({
                 message: 'Successfully created. Please continue',
                 title: 'Great!',
