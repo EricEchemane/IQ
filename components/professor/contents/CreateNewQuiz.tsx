@@ -63,7 +63,7 @@ export default function CreateNewQuiz() {
         <Stack>
             <Title order={4}> Create New Quiz </Title>
 
-            <TextInput
+            {!newQuizAdapter.data && <><TextInput
                 placeholder='enter your quiz title here'
                 label='Quiz Title'
                 required
@@ -71,20 +71,20 @@ export default function CreateNewQuiz() {
                 minLength={5}
                 onChange={(event) => setQuizTitle(event.currentTarget.value)} />
 
-            <Group align='flex-end' spacing={5}>
-                <TextInput
-                    placeholder='enter sections here'
-                    label='For Sections'
-                    style={{ flex: 1 }}
-                    value={section}
-                    required
-                    onChange={(event) => setSection(event.currentTarget.value)}
-                    onKeyDown={getHotkeyHandler([
-                        ['enter', addSection]
-                    ])}
-                />
-                <Button variant='filled' disabled={section.trim().length === 0} onClick={addSection}>Add</Button>
-            </Group>
+                <Group align='flex-end' spacing={5}>
+                    <TextInput
+                        placeholder='enter sections here'
+                        label='For Sections'
+                        style={{ flex: 1 }}
+                        value={section}
+                        required
+                        onChange={(event) => setSection(event.currentTarget.value)}
+                        onKeyDown={getHotkeyHandler([
+                            ['enter', addSection]
+                        ])}
+                    />
+                    <Button variant='filled' disabled={section.trim().length === 0} onClick={addSection}>Add</Button>
+                </Group> </>}
 
             <Paper p='sm' radius={7} shadow='sm'>
                 <Group align='flex-start'>
