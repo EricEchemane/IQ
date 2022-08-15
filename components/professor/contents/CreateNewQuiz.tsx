@@ -41,6 +41,14 @@ export default function CreateNewQuiz() {
         setForSections(sections => sections.filter(s => s !== section));
     };
     const createNew = () => {
+        if (quizTitle.trim().length < 5) {
+            showNotification({
+                title: 'Ooops!',
+                message: 'Title must be at least 5 characters long',
+                color: 'red'
+            });
+            return;
+        }
         const payload: CreateQuizPayload = { forSections, title: quizTitle };
         newQuizAdapter.execute(payload);
     };
