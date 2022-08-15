@@ -16,8 +16,6 @@ export default function CreateNewQuiz() {
 
     useEffect(() => {
         if (newQuizAdapter.error) {
-            console.log(newQuizAdapter.error);
-
             showNotification({
                 message: newQuizAdapter.error.message,
                 title: 'Ooops!',
