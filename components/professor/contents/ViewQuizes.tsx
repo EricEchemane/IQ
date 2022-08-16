@@ -61,6 +61,7 @@ export default function ViewQuizes() {
 
             <Modal
                 overflow='inside'
+                closeOnEscape
                 opened={viewQuestionsModelIsOpen}
                 onClose={() => setViewQuestionsModelIsOpen(false)}
                 title={<Text weight='bold' color='dimmed'> {selectedQuiz?.title} | Questions </Text>}
