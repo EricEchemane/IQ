@@ -55,12 +55,14 @@ export default function AddQuestions({ onSave, quiz }: {
                         </Group>
 
                         <Stack spacing={8}>
+
                             <Group>
                                 <Text> Answer key: </Text>
                                 <Badge color={form.values.correct_choice ? 'blue' : 'yellow'}>
                                     {form.values.correct_choice || 'check one of the options below'}
                                 </Badge>
                             </Group>
+
                             {form.values.choices.map((choice, index) => (
                                 <Group key={index}>
                                     <TextInput
@@ -102,7 +104,9 @@ export default function AddQuestions({ onSave, quiz }: {
 
                                 </Group>
                             ))}
+
                             <Stack mt='md' align='center' spacing={2}>
+
                                 <ActionIcon
                                     onClick={() => {
                                         if (form.values.choices.length === 4) return;
@@ -118,9 +122,11 @@ export default function AddQuestions({ onSave, quiz }: {
                                     radius={50}>
                                     <IconPlus />
                                 </ActionIcon>
+
                                 <Text color='dimmed'>
                                     {form.values.choices.length === 4 ? 'Maximum of 4 choices' : 'Add another choice'}
                                 </Text>
+
                             </Stack>
                         </Stack>
                     </Stack>
