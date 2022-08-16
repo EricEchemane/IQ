@@ -9,7 +9,7 @@ export default function useHttpAdapter<PayloadType>(adapter: HttpAdapter) {
     const [error, setError] = useState<RequestError | null>();
     const [data, setData] = useState<any | null>();
 
-    const execute = useCallback(async (payload: PayloadType) => {
+    const execute = useCallback(async (payload?: PayloadType) => {
         setLoading(true);
         setError(null);
         setResponse(null);
