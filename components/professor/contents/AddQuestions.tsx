@@ -1,8 +1,11 @@
 import { ActionIcon, Badge, Button, Group, NumberInput, Paper, Stack, Text, Textarea, TextInput, Title } from '@mantine/core';
 import { useForm } from '@mantine/form';
+import { showNotification } from '@mantine/notifications';
 import { IconCheck, IconPlus, IconX } from '@tabler/icons';
 import { IQuestion } from 'entities/question.entity';
-import React, { useState } from 'react';
+import QuizAdapter, { CreateQuizPayload } from 'http_adapters/adapters/quiz.adapter';
+import useHttpAdapter from 'http_adapters/useHttpAdapter';
+import React, { useEffect, useState } from 'react';
 import AddedQuestions from './AddedQuestions';
 
 export default function AddQuestions({ quizTitle, forSections }: {
@@ -10,6 +13,25 @@ export default function AddQuestions({ quizTitle, forSections }: {
     forSections: string[];
 }) {
     const [questions, setQuestions] = useState<IQuestion[]>([]);
+    const createNewQuizAdapter = useHttpAdapter<CreateQuizPayload>(QuizAdapter.createNew);
+
+    useEffect(() => {
+        if (createNewQuizAdapter.data) {
+            showNotification({
+                title: 'Alright!',
+                icon: <IconCheck />,
+                message: 'Quiz successfully created',
+                color: 'green'
+            });
+        }
+        if (createNewQuizAdapter.error) {
+            showNotification({
+                title: 'Oops',
+                message: createNewQuizAdapter.error.message,
+                color: 'red'
+            });
+        }
+    }, [createNewQuizAdapter.data, createNewQuizAdapter.error]);
 
     const form = useForm({
         initialValues: {
@@ -36,7 +58,11 @@ export default function AddQuestions({ quizTitle, forSections }: {
         form.reset();
     };
     const save = () => {
-        console.log('save');
+        createNewQuizAdapter.execute({
+            forSections,
+            title: quizTitle,
+            questions
+        });
     };
 
     return (
@@ -157,8 +183,11 @@ export default function AddQuestions({ quizTitle, forSections }: {
 
             {questions.length !== 0 && <AddedQuestions questions={questions} />}
 
-            <Group position='right' mt='md' grow>
-                <Button disabled={!quizTitle || !questions.length} onClick={save}> SAVE THIS QUIZ </Button>
+            <Group position='right' mt='md'>
+                <Button
+                    loading={createNewQuizAdapter.loading}
+                    disabled={!quizTitle || !questions.length}
+                    onClick={save}> SAVE THIS QUIZ </Button>
             </Group>
         </Stack>
     );
