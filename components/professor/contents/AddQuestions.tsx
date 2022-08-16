@@ -72,8 +72,8 @@ export default function AddQuestions({ quizTitle, forSections }: {
 
                         <Stack spacing={8} mt='1rem'>
                             <Group>
-                                <Text> Answer key: </Text>
-                                <Badge color={form.values.correct_choice ? 'blue' : 'yellow'}>
+                                <Text size='sm' weight='bold'> Answer key: </Text>
+                                <Badge size='lg' color={form.values.correct_choice ? 'blue' : 'yellow'}>
                                     {form.values.correct_choice || 'check one of the options below'}
                                 </Badge>
                             </Group>
@@ -147,7 +147,10 @@ export default function AddQuestions({ quizTitle, forSections }: {
                     </Stack>
 
                     <Group grow mt='2rem'>
-                        <Button variant='light' type='submit'> Add this question </Button>
+                        <Button
+                            disabled={form.values.correct_choice === ''}
+                            variant='light'
+                            type='submit'> Add this question </Button>
                     </Group>
                 </form>
             </Paper>
