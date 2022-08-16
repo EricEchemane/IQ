@@ -8,9 +8,10 @@ import useHttpAdapter from 'http_adapters/useHttpAdapter';
 import React, { useEffect, useState } from 'react';
 import AddedQuestions from './AddedQuestions';
 
-export default function AddQuestions({ quizTitle, forSections }: {
+export default function AddQuestions({ quizTitle, forSections, onSaveSuccess }: {
     quizTitle: string;
     forSections: string[];
+    onSaveSuccess: Function;
 }) {
     const [questions, setQuestions] = useState<IQuestion[]>([]);
     const createNewQuizAdapter = useHttpAdapter<CreateQuizPayload>(QuizAdapter.createNew);
@@ -23,6 +24,7 @@ export default function AddQuestions({ quizTitle, forSections }: {
                 message: 'Quiz successfully created',
                 color: 'green'
             });
+            onSaveSuccess();
         }
         if (createNewQuizAdapter.error) {
             showNotification({
@@ -31,7 +33,7 @@ export default function AddQuestions({ quizTitle, forSections }: {
                 color: 'red'
             });
         }
-    }, [createNewQuizAdapter.data, createNewQuizAdapter.error]);
+    }, [createNewQuizAdapter.data, createNewQuizAdapter.error, onSaveSuccess]);
 
     const form = useForm({
         initialValues: {

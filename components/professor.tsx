@@ -110,7 +110,7 @@ export default function Student({ data }: any) {
                 </Header>
             }
         >
-            <Contents activeTab={activeTab} />
+            <Contents activeTab={activeTab} onSaveSuccess={() => setActiveTab(professorTabs.view_quizes)} />
         </AppShell>
     );
 }

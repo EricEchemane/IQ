@@ -5,7 +5,10 @@ import React from 'react';
 import CreateNewQuiz from './contents/CreateNewQuiz';
 import { professorTabs } from 'components/professor';
 
-export default function Contents({ activeTab }: { activeTab: string | null; }) {
+export default function Contents({ activeTab, onSaveSuccess }: {
+    activeTab: string | null;
+    onSaveSuccess: Function;
+}) {
     const { state, dispatch }: ProfessorStateType = useProfessorState();
 
     if (activeTab === professorTabs.view_quizes) {
@@ -22,7 +25,7 @@ export default function Contents({ activeTab }: { activeTab: string | null; }) {
         </>;
     }
     else if (activeTab === professorTabs.create_new_quiz) {
-        return <CreateNewQuiz />;
+        return <CreateNewQuiz onSaveSuccess={onSaveSuccess} />;
     }
     else {
         return <div> students </div>;

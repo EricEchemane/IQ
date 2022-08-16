@@ -5,7 +5,7 @@ import { getHotkeyHandler } from '@mantine/hooks';
 import AddQuestions from './AddQuestions';
 import { IconX } from '@tabler/icons';
 
-export default function CreateNewQuiz() {
+export default function CreateNewQuiz({ onSaveSuccess }: { onSaveSuccess: Function; }) {
     const { state, dispatch }: ProfessorStateType = useProfessorState();
     const [quizTitle, setQuizTitle] = useState<string>('');
     const [section, setSection] = useState<string>('');
@@ -64,7 +64,7 @@ export default function CreateNewQuiz() {
                 })} </Text>
             </Paper>
 
-            {forSections.length > 0 && <AddQuestions quizTitle={quizTitle} forSections={forSections} />}
+            {forSections.length > 0 && <AddQuestions onSaveSuccess={onSaveSuccess} quizTitle={quizTitle} forSections={forSections} />}
         </Stack>
     );
 }
