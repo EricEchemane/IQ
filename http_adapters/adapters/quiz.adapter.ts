@@ -7,6 +7,10 @@ export default class QuizAdapter {
         url: '/api/quiz/create',
         method: "POST",
     };
+    static get: HttpAdapter = {
+        url: '/api/quiz/get',
+        method: "GET",
+    };
 }
 
 export type CreateQuizPayload = {
