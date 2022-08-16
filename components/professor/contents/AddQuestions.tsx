@@ -11,6 +11,7 @@ export default function AddQuestions({ onSave, quiz }: {
     onSave: Function;
 }) {
     const [questions, setQuestions] = useState<IQuestion[]>([]);
+
     const form = useForm({
         initialValues: {
             question: '',
@@ -38,10 +39,10 @@ export default function AddQuestions({ onSave, quiz }: {
 
     return (
         <Stack mt='1rem'>
-            <AddedQuestions questions={questions} />
+            {questions.length !== 0 && <AddedQuestions questions={questions} />}
 
+            <Title order={6} mt='sm'> Add Questions </Title>
             <Paper p='md' shadow='md'>
-                <Title order={6} my='sm'> Add Questions </Title>
                 <form onSubmit={form.onSubmit(addQuestion)}>
                     <Stack>
                         <Textarea
@@ -145,7 +146,7 @@ export default function AddQuestions({ onSave, quiz }: {
                     </Stack>
 
                     <Group grow mt='2rem'>
-                        <Button variant='light' type='submit'> Submit </Button>
+                        <Button variant='light' type='submit'> Add this question </Button>
                     </Group>
                 </form>
             </Paper>
