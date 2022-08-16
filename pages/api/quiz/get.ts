@@ -14,9 +14,10 @@ async function handler(req: NextApiRequest, token: JWT) {
         throw new RequestError(500, 'Database connection failed');
     }
     const { Quiz } = db.models;
-    const quizzes = await Quiz.find().where({
-        author: userId
-    });
+    const quizzes = await Quiz
+        .find()
+        .where({ author: userId });
+
     if (!quizzes) {
         throw new RequestError(500, 'Quiz not found');
     }

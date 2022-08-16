@@ -13,7 +13,8 @@ export interface IProfessorState {
 
 export enum ProfessorActions {
     set_user = 'set_user',
-    create_new_quiz = 'create_new_quiz'
+    create_new_quiz = 'create_new_quiz',
+    push_new_quiz = 'push_new_quiz'
 }
 
 export interface ProfessorAction {

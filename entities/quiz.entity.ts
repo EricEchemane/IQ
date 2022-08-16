@@ -1,9 +1,10 @@
 import mongoose from "mongoose";
+import questionSchema, { IQuestion } from "./question.entity";
 
 export interface IQuiz {
     title: string;
     author: mongoose.Schema.Types.ObjectId;
-    questions: mongoose.Schema.Types.ObjectId[];
+    questions: IQuestion[];
     forSections: string[];
     published: boolean;
     date_created?: Date;
@@ -27,8 +28,7 @@ const quizSchema = new mongoose.Schema<IQuiz>({
         default: Date.now,
     },
     questions: {
-        type: [mongoose.Schema.Types.ObjectId],
-        ref: 'Question',
+        type: [questionSchema],
     },
     participants: {
         type: [mongoose.Schema.Types.ObjectId],

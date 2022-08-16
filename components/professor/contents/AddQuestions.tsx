@@ -6,6 +6,7 @@ import { IQuestion } from 'entities/question.entity';
 import QuizAdapter, { CreateQuizPayload } from 'http_adapters/adapters/quiz.adapter';
 import useHttpAdapter from 'http_adapters/useHttpAdapter';
 import React, { useEffect, useState } from 'react';
+import useProfessorState, { ProfessorActions, ProfessorStateType } from 'state_providers/professor';
 import AddedQuestions from './AddedQuestions';
 
 export default function AddQuestions({ quizTitle, forSections, onSaveSuccess }: {
@@ -13,6 +14,7 @@ export default function AddQuestions({ quizTitle, forSections, onSaveSuccess }: 
     forSections: string[];
     onSaveSuccess: Function;
 }) {
+    const { dispatch }: ProfessorStateType = useProfessorState();
     const [questions, setQuestions] = useState<IQuestion[]>([]);
     const createNewQuizAdapter = useHttpAdapter<CreateQuizPayload>(QuizAdapter.createNew);
 
@@ -24,6 +26,7 @@ export default function AddQuestions({ quizTitle, forSections, onSaveSuccess }: 
                 message: 'Quiz successfully created',
                 color: 'green'
             });
+            dispatch({ type: ProfessorActions.push_new_quiz, payload: createNewQuizAdapter.data });
             onSaveSuccess();
         }
         if (createNewQuizAdapter.error) {
@@ -33,6 +36,7 @@ export default function AddQuestions({ quizTitle, forSections, onSaveSuccess }: 
                 color: 'red'
             });
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [createNewQuizAdapter.data, createNewQuizAdapter.error, onSaveSuccess]);
 
     const form = useForm({
