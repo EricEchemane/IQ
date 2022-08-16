@@ -1,9 +1,10 @@
-import { ActionIcon, Badge, Group, NumberInput, Paper, Stack, Text, Textarea, TextInput, Title } from '@mantine/core';
+import { ActionIcon, Badge, Button, Group, NumberInput, Paper, Stack, Text, Textarea, TextInput, Title } from '@mantine/core';
 import { useForm } from '@mantine/form';
 import { IconCheck, IconPlus, IconX } from '@tabler/icons';
 import { IQuestion } from 'entities/question.entity';
 import { IQuiz } from 'entities/quiz.entity';
 import React, { useState } from 'react';
+import AddedQuestions from './AddedQuestions';
 
 export default function AddQuestions({ onSave, quiz }: {
     quiz: IQuiz;
@@ -28,34 +29,46 @@ export default function AddQuestions({ onSave, quiz }: {
             }
         }
     });
-    const submitForm = (values: typeof form.values) => {
-
+    const addQuestion = () => {
+        setQuestions(q => {
+            return [...q, form.values];
+        });
+        form.reset();
     };
 
     return (
         <Stack mt='1rem'>
-            <Title order={4}> Add Questions </Title>
-            <Paper p='md' shadow='md'>
-                <form onSubmit={form.onSubmit(submitForm)}>
-                    <Stack>
+            <AddedQuestions questions={questions} />
 
-                        <Group align='flex-start'>
-                            <Textarea
-                                style={{ flex: 1 }}
-                                required
-                                minLength={5}
-                                label='Question'
-                                placeholder='enter your question here'
-                                {...form.getInputProps('question')}
-                            />
-                            <Group>
-                                <NumberInput min={1} {...form.getInputProps('timer')} label='Timer in seconds' placeholder='5' />
-                                <NumberInput min={1} {...form.getInputProps('points')} label='Points' placeholder='1' />
-                            </Group>
+            <Paper p='md' shadow='md'>
+                <Title order={5} my='sm'> Add Questions </Title>
+                <form onSubmit={form.onSubmit(addQuestion)}>
+                    <Stack>
+                        <Textarea
+                            style={{ flex: 1 }}
+                            required
+                            minLength={5}
+                            label='New question'
+                            placeholder='enter your question here'
+                            {...form.getInputProps('question')}
+                        />
+
+                        <Group>
+                            <NumberInput
+                                {...form.getInputProps('timer')}
+                                style={{ width: '100px' }}
+                                min={1}
+                                label='Timer'
+                                placeholder='5' />
+                            <NumberInput
+                                {...form.getInputProps('points')}
+                                style={{ width: '100px' }}
+                                min={1}
+                                label='Points'
+                                placeholder='1' />
                         </Group>
 
-                        <Stack spacing={8}>
-
+                        <Stack spacing={8} mt='1rem'>
                             <Group>
                                 <Text> Answer key: </Text>
                                 <Badge color={form.values.correct_choice ? 'blue' : 'yellow'}>
@@ -130,6 +143,10 @@ export default function AddQuestions({ onSave, quiz }: {
                             </Stack>
                         </Stack>
                     </Stack>
+
+                    <Group grow mt='2rem'>
+                        <Button variant='light' type='submit'> Submit </Button>
+                    </Group>
                 </form>
             </Paper>
         </Stack>
