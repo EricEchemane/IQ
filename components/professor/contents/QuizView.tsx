@@ -101,7 +101,7 @@ export default function QuizViewEditMode({ question, index }: { question: IQuest
                                         editForm.setFieldValue('choices', choices);
                                     }}
                                     disabled={editForm.values.choices.length === 4}
-                                    variant='light'
+                                    variant='subtle'
                                     color="blue">
                                     <IconPlus />
                                 </ActionIcon>
