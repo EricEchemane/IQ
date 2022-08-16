@@ -41,7 +41,7 @@ export default function AddQuestions({ onSave, quiz }: {
             <AddedQuestions questions={questions} />
 
             <Paper p='md' shadow='md'>
-                <Title order={5} my='sm'> Add Questions </Title>
+                <Title order={6} my='sm'> Add Questions </Title>
                 <form onSubmit={form.onSubmit(addQuestion)}>
                     <Stack>
                         <Textarea

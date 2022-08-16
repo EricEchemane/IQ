@@ -87,7 +87,7 @@ export default function CreateNewQuiz() {
                     <Button variant='filled' disabled={section.trim().length === 0} onClick={addSection}>Add</Button>
                 </Group> </>}
 
-            <Paper p='sm' radius={7} shadow='sm'>
+            <Paper p='sm' radius={7} withBorder>
                 <Group align='flex-start'>
                     <Text color='dimmed' mb='sm'>Title: </Text>
                     <Text weight='bold'> {quizTitle} </Text>
