@@ -78,7 +78,7 @@ export default function AddQuestions({ onSave, quiz }: {
                                         onClick={() => {
                                             form.setFieldValue('correct_choice', choice);
                                         }}
-                                        size={30}
+                                        size={20}
                                         variant={form.values.correct_choice === choice ? 'filled' : 'light'}
                                         color='green'>
                                         <IconCheck />
@@ -96,7 +96,7 @@ export default function AddQuestions({ onSave, quiz }: {
                                             );
                                         }}
                                         disabled={form.values.choices.length === 2}
-                                        size={30}
+                                        size={20}
                                         radius={0}
                                         variant='light'>
                                         <IconX />
