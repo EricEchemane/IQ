@@ -67,7 +67,7 @@ export default function ViewQuizes() {
                     {selectedQuiz?.questions.map(({ choices, correct_choice, question, timer, points }: any, index: number) => (
                         <Accordion.Item value={question} key={index}>
                             <Accordion.Control>
-                                <Title order={6}>{question}</Title>
+                                <Title order={6}> {index + 1}. {question} </Title>
                             </Accordion.Control>
                             <Accordion.Panel>
                                 {choices.map((c: any) => (
