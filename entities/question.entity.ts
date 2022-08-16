@@ -12,7 +12,7 @@ const questionSchema = new mongoose.Schema<IQuestion>({
     question: {
         type: String,
         required: [true, 'Question is required'],
-        minlength: [5, 'Question must be at least 3 characters long'],
+        minlength: [5, 'Question must be at least 5 characters long'],
     },
     timer: { // in seconds: default to inherit from quiz
         type: Number || 'inherit',

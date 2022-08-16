@@ -7,6 +7,7 @@ import { getHotkeyHandler } from '@mantine/hooks';
 import { IconCheck, IconX } from '@tabler/icons';
 import { showNotification } from '@mantine/notifications';
 import AddQuestions from './AddQuestions';
+import { IQuestion } from 'entities/question.entity';
 
 export default function CreateNewQuiz() {
     const { state, dispatch }: ProfessorStateType = useProfessorState();
@@ -55,7 +56,7 @@ export default function CreateNewQuiz() {
         const payload: CreateQuizPayload = { forSections, title: quizTitle };
         newQuizAdapter.execute(payload);
     };
-    const saveQuestions = async () => {
+    const saveQuestions = async (questions: IQuestion[]) => {
         console.log('saveQuestions called');
     };
 
