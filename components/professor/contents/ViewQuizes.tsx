@@ -1,8 +1,9 @@
-import { Accordion, ActionIcon, Button, Group, Menu, Modal, Paper, Stack, Text, Title } from '@mantine/core';
+import { Accordion, ActionIcon, Button, Group, Menu, Modal, Paper, Stack, Switch, Text, Title } from '@mantine/core';
 import { IconSettings, IconSearch, IconPhoto, IconMessageCircle, IconTrash, IconArrowsLeftRight, IconDots, IconEdit, IconUpload, IconBookUpload, IconDownloadOff, IconBookDownload } from '@tabler/icons';
 import React, { useState } from 'react';
 import useProfessorState, { ProfessorStateType } from 'state_providers/professor';
 import moment from 'moment';
+import QuizView from './QuizView';
 
 export default function ViewQuizes() {
     const { state, dispatch }: ProfessorStateType = useProfessorState();
@@ -64,20 +65,8 @@ export default function ViewQuizes() {
                 title={<Text weight='bold' color='dimmed'> {selectedQuiz?.title} | Questions </Text>}
             >
                 <Accordion>
-                    {selectedQuiz?.questions.map(({ choices, correct_choice, question, timer, points }: any, index: number) => (
-                        <Accordion.Item value={question} key={index}>
-                            <Accordion.Control>
-                                <Title order={6}> {index + 1}. {question} </Title>
-                            </Accordion.Control>
-                            <Accordion.Panel>
-                                {choices.map((c: any) => (
-                                    <Text key={c} color={c === correct_choice ? 'green' : 'dark'}> {c} </Text>
-                                ))}
-                                <Text color='dimmed' size='sm' mt='sm'>
-                                    {timer} seconds - {points} {points && points > 1 ? 'points' : 'point'}
-                                </Text>
-                            </Accordion.Panel>
-                        </Accordion.Item>
+                    {selectedQuiz?.questions.map((question: any, index: number) => (
+                        <QuizView key={index} index={index} question={question} />
                     ))}
                 </Accordion>
             </Modal>
