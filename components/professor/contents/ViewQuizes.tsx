@@ -16,8 +16,8 @@ export default function ViewQuizes() {
                         <Stack style={{ flex: 1 }}>
                             <Title order={5}> {quiz.title} </Title>
                             <Group>
-                                <Text size='sm'> {quiz.questions.length} questions </Text> -
                                 <Text size='sm'> Created on {moment(quiz.date_created).format('LL')} </Text>
+                                <Button variant='subtle' size='sm'> {quiz.questions.length} questions </Button>
                             </Group>
                         </Stack>
 
