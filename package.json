@@ -19,6 +19,7 @@
     "@mantine/next": "^5.1.1",
     "@mantine/notifications": "^5.1.1",
     "@tabler/icons": "^1.80.0",
+    "moment": "^2.29.4",
     "mongoose": "^6.5.2",
     "next": "12.2.4",
     "next-auth": "^4.10.3",
