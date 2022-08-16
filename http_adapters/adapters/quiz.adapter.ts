@@ -9,7 +9,7 @@ export default class QuizAdapter {
     };
     static get: HttpAdapter = {
         url: '/api/quiz/get',
-        method: "GET",
+        method: "POST",
     };
 }
 
@@ -17,4 +17,8 @@ export type CreateQuizPayload = {
     title: string;
     forSections: string[];
     questions: IQuestion[];
+};
+
+export type GetQuizzesPayload = {
+    userId: string;
 };

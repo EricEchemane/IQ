@@ -4,6 +4,7 @@ import Image from 'next/image';
 import React from 'react';
 import CreateNewQuiz from './contents/CreateNewQuiz';
 import { professorTabs } from 'components/professor';
+import ViewQuizes from './contents/ViewQuizes';
 
 export default function Contents({ activeTab, onSaveSuccess }: {
     activeTab: string | null;
@@ -20,9 +21,7 @@ export default function Contents({ activeTab, onSaveSuccess }: {
                 </Stack>
             </Center>
         </>;
-        else return <>
-            <div> display the quizes </div>
-        </>;
+        else return <ViewQuizes />;
     }
     else if (activeTab === professorTabs.create_new_quiz) {
         return <CreateNewQuiz onSaveSuccess={onSaveSuccess} />;

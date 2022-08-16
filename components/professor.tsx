@@ -6,8 +6,6 @@ import {
     Navbar,
     Header,
     Footer,
-    Aside,
-    Text,
     MediaQuery,
     Burger,
     useMantineTheme,
@@ -19,6 +17,8 @@ import {
 import AppHeader from './professor/AppHeader';
 import { IconList, IconPencilPlus, IconUsers } from '@tabler/icons';
 import Contents from './professor/Contents';
+import useHttpAdapter from 'http_adapters/useHttpAdapter';
+import QuizAdapter, { GetQuizzesPayload } from 'http_adapters/adapters/quiz.adapter';
 
 export const professorTabs = Object.freeze({
     view_quizes: 'view_quizes',
@@ -30,18 +30,26 @@ export default function Student({ data }: any) {
     const { dispatch, state }: ProfessorStateType = useProfessorState();
     const theme = useMantineTheme();
     const [opened, setOpened] = useState(false);
-    const [activeTab, setActiveTab] = useState<string | null>(professorTabs.create_new_quiz);
+    const [activeTab, setActiveTab] = useState<string | null>(professorTabs.view_quizes);
+    const getQuizzesAdapter = useHttpAdapter<GetQuizzesPayload>(QuizAdapter.get);
 
     useEffect(() => {
-        dispatch({
-            type: ProfessorActions.set_user,
-            payload: {
-                ...data,
-                quizes: []
-            }
-        });
+        if (data) getQuizzesAdapter.execute({ userId: data._id });
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [data]);
+
+    useEffect(() => {
+        if (getQuizzesAdapter.data) {
+            dispatch({
+                type: ProfessorActions.set_user,
+                payload: {
+                    ...data,
+                    quizes: getQuizzesAdapter.data
+                }
+            });
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [getQuizzesAdapter.data]);
 
     return (
         <AppShell

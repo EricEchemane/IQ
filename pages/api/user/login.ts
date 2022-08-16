@@ -2,7 +2,7 @@ import connectToDatabase from 'db/connectToDatabase';
 import normalize, { RequestError } from 'http_adapters/response_normalizer';
 import { LoginPayload } from 'http_adapters/adapters/user.adapter';
 import type { NextApiRequest } from "next";
-import { JWT } from "next-auth/jwt";;
+import { JWT } from "next-auth/jwt";
 
 async function handler(req: NextApiRequest, token?: JWT) {
     if (req.method !== "POST") {
