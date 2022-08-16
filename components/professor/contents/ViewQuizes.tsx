@@ -1,4 +1,4 @@
-import { Accordion, ActionIcon, Button, Group, Menu, Modal, Paper, Stack, Switch, Text, Title } from '@mantine/core';
+import { Accordion, ActionIcon, Button, Group, Menu, Modal, Paper, Stack, Switch, Text, Title, useMantineTheme } from '@mantine/core';
 import { IconSettings, IconSearch, IconPhoto, IconMessageCircle, IconTrash, IconArrowsLeftRight, IconDots, IconEdit, IconUpload, IconBookUpload, IconDownloadOff, IconBookDownload } from '@tabler/icons';
 import React, { useState } from 'react';
 import useProfessorState, { ProfessorStateType } from 'state_providers/professor';
@@ -6,6 +6,7 @@ import moment from 'moment';
 import QuizView from './QuizView';
 
 export default function ViewQuizes() {
+    const theme = useMantineTheme();
     const { state, dispatch }: ProfessorStateType = useProfessorState();
     const [viewQuestionsModelIsOpen, setViewQuestionsModelIsOpen] = useState(false);
     const [selectedQuiz, setSelectedQuiz] = useState<any>();
@@ -60,6 +61,9 @@ export default function ViewQuizes() {
             </Stack>
 
             <Modal
+                overlayColor={theme.colorScheme === 'dark' ? theme.colors.dark[9] : theme.colors.gray[2]}
+                overlayOpacity={0.55}
+                overlayBlur={3}
                 overflow='inside'
                 closeOnEscape
                 opened={viewQuestionsModelIsOpen}
