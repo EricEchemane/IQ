@@ -9,7 +9,7 @@ export default function AddedQuestions({ questions }: { questions: IQuestion[]; 
             <Paper shadow='md'>
                 <Accordion>
                     {questions.map(({ choices, correct_choice, question, timer, points }, index) => (
-                        <Accordion.Item value="customization" key={index}>
+                        <Accordion.Item value={question} key={index}>
                             <Accordion.Control>
                                 <Title order={6}>{question}</Title>
                             </Accordion.Control>

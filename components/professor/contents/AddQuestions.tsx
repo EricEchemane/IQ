@@ -2,20 +2,19 @@ import { ActionIcon, Badge, Button, Group, NumberInput, Paper, Stack, Text, Text
 import { useForm } from '@mantine/form';
 import { IconCheck, IconPlus, IconX } from '@tabler/icons';
 import { IQuestion } from 'entities/question.entity';
-import { IQuiz } from 'entities/quiz.entity';
 import React, { useState } from 'react';
 import AddedQuestions from './AddedQuestions';
 
-export default function AddQuestions({ onSave, quiz }: {
-    quiz: IQuiz;
-    onSave: Function;
+export default function AddQuestions({ quizTitle, forSections }: {
+    quizTitle: string;
+    forSections: string[];
 }) {
     const [questions, setQuestions] = useState<IQuestion[]>([]);
 
     const form = useForm({
         initialValues: {
             question: '',
-            timer: quiz?.default_question_timer || 5,
+            timer: 5,
             choices: ['option 1 (edit me)', 'option 2 (edit me)'],
             correct_choice: '',
             points: 1,
@@ -36,12 +35,14 @@ export default function AddQuestions({ onSave, quiz }: {
         });
         form.reset();
     };
+    const save = () => {
+        console.log('save');
+    };
 
     return (
         <Stack mt='1rem'>
-            {questions.length !== 0 && <AddedQuestions questions={questions} />}
 
-            <Title order={6} mt='sm'> Add Questions </Title>
+            <Title order={6}> Add Questions </Title>
             <Paper p='md' shadow='md'>
                 <form onSubmit={form.onSubmit(addQuestion)}>
                     <Stack>
@@ -150,6 +151,12 @@ export default function AddQuestions({ onSave, quiz }: {
                     </Group>
                 </form>
             </Paper>
+
+            {questions.length !== 0 && <AddedQuestions questions={questions} />}
+
+            <Group position='right' mt='md' grow>
+                <Button disabled={!quizTitle || !questions.length} onClick={save}> SAVE THIS QUIZ </Button>
+            </Group>
         </Stack>
     );
 }
