@@ -112,7 +112,8 @@ export default function CreateNewQuiz() {
                 </Group>}
             </Paper>
 
-            <AddQuestions quiz={newQuizAdapter.data} onSave={saveQuestions} />
+            {newQuizAdapter.data &&
+                <AddQuestions quiz={newQuizAdapter.data} onSave={saveQuestions} />}
         </Stack>
     );
 }
