@@ -1,6 +1,6 @@
-import { Accordion, ActionIcon, Button, Divider, Group, NumberInput, Stack, Switch, Text, TextInput, ThemeIcon, Title } from '@mantine/core';
+import { Accordion, ActionIcon, Button, Group, NumberInput, Switch, Text, TextInput, Title } from '@mantine/core';
 import { useForm } from '@mantine/form';
-import { IconCheck, IconX } from '@tabler/icons';
+import { IconCheck, IconPlus, IconX } from '@tabler/icons';
 import { IQuestion } from 'entities/question.entity';
 import React, { useState } from 'react';
 
@@ -93,6 +93,19 @@ export default function QuizViewEditMode({ question, index }: { question: IQuest
                                     </ActionIcon>
                                 </Group>
                             ))}
+                            <Group position='right' mb='md' spacing={5} align='center'>
+                                <Text size='xs'> {editForm.values.choices.length === 4 ? 'Maximum of 4 options' : 'Add another option'} </Text>
+                                <ActionIcon
+                                    onClick={() => {
+                                        const choices = [...editForm.values.choices, `Options ${editForm.values.choices.length + 1}`];
+                                        editForm.setFieldValue('choices', choices);
+                                    }}
+                                    disabled={editForm.values.choices.length === 4}
+                                    variant='light'
+                                    color="blue">
+                                    <IconPlus />
+                                </ActionIcon>
+                            </Group>
 
                             <Group mb='md'>
                                 <NumberInput
