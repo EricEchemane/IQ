@@ -11,13 +11,15 @@ export default function ViewQuizes() {
         <Stack>
             <Title order={4}> Your Quizzes </Title>
             {state.quizes.map((quiz: any, index) => (
-                <Paper key={index} p='xs' shadow='xs'>
-                    <Group>
-                        <Group style={{ flex: 1 }}>
-                            <Title order={5}> {quiz.title} </Title> -
-                            <Text size='sm'> {quiz.questions.length} questions </Text> -
-                            <Text size='sm'> Created on {moment(quiz.date_created).format('LL')} </Text>
-                        </Group>
+                <Paper key={index} py='xs' px='md' shadow='xs'>
+                    <Group align='flex-start'>
+                        <Stack style={{ flex: 1 }}>
+                            <Title order={5}> {quiz.title} </Title>
+                            <Group>
+                                <Text size='sm'> {quiz.questions.length} questions </Text> -
+                                <Text size='sm'> Created on {moment(quiz.date_created).format('LL')} </Text>
+                            </Group>
+                        </Stack>
 
                         <Menu shadow="md" width={200} position='bottom-end' offset={0} withArrow>
                             <Menu.Target>
