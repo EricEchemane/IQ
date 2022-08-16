@@ -1,6 +1,6 @@
 import { Accordion, ActionIcon, Button, Divider, Group, NumberInput, Stack, Switch, Text, TextInput, ThemeIcon, Title } from '@mantine/core';
 import { useForm } from '@mantine/form';
-import { IconCheck } from '@tabler/icons';
+import { IconCheck, IconX } from '@tabler/icons';
 import { IQuestion } from 'entities/question.entity';
 import React, { useState } from 'react';
 
@@ -58,13 +58,13 @@ export default function QuizViewEditMode({ question, index }: { question: IQuest
                                 {...editForm.getInputProps('question')}
                             />
 
-                            {question.choices.map((c: any, index: number) => (
+                            {editForm.values.choices.map((c: any, index: number) => (
                                 <Group key={index} mb='md' spacing={5} align='flex-end'>
                                     <TextInput
                                         style={{ flex: 1 }}
                                         value={c}
                                         size='xs'
-                                        description={`Option ${index + 1}`}
+                                        description={`Option ${index + 1} ${editForm.values.correct_choice === c ? ' - correct' : ''}`}
                                         onChange={e => {
                                             const choices = editForm.values.choices;
                                             choices[index] = e.target.value;
@@ -75,9 +75,21 @@ export default function QuizViewEditMode({ question, index }: { question: IQuest
                                         onClick={() => {
                                             editForm.setFieldValue('correct_choice', c);
                                         }}
-                                        variant={editForm.values.correct_choice === c ? 'filled' : 'light'}
+                                        variant={editForm.values.correct_choice === c ? 'light' : 'subtle'}
                                         color="green">
                                         <IconCheck />
+                                    </ActionIcon>
+
+                                    <ActionIcon
+                                        onClick={() => {
+                                            if (editForm.values.choices.length === 2) return;
+                                            const choices = editForm.values.choices.filter(ch => ch !== c);
+                                            editForm.setFieldValue('choices', choices);
+                                        }}
+                                        disabled={editForm.values.choices.length === 2}
+                                        variant='subtle'
+                                        color="red">
+                                        <IconX />
                                     </ActionIcon>
                                 </Group>
                             ))}
