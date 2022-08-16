@@ -7,19 +7,10 @@ export default class QuizAdapter {
         url: '/api/quiz/create',
         method: "POST",
     };
-
-    static addQuestion: HttpAdapter = {
-        url: '/api/quiz/add-question',
-        method: "POST",
-    };
 }
 
 export type CreateQuizPayload = {
     title: string;
     forSections: string[];
-};
-
-export type AddQuestionPayload = {
-    quizId: string;
     questions: IQuestion[];
 };
