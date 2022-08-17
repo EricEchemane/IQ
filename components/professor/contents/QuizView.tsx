@@ -1,4 +1,4 @@
-import { Accordion, ActionIcon, Button, Group, LoadingOverlay, NumberInput, Switch, Text, TextInput, Title } from '@mantine/core';
+import { Accordion, ActionIcon, Button, Group, NumberInput, Switch, Text, TextInput, Title } from '@mantine/core';
 import { useForm } from '@mantine/form';
 import { showNotification } from '@mantine/notifications';
 import { IconCheck, IconPlus, IconX } from '@tabler/icons';
