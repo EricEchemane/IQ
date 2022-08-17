@@ -6,6 +6,7 @@ import { IQuestion } from 'entities/question.entity';
 import QuizAdapter, { UpdateAQuestionPayload } from 'http_adapters/adapters/quiz.adapter';
 import useHttpAdapter from 'http_adapters/useHttpAdapter';
 import React, { useEffect, useState } from 'react';
+import useProfessorState, { ProfessorActions, ProfessorStateType } from 'state_providers/professor';
 
 export default function QuizViewEditMode({ question, index, quizId }
     : {
@@ -13,11 +14,29 @@ export default function QuizViewEditMode({ question, index, quizId }
         index: number;
         quizId: string;
     }) {
+    const { dispatch }: ProfessorStateType = useProfessorState();
     const [isInEditMode, setIsInEditMode] = useState(false);
+    const editForm = useForm({
+        initialValues: {
+            question: question.question,
+            choices: question.choices,
+            correct_choice: question.correct_choice,
+            points: question.points,
+            timer: question.timer
+        }
+    });
     const updateQuestionAdapter = useHttpAdapter<UpdateAQuestionPayload>(QuizAdapter.updateAQuestion);
 
     useEffect(() => {
         if (updateQuestionAdapter.data) {
+            dispatch({
+                type: ProfessorActions.update_question,
+                payload: {
+                    questionId: question._id,
+                    quizId,
+                    ...editForm.values
+                } as UpdateAQuestionPayload
+            });
             showNotification({
                 message: 'Updated successfully',
                 color: 'green',
@@ -31,18 +50,19 @@ export default function QuizViewEditMode({ question, index, quizId }
                 color: 'red',
             });
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [updateQuestionAdapter.data, updateQuestionAdapter.error]);
 
-    const editForm = useForm({
-        initialValues: {
-            question: question.question,
-            choices: question.choices,
-            correct_choice: question.correct_choice,
-            points: question.points,
-            timer: question.timer
-        }
-    });
     const save = (values: typeof editForm.values) => {
+        const hasCorrectChoice = values.choices.find(c => c === values.correct_choice);
+        if (!hasCorrectChoice) {
+            showNotification({
+                title: 'Ooops!',
+                message: 'Please provide the correct answer',
+                color: 'red',
+            });
+            return;
+        }
         updateQuestionAdapter.execute({
             ...values,
             questionId: question._id,
@@ -52,8 +72,7 @@ export default function QuizViewEditMode({ question, index, quizId }
 
     return (
         <>
-            <form onSubmit={editForm.onSubmit(save)} style={{ position: 'relative' }}>
-                <LoadingOverlay visible={updateQuestionAdapter.loading} overlayBlur={2} />
+            <form onSubmit={editForm.onSubmit(save)}>
 
                 <Accordion.Item value={question.question}>
 
@@ -162,7 +181,10 @@ export default function QuizViewEditMode({ question, index, quizId }
                                     {isInEditMode ? 'Turn off edit mode' : 'Turn on edit mode'}
                                 </Text>
                             </Group>
-                            {isInEditMode && <Button type='submit'> Save </Button>}
+                            {isInEditMode &&
+                                <Button
+                                    loading={updateQuestionAdapter.loading}
+                                    type='submit'> Save </Button>}
                         </Group>
 
                     </Accordion.Panel>
