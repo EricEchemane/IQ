@@ -1,24 +1,48 @@
 import { Accordion, ActionIcon, Button, Dialog, Group, Menu, Modal, Paper, Stack, Text, TextInput, Title, useMantineTheme } from '@mantine/core';
-import { IconTrash, IconDots, IconEdit, IconBookUpload, IconBookDownload } from '@tabler/icons';
-import React, { useState } from 'react';
+import { IconTrash, IconDots, IconEdit, IconBookUpload, IconBookDownload, IconCheck } from '@tabler/icons';
+import React, { useEffect, useState } from 'react';
 import useProfessorState, { ProfessorStateType } from 'state_providers/professor';
 import moment from 'moment';
 import QuizView from './QuizView';
+import useHttpAdapter from 'http_adapters/useHttpAdapter';
+import QuizAdapter, { updateQuizTitlePayload } from 'http_adapters/adapters/quiz.adapter';
+import { showNotification } from '@mantine/notifications';
 
 export default function ViewQuizes() {
     const theme = useMantineTheme();
     const { state, dispatch }: ProfessorStateType = useProfessorState();
     const [viewQuestionsModelIsOpen, setViewQuestionsModelIsOpen] = useState(false);
     const [editTitleModalIsOpen, setEditTitleModalIsOpen] = useState(false);
-
     const [selectedQuiz, setSelectedQuiz] = useState<any>();
+    const updateQuizTitleAdapter = useHttpAdapter<updateQuizTitlePayload>(QuizAdapter.updateTitle);
+
+    useEffect(() => {
+        if (updateQuizTitleAdapter.data) {
+            showNotification({
+                message: 'Updated successfully',
+                color: 'green',
+                icon: <IconCheck />
+            });
+            setEditTitleModalIsOpen(false);
+        }
+        if (updateQuizTitleAdapter.error) {
+            showNotification({
+                title: 'Ooops!',
+                message: updateQuizTitleAdapter.error.message,
+                color: 'red',
+            });
+        }
+    }, [updateQuizTitleAdapter.data, updateQuizTitleAdapter.error]);
 
     const openQuestionsModal = (index: number) => {
         setSelectedQuiz(state.quizes[index]);
         setViewQuestionsModelIsOpen(true);
     };
     const saveTitle = () => {
-
+        updateQuizTitleAdapter.execute({
+            quizId: selectedQuiz._id,
+            title: selectedQuiz.title
+        });
     };
 
     return (
@@ -99,10 +123,15 @@ export default function ViewQuizes() {
                 </Text>
                 <Group align="flex-end">
                     <TextInput
-                        defaultValue={selectedQuiz?.title}
+                        value={selectedQuiz?.title}
                         placeholder="New quiz title"
+                        onChange={e => {
+                            setSelectedQuiz((quiz: any) => ({ ...quiz, title: e.target.value }));
+                        }}
                         style={{ flex: 1 }} />
-                    <Button onClick={saveTitle}>Save</Button>
+                    <Button
+                        loading={updateQuizTitleAdapter.loading}
+                        onClick={saveTitle}> Save </Button>
                 </Group>
             </Dialog>
         </>
