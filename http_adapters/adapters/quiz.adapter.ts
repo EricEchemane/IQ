@@ -19,6 +19,10 @@ export default class QuizAdapter {
         url: '/api/quiz/update-title',
         method: "POST",
     };
+    static publish: HttpAdapter = {
+        url: '/api/quiz/publish',
+        method: "POST",
+    };
 }
 
 export type CreateQuizPayload = {
@@ -39,4 +43,8 @@ export type UpdateAQuestionPayload = IQuestion & {
 export type updateQuizTitlePayload = {
     quizId: string;
     title: string;
+};
+
+export type publishQuizPayload = {
+    quizId: string;
 };
