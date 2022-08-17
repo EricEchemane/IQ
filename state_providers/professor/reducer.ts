@@ -28,6 +28,7 @@ function reducer(state: IProfessorState, { type, payload }: ProfessorAction): IP
             quiz2.title = title;
             return _state;
         case ProfessorActions.publish_quiz:
+            _state = null, _state = null;
             _state = { ...state };
             _payload = payload as publishQuizPayload;
             const quiz3: any = _state.quizes.find((quiz: any) => quiz._id === _payload.quizId);

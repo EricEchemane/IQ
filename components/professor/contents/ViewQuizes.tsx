@@ -5,7 +5,7 @@ import useProfessorState, { ProfessorActions, ProfessorStateType } from 'state_p
 import moment from 'moment';
 import QuizView from './QuizView';
 import useHttpAdapter from 'http_adapters/useHttpAdapter';
-import QuizAdapter, { updateQuizTitlePayload } from 'http_adapters/adapters/quiz.adapter';
+import QuizAdapter, { publishQuizPayload, updateQuizTitlePayload } from 'http_adapters/adapters/quiz.adapter';
 import { showNotification } from '@mantine/notifications';
 
 export default function ViewQuizes() {
@@ -15,6 +15,7 @@ export default function ViewQuizes() {
     const [editTitleModalIsOpen, setEditTitleModalIsOpen] = useState(false);
     const [selectedQuiz, setSelectedQuiz] = useState<any>();
     const updateQuizTitleAdapter = useHttpAdapter<updateQuizTitlePayload>(QuizAdapter.updateTitle);
+    const publishQuizAdapter = useHttpAdapter<publishQuizPayload>(QuizAdapter.publish);
 
     useEffect(() => {
         if (updateQuizTitleAdapter.data) {
@@ -42,6 +43,28 @@ export default function ViewQuizes() {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [updateQuizTitleAdapter.data, updateQuizTitleAdapter.error]);
 
+    useEffect(() => {
+        if (publishQuizAdapter.data && selectedQuiz) {
+            showNotification({
+                message: 'Quiz has been published',
+                color: 'green',
+                icon: <IconCheck />
+            });
+            dispatch({
+                type: ProfessorActions.publish_quiz,
+                payload: { quizId: selectedQuiz._id } as publishQuizPayload
+            });
+        }
+        if (publishQuizAdapter.error) {
+            showNotification({
+                title: 'Ooops!',
+                message: publishQuizAdapter.error.message,
+                color: 'red',
+            });
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [publishQuizAdapter.data, publishQuizAdapter.error]);
+
     const openQuestionsModal = (index: number) => {
         setSelectedQuiz(state.quizes[index]);
         setViewQuestionsModelIsOpen(true);
@@ -51,6 +74,9 @@ export default function ViewQuizes() {
             quizId: selectedQuiz._id,
             title: selectedQuiz.title
         });
+    };
+    const publish = (quizId: string) => {
+        publishQuizAdapter.execute({ quizId });
     };
 
     return (
@@ -89,7 +115,12 @@ export default function ViewQuizes() {
                                         icon={<IconEdit size={14} />}> Edit title </Menu.Item>
                                     {quiz.published
                                         ? <Menu.Item icon={<IconBookDownload size={14} />}> Unpublish </Menu.Item>
-                                        : <Menu.Item icon={<IconBookUpload size={14} />}> Publish this quiz </Menu.Item>}
+                                        : <Menu.Item
+                                            onClick={() => {
+                                                setSelectedQuiz(quiz);
+                                                publish(quiz._id);
+                                            }}
+                                            icon={<IconBookUpload size={14} />}> Publish this quiz </Menu.Item>}
 
                                     <Menu.Divider />
 
