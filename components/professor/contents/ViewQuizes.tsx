@@ -5,7 +5,7 @@ import useProfessorState, { ProfessorActions, ProfessorStateType } from 'state_p
 import moment from 'moment';
 import QuizView from './QuizView';
 import useHttpAdapter from 'http_adapters/useHttpAdapter';
-import QuizAdapter, { publishQuizPayload, updateQuizTitlePayload } from 'http_adapters/adapters/quiz.adapter';
+import QuizAdapter, { publishQuizPayload, unpublishQuizPayload, updateQuizTitlePayload } from 'http_adapters/adapters/quiz.adapter';
 import { showNotification } from '@mantine/notifications';
 
 export default function ViewQuizes() {
@@ -16,6 +16,7 @@ export default function ViewQuizes() {
     const [selectedQuiz, setSelectedQuiz] = useState<any>();
     const updateQuizTitleAdapter = useHttpAdapter<updateQuizTitlePayload>(QuizAdapter.updateTitle);
     const publishQuizAdapter = useHttpAdapter<publishQuizPayload>(QuizAdapter.publish);
+    const unpublishQuizAdapter = useHttpAdapter<unpublishQuizPayload>(QuizAdapter.unpublish);
 
     useEffect(() => {
         if (updateQuizTitleAdapter.data) {
@@ -65,6 +66,28 @@ export default function ViewQuizes() {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [publishQuizAdapter.data, publishQuizAdapter.error]);
 
+    useEffect(() => {
+        if (unpublishQuizAdapter.data && selectedQuiz) {
+            showNotification({
+                message: 'Quiz has been unpublished',
+                color: 'green',
+                icon: <IconCheck />
+            });
+            dispatch({
+                type: ProfessorActions.unpublish_quiz,
+                payload: { quizId: selectedQuiz._id } as unpublishQuizPayload
+            });
+        }
+        if (unpublishQuizAdapter.error) {
+            showNotification({
+                title: 'Ooops!',
+                message: unpublishQuizAdapter.error.message,
+                color: 'red',
+            });
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [unpublishQuizAdapter.data, unpublishQuizAdapter.error]);
+
     const openQuestionsModal = (index: number) => {
         setSelectedQuiz(state.quizes[index]);
         setViewQuestionsModelIsOpen(true);
@@ -77,6 +100,9 @@ export default function ViewQuizes() {
     };
     const publish = (quizId: string) => {
         publishQuizAdapter.execute({ quizId });
+    };
+    const unpublish = (quizId: string) => {
+        unpublishQuizAdapter.execute({ quizId });
     };
 
     return (
@@ -114,7 +140,12 @@ export default function ViewQuizes() {
                                         }}
                                         icon={<IconEdit size={14} />}> Edit title </Menu.Item>
                                     {quiz.published
-                                        ? <Menu.Item icon={<IconBookDownload size={14} />}> Unpublish </Menu.Item>
+                                        ? <Menu.Item
+                                            onClick={() => {
+                                                setSelectedQuiz(quiz);
+                                                unpublish(quiz._id);
+                                            }}
+                                            icon={<IconBookDownload size={14} />}> Unpublish </Menu.Item>
                                         : <Menu.Item
                                             onClick={() => {
                                                 setSelectedQuiz(quiz);
