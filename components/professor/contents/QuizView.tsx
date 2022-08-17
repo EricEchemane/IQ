@@ -128,7 +128,7 @@ export default function QuizViewEditMode({ question, index }: { question: IQuest
                                     {isInEditMode ? 'Turn off edit mode' : 'Turn on edit mode'}
                                 </Text>
                             </Group>
-                            <Button type='submit'> Save </Button>
+                            {isInEditMode && <Button type='submit'> Save </Button>}
                         </Group>
 
                     </Accordion.Panel>
