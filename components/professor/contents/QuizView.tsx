@@ -15,10 +15,13 @@ export default function QuizViewEditMode({ question, index }: { question: IQuest
             timer: question.timer
         }
     });
+    const save = (values: typeof editForm.values) => {
+        console.log(values);
+    };
 
     return (
         <>
-            <form>
+            <form onSubmit={editForm.onSubmit(save)}>
                 <Accordion.Item value={editForm.values.question}>
 
                     {!isInEditMode
