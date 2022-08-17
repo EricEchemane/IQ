@@ -1,11 +1,26 @@
-import { Accordion, ActionIcon, Button, Group, NumberInput, Switch, Text, TextInput, Title } from '@mantine/core';
+import { Accordion, ActionIcon, Button, Group, LoadingOverlay, NumberInput, Switch, Text, TextInput, Title } from '@mantine/core';
 import { useForm } from '@mantine/form';
 import { IconCheck, IconPlus, IconX } from '@tabler/icons';
 import { IQuestion } from 'entities/question.entity';
-import React, { useState } from 'react';
+import QuizAdapter, { UpdateAQuestionPayload } from 'http_adapters/adapters/quiz.adapter';
+import useHttpAdapter from 'http_adapters/useHttpAdapter';
+import React, { useEffect, useState } from 'react';
 
-export default function QuizViewEditMode({ question, index }: { question: IQuestion; index: number; }) {
+export default function QuizViewEditMode({ question, index, quizId }
+    : {
+        question: IQuestion & { _id: string; };
+        index: number;
+        quizId: string;
+    }) {
     const [isInEditMode, setIsInEditMode] = useState(false);
+    const updateQuestionAdapter = useHttpAdapter<UpdateAQuestionPayload>(QuizAdapter.updateAQuestion);
+
+    useEffect(() => {
+        if (updateQuestionAdapter.data) {
+            console.log(updateQuestionAdapter.data);
+        }
+    });
+
     const editForm = useForm({
         initialValues: {
             question: question.question,
@@ -16,13 +31,19 @@ export default function QuizViewEditMode({ question, index }: { question: IQuest
         }
     });
     const save = (values: typeof editForm.values) => {
-        console.log(values);
+        updateQuestionAdapter.execute({
+            ...values,
+            questionId: question._id,
+            quizId
+        });
     };
 
     return (
         <>
-            <form onSubmit={editForm.onSubmit(save)}>
-                <Accordion.Item value={editForm.values.question}>
+            <form onSubmit={editForm.onSubmit(save)} style={{ position: 'relative' }}>
+                <LoadingOverlay visible={updateQuestionAdapter.loading} overlayBlur={2} />
+
+                <Accordion.Item value={question.question}>
 
                     {!isInEditMode
                         ? <Accordion.Control>
@@ -36,7 +57,8 @@ export default function QuizViewEditMode({ question, index }: { question: IQuest
 
                     <Accordion.Panel>
                         {!isInEditMode
-                            ? <>
+                            ?
+                            <>
                                 {question.choices.map((c: any) => (
                                     <Text key={c} color={c === question.correct_choice ? 'green' : 'dark'}> {c} </Text>
                                 ))}
@@ -44,8 +66,8 @@ export default function QuizViewEditMode({ question, index }: { question: IQuest
                                     {question.timer} seconds - {question.points} {question.points && question.points > 1 ? 'points' : 'point'}
                                 </Text>
                             </>
-
-                            : <>
+                            :
+                            <>
                                 <TextInput
                                     mb='md'
                                     label='Question'

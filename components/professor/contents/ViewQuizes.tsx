@@ -1,5 +1,5 @@
-import { Accordion, ActionIcon, Button, Group, Menu, Modal, Paper, Stack, Switch, Text, Title, useMantineTheme } from '@mantine/core';
-import { IconSettings, IconSearch, IconPhoto, IconMessageCircle, IconTrash, IconArrowsLeftRight, IconDots, IconEdit, IconUpload, IconBookUpload, IconDownloadOff, IconBookDownload } from '@tabler/icons';
+import { Accordion, ActionIcon, Button, Group, Menu, Modal, Paper, Stack, Text, Title, useMantineTheme } from '@mantine/core';
+import { IconTrash, IconDots, IconEdit, IconBookUpload, IconBookDownload } from '@tabler/icons';
 import React, { useState } from 'react';
 import useProfessorState, { ProfessorStateType } from 'state_providers/professor';
 import moment from 'moment';
@@ -72,7 +72,7 @@ export default function ViewQuizes() {
             >
                 <Accordion>
                     {selectedQuiz?.questions.map((question: any, index: number) => (
-                        <QuizView key={index} index={index} question={question} />
+                        <QuizView quizId={selectedQuiz._id} key={index} index={index} question={question} />
                     ))}
                 </Accordion>
             </Modal>
