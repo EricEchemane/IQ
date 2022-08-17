@@ -28,5 +28,6 @@ export type GetQuizzesPayload = {
 };
 
 export type UpdateAQuestionPayload = IQuestion & {
-    _id: string;
+    questionId: string;
+    quizId: string;
 };
