@@ -1,4 +1,4 @@
-import { UpdateAQuestionPayload, updateQuizTitlePayload } from "http_adapters/adapters/quiz.adapter";
+import { publishQuizPayload, UpdateAQuestionPayload, updateQuizTitlePayload } from "http_adapters/adapters/quiz.adapter";
 import { ProfessorAction, ProfessorActions, IProfessorState } from "./index";
 
 function reducer(state: IProfessorState, { type, payload }: ProfessorAction): IProfessorState {
@@ -26,6 +26,12 @@ function reducer(state: IProfessorState, { type, payload }: ProfessorAction): IP
             const { quizId, title } = payload as updateQuizTitlePayload;
             const quiz2: any = _state.quizes.find((quiz: any) => quiz._id === quizId);
             quiz2.title = title;
+            return _state;
+        case ProfessorActions.publish_quiz:
+            _state = { ...state };
+            _payload = payload as publishQuizPayload;
+            const quiz3: any = _state.quizes.find((quiz: any) => quiz._id === _payload.quizId);
+            quiz3.published = true;
             return _state;
         default:
             return state;

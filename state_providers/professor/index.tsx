@@ -16,7 +16,8 @@ export enum ProfessorActions {
     create_new_quiz = 'create_new_quiz',
     push_new_quiz = 'push_new_quiz',
     update_question = 'update_question',
-    update_quiz_title = 'update_quiz_title'
+    update_quiz_title = 'update_quiz_title',
+    publish_quiz = 'publish_quiz'
 }
 
 export interface ProfessorAction {
