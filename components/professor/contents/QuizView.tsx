@@ -1,5 +1,6 @@
 import { Accordion, ActionIcon, Button, Group, LoadingOverlay, NumberInput, Switch, Text, TextInput, Title } from '@mantine/core';
 import { useForm } from '@mantine/form';
+import { showNotification } from '@mantine/notifications';
 import { IconCheck, IconPlus, IconX } from '@tabler/icons';
 import { IQuestion } from 'entities/question.entity';
 import QuizAdapter, { UpdateAQuestionPayload } from 'http_adapters/adapters/quiz.adapter';
@@ -17,9 +18,20 @@ export default function QuizViewEditMode({ question, index, quizId }
 
     useEffect(() => {
         if (updateQuestionAdapter.data) {
-            console.log(updateQuestionAdapter.data);
+            showNotification({
+                message: 'Updated successfully',
+                color: 'green',
+                icon: <IconCheck />
+            });
         }
-    });
+        if (updateQuestionAdapter.error) {
+            showNotification({
+                title: 'Ooops!',
+                message: updateQuestionAdapter.error.message,
+                color: 'red',
+            });
+        }
+    }, [updateQuestionAdapter.data, updateQuestionAdapter.error]);
 
     const editForm = useForm({
         initialValues: {
