@@ -3,6 +3,7 @@ import type { AppProps } from 'next/app';
 import { SessionProvider } from "next-auth/react";
 import { MantineProvider } from '@mantine/core';
 import { NotificationsProvider } from '@mantine/notifications';
+import { ModalsProvider } from '@mantine/modals';
 
 function MyApp({ Component, pageProps: { session, ...pageProps }, }: AppProps) {
   return (
@@ -15,9 +16,11 @@ function MyApp({ Component, pageProps: { session, ...pageProps }, }: AppProps) {
           colorScheme: 'light',
         }}
       >
-        <NotificationsProvider>
-          <Component {...pageProps} />
-        </NotificationsProvider>
+        <ModalsProvider>
+          <NotificationsProvider>
+            <Component {...pageProps} />
+          </NotificationsProvider>
+        </ModalsProvider>
       </MantineProvider>
     </SessionProvider>
   );
