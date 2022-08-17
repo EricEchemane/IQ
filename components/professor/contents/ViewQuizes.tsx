@@ -1,4 +1,4 @@
-import { Accordion, ActionIcon, Button, Group, Menu, Modal, Paper, Stack, Text, Title, useMantineTheme } from '@mantine/core';
+import { Accordion, ActionIcon, Button, Dialog, Group, Menu, Modal, Paper, Stack, Text, TextInput, Title, useMantineTheme } from '@mantine/core';
 import { IconTrash, IconDots, IconEdit, IconBookUpload, IconBookDownload } from '@tabler/icons';
 import React, { useState } from 'react';
 import useProfessorState, { ProfessorStateType } from 'state_providers/professor';
@@ -9,11 +9,16 @@ export default function ViewQuizes() {
     const theme = useMantineTheme();
     const { state, dispatch }: ProfessorStateType = useProfessorState();
     const [viewQuestionsModelIsOpen, setViewQuestionsModelIsOpen] = useState(false);
+    const [editTitleModalIsOpen, setEditTitleModalIsOpen] = useState(false);
+
     const [selectedQuiz, setSelectedQuiz] = useState<any>();
 
     const openQuestionsModal = (index: number) => {
         setSelectedQuiz(state.quizes[index]);
         setViewQuestionsModelIsOpen(true);
+    };
+    const saveTitle = () => {
+
     };
 
     return (
@@ -44,7 +49,12 @@ export default function ViewQuizes() {
 
                                 <Menu.Dropdown>
                                     <Menu.Label>Quiz options</Menu.Label>
-                                    <Menu.Item icon={<IconEdit size={14} />}> Edit </Menu.Item>
+                                    <Menu.Item
+                                        onClick={() => {
+                                            setSelectedQuiz(quiz);
+                                            setEditTitleModalIsOpen(true);
+                                        }}
+                                        icon={<IconEdit size={14} />}> Edit title </Menu.Item>
                                     {quiz.published
                                         ? <Menu.Item icon={<IconBookDownload size={14} />}> Unpublish </Menu.Item>
                                         : <Menu.Item icon={<IconBookUpload size={14} />}> Publish this quiz </Menu.Item>}
@@ -76,6 +86,25 @@ export default function ViewQuizes() {
                     ))}
                 </Accordion>
             </Modal>
+
+            <Dialog
+                opened={editTitleModalIsOpen}
+                withCloseButton
+                onClose={() => setEditTitleModalIsOpen(false)}
+                size="lg"
+                radius="md"
+            >
+                <Text size="sm" style={{ marginBottom: 10 }} weight={500}>
+                    Edit quiz title
+                </Text>
+                <Group align="flex-end">
+                    <TextInput
+                        defaultValue={selectedQuiz?.title}
+                        placeholder="New quiz title"
+                        style={{ flex: 1 }} />
+                    <Button onClick={saveTitle}>Save</Button>
+                </Group>
+            </Dialog>
         </>
     );
 }
