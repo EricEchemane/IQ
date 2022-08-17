@@ -1,7 +1,7 @@
 import { Accordion, ActionIcon, Button, Dialog, Group, Menu, Modal, Paper, Stack, Text, TextInput, Title, useMantineTheme } from '@mantine/core';
 import { IconTrash, IconDots, IconEdit, IconBookUpload, IconBookDownload, IconCheck } from '@tabler/icons';
 import React, { useEffect, useState } from 'react';
-import useProfessorState, { ProfessorStateType } from 'state_providers/professor';
+import useProfessorState, { ProfessorActions, ProfessorStateType } from 'state_providers/professor';
 import moment from 'moment';
 import QuizView from './QuizView';
 import useHttpAdapter from 'http_adapters/useHttpAdapter';
@@ -24,6 +24,13 @@ export default function ViewQuizes() {
                 icon: <IconCheck />
             });
             setEditTitleModalIsOpen(false);
+            dispatch({
+                type: ProfessorActions.update_quiz_title,
+                payload: {
+                    quizId: selectedQuiz._id,
+                    title: selectedQuiz.title
+                } as updateQuizTitlePayload
+            });
         }
         if (updateQuizTitleAdapter.error) {
             showNotification({
@@ -32,6 +39,7 @@ export default function ViewQuizes() {
                 color: 'red',
             });
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [updateQuizTitleAdapter.data, updateQuizTitleAdapter.error]);
 
     const openQuestionsModal = (index: number) => {
