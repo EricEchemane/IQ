@@ -23,6 +23,10 @@ export default class QuizAdapter {
         url: '/api/quiz/publish',
         method: "POST",
     };
+    static unpublish: HttpAdapter = {
+        url: '/api/quiz/unpublish',
+        method: "POST",
+    };
 }
 
 export type CreateQuizPayload = {
@@ -46,5 +50,9 @@ export type updateQuizTitlePayload = {
 };
 
 export type publishQuizPayload = {
+    quizId: string;
+};
+
+export type unpublishQuizPayload = {
     quizId: string;
 };
