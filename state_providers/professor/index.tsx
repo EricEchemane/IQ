@@ -19,6 +19,7 @@ export enum ProfessorActions {
     update_quiz_title = 'update_quiz_title',
     publish_quiz = 'publish_quiz',
     unpublish_quiz = 'unpublish_quiz',
+    delete_quiz = 'delete_quiz',
 }
 
 export interface ProfessorAction {
