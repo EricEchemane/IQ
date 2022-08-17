@@ -27,6 +27,10 @@ export default class QuizAdapter {
         url: '/api/quiz/unpublish',
         method: "POST",
     };
+    static delete: HttpAdapter = {
+        url: '/api/quiz/delete',
+        method: "POST",
+    };
 }
 
 export type CreateQuizPayload = {
@@ -54,5 +58,9 @@ export type publishQuizPayload = {
 };
 
 export type unpublishQuizPayload = {
+    quizId: string;
+};
+
+export type deleteQuizPayload = {
     quizId: string;
 };
