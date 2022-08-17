@@ -13,11 +13,12 @@ async function handler(req: NextApiRequest) {
         throw new RequestError(500, 'Database connection failed');
     }
     const { Quiz } = db.models;
-    const quiz = await Quiz.findById(quizId);
+    const quiz = await Quiz.findById(quizId).populate('participants');
     if (!quiz) {
         throw new RequestError(404, 'Quiz not found');
     }
-    if (quiz.participants.length !== 0) {
+
+    if (quiz.participants && quiz.participants.length !== 0) {
         throw new RequestError(403, 'Cannot unpublish this quiz because there are students that already took it');
     }
     else {
