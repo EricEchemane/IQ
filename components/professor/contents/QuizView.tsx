@@ -42,6 +42,7 @@ export default function QuizViewEditMode({ question, index, quizId }
                 color: 'green',
                 icon: <IconCheck />
             });
+            setIsInEditMode(false);
         }
         if (updateQuestionAdapter.error) {
             showNotification({
