@@ -63,4 +63,5 @@ export type unpublishQuizPayload = {
 
 export type deleteQuizPayload = {
     quizId: string;
+    userId: string;
 };

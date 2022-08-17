@@ -5,7 +5,7 @@ import useProfessorState, { ProfessorActions, ProfessorStateType } from 'state_p
 import moment from 'moment';
 import QuizView from './QuizView';
 import useHttpAdapter from 'http_adapters/useHttpAdapter';
-import QuizAdapter, { publishQuizPayload, unpublishQuizPayload, updateQuizTitlePayload } from 'http_adapters/adapters/quiz.adapter';
+import QuizAdapter, { deleteQuizPayload, publishQuizPayload, unpublishQuizPayload, updateQuizTitlePayload } from 'http_adapters/adapters/quiz.adapter';
 import { showNotification } from '@mantine/notifications';
 
 export default function ViewQuizes() {
@@ -17,6 +17,7 @@ export default function ViewQuizes() {
     const updateQuizTitleAdapter = useHttpAdapter<updateQuizTitlePayload>(QuizAdapter.updateTitle);
     const publishQuizAdapter = useHttpAdapter<publishQuizPayload>(QuizAdapter.publish);
     const unpublishQuizAdapter = useHttpAdapter<unpublishQuizPayload>(QuizAdapter.unpublish);
+    const deleteQuizAdapter = useHttpAdapter<deleteQuizPayload>(QuizAdapter.delete);
 
     useEffect(() => {
         if (updateQuizTitleAdapter.data) {
@@ -88,6 +89,28 @@ export default function ViewQuizes() {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [unpublishQuizAdapter.data, unpublishQuizAdapter.error]);
 
+    useEffect(() => {
+        if (deleteQuizAdapter.data && selectedQuiz) {
+            showNotification({
+                message: 'Quiz has been deleted',
+                color: 'green',
+                icon: <IconCheck />
+            });
+            dispatch({
+                type: ProfessorActions.delete_quiz,
+                payload: { quizId: selectedQuiz._id } as deleteQuizPayload
+            });
+        }
+        if (deleteQuizAdapter.error) {
+            showNotification({
+                title: 'Ooops!',
+                message: deleteQuizAdapter.error.message,
+                color: 'red',
+            });
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [deleteQuizAdapter.data, deleteQuizAdapter.error]);
+
     const openQuestionsModal = (index: number) => {
         setSelectedQuiz(state.quizes[index]);
         setViewQuestionsModelIsOpen(true);
@@ -103,6 +126,10 @@ export default function ViewQuizes() {
     };
     const unpublish = (quizId: string) => {
         unpublishQuizAdapter.execute({ quizId });
+    };
+    const deleteQuiz = (quizId: string) => {
+        if (!state._id) return;
+        deleteQuizAdapter.execute({ quizId, userId: state._id });
     };
 
     return (
@@ -156,7 +183,14 @@ export default function ViewQuizes() {
                                     <Menu.Divider />
 
                                     <Menu.Label>Danger zone</Menu.Label>
-                                    <Menu.Item color="red" icon={<IconTrash size={14} />}>Delete this quiz</Menu.Item>
+                                    <Menu.Item
+                                        onClick={() => {
+                                            setSelectedQuiz(quiz);
+                                            deleteQuiz(quiz._id);
+                                        }}
+                                        color="red"
+                                        icon={<IconTrash
+                                            size={14} />}>Delete this quiz</Menu.Item>
                                 </Menu.Dropdown>
                             </Menu>
                         </Group>
