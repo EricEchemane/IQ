@@ -44,8 +44,7 @@ function reducer(state: IProfessorState, { type, payload }: ProfessorAction): IP
         case ProfessorActions.delete_quiz:
             _state = null, _state = null;
             _state = { ...state };
-            _payload = payload as deleteQuizPayload;
-            _state.quizes = _state.quizes.filter((quiz: any) => quiz._id === _payload.quizId);
+            _state.quizes = _state.quizes.filter((quiz: any) => quiz._id !== payload.quizId);
             return _state;
         default:
             return state;

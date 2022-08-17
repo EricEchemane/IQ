@@ -7,6 +7,7 @@ import QuizView from './QuizView';
 import useHttpAdapter from 'http_adapters/useHttpAdapter';
 import QuizAdapter, { deleteQuizPayload, publishQuizPayload, unpublishQuizPayload, updateQuizTitlePayload } from 'http_adapters/adapters/quiz.adapter';
 import { showNotification } from '@mantine/notifications';
+import { openConfirmModal } from '@mantine/modals';
 
 export default function ViewQuizes() {
     const theme = useMantineTheme();
@@ -98,7 +99,7 @@ export default function ViewQuizes() {
             });
             dispatch({
                 type: ProfessorActions.delete_quiz,
-                payload: { quizId: selectedQuiz._id } as deleteQuizPayload
+                payload: { quizId: selectedQuiz._id, userId: state._id } as deleteQuizPayload
             });
         }
         if (deleteQuizAdapter.error) {
@@ -128,8 +129,22 @@ export default function ViewQuizes() {
         unpublishQuizAdapter.execute({ quizId });
     };
     const deleteQuiz = (quizId: string) => {
-        if (!state._id) return;
-        deleteQuizAdapter.execute({ quizId, userId: state._id });
+        openConfirmModal({
+            title: 'Delete this quiz?',
+            centered: true,
+            children: (
+                <Text size="sm">
+                    Are you sure you want to delete this quiz? This action is irreversable.
+                </Text>
+            ),
+            labels: { confirm: 'Yes, Delete this quiz', cancel: "No don't delete it" },
+            confirmProps: { color: 'red' },
+            onCancel: () => { },
+            onConfirm: () => {
+                if (!state._id) return;
+                deleteQuizAdapter.execute({ quizId, userId: state._id });
+            },
+        });
     };
 
     return (
