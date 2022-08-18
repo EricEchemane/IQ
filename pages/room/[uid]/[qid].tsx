@@ -24,6 +24,10 @@ export default function QuizRoom({ user, quiz }: {
     });
     const [participants, setParticipants] = useState<IUser[]>([]);
 
+    const cancelQuiz = () => {
+        router.replace('/');
+    };
+
     return <>
         <Head> <title> Quiz Room - IQ </title> </Head>
 
@@ -79,7 +83,10 @@ export default function QuizRoom({ user, quiz }: {
                 weight={'bold'}
                 size='xl'
                 color='dimmed'> Waiting for other participants to join </Text>
-            <Button variant='light' mt='xl'> Cancel and return home </Button>
+            <Button
+                onClick={cancelQuiz}
+                variant='light'
+                mt='xl'> Cancel and return home </Button>
         </Stack>
     </>;
 }
