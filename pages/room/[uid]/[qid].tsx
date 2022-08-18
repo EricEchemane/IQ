@@ -1,4 +1,4 @@
-import { Avatar, Box, Button, Center, CopyButton, Group, Loader, Paper, Stack, Text, Title } from '@mantine/core';
+import { Avatar, Button, CopyButton, Group, Loader, Paper, Stack, Text, Title } from '@mantine/core';
 import { IconClipboard, IconClipboardCheck, IconRocket } from '@tabler/icons';
 import connectToDatabase from 'db/connectToDatabase';
 import { IQuiz } from 'entities/quiz.entity';
