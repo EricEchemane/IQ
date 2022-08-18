@@ -1,4 +1,4 @@
-import { Avatar, Box, Button, CopyButton, Group, Loader, Paper, Stack, Text, Title } from '@mantine/core';
+import { Avatar, Box, Button, Center, CopyButton, Group, Loader, Paper, Stack, Text, Title } from '@mantine/core';
 import { IconClipboard, IconClipboardCheck, IconRocket } from '@tabler/icons';
 import connectToDatabase from 'db/connectToDatabase';
 import { IQuiz } from 'entities/quiz.entity';
@@ -72,9 +72,13 @@ export default function QuizRoom({ user, quiz }: {
                 radius={50}> Start </Button>
         </Group>
 
-        <Stack align='center'>
-            <Text weight={'bold'} size='xl' color='dimmed'> waiting for other participants </Text>
-            <Loader size="xl" variant="dots" />
+        <Stack align='center' p='md' mt='4rem'>
+            <Loader size="xl" variant="bars" />
+            <Text
+                align='center'
+                weight={'bold'}
+                size='xl'
+                color='dimmed'> Waiting for other participants to join </Text>
         </Stack>
     </>;
 }
