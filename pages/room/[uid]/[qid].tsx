@@ -1,4 +1,4 @@
-import { Avatar, Button, CopyButton, Group, Loader, Paper, Stack, Text, Title } from '@mantine/core';
+import { Avatar, Button, CopyButton, Divider, Group, Loader, Paper, Stack, Text, Title } from '@mantine/core';
 import { IconClipboard, IconClipboardCheck, IconRocket } from '@tabler/icons';
 import connectToDatabase from 'db/connectToDatabase';
 import { IQuiz } from 'entities/quiz.entity';
@@ -64,9 +64,13 @@ export default function QuizRoom({ user, quiz }: {
                 <Title order={3}>
                     {quiz.title}
                 </Title>
-                <Text>
-                    {participants.length} {participants.length === 1 ? 'Participant' : 'Participants'}
-                </Text>
+                <Group>
+                    <Text>
+                        {participants.length} {participants.length === 1 ? 'Participant' : 'Participants'}
+                    </Text>
+                    <Divider size={'sm'} orientation='vertical' />
+                    <Text> {quiz.questions.length} Questions </Text>
+                </Group>
             </Stack>
 
             <Button
