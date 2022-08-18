@@ -66,6 +66,7 @@ export default function QuizRoom({ user, quiz }: {
             </Stack>
 
             <Button
+                disabled={participants.length === 0}
                 rightIcon={<IconRocket strokeWidth={1.5} />}
                 size='md'
                 radius={50}> Start </Button>
