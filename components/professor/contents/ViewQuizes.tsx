@@ -165,7 +165,7 @@ export default function ViewQuizes() {
                                         size='sm'> {quiz.questions.length} questions </Button>
                                     <Group spacing={5}>
                                         <Text color='dimmed'> Quiz code: </Text>
-                                        <CopyButton value={quiz._id.slice(0, 6)}>
+                                        <CopyButton value={quiz._id.slice(quiz._id.length - 6)}>
                                             {({ copied, copy }) => (
                                                 <Button
                                                     rightIcon={copied ? <IconClipboardCheck /> : <IconClipboard />}
@@ -173,7 +173,7 @@ export default function ViewQuizes() {
                                                     variant='light'
                                                     color={copied ? 'teal' : 'blue'}
                                                     onClick={copy}>
-                                                    {quiz._id.slice(0, 6)}
+                                                    {quiz._id.slice(quiz._id.length - 6)}
                                                 </Button>
                                             )}
                                         </CopyButton>
