@@ -37,7 +37,7 @@ export default function QuizRoom({ user, quiz }: {
                 <Group align={'center'}>
                     <Avatar src={user.image} alt={`profile of ${user.name}`} radius={50} />
                     <Stack spacing={0}>
-                        <Title order={6}> {user.name} </Title>
+                        <Title order={6}> Prof. {user.name} </Title>
                         <Text size='sm'> {user.email} </Text>
                     </Stack>
                 </Group>
