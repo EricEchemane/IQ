@@ -1,5 +1,5 @@
-import { Accordion, ActionIcon, Button, Dialog, Group, Menu, Modal, Paper, Stack, Text, TextInput, Title, useMantineTheme } from '@mantine/core';
-import { IconTrash, IconDots, IconEdit, IconBookUpload, IconBookDownload, IconCheck } from '@tabler/icons';
+import { Accordion, ActionIcon, Button, CopyButton, Dialog, Group, Menu, Modal, Paper, Stack, Text, TextInput, Title, useMantineTheme } from '@mantine/core';
+import { IconTrash, IconDots, IconEdit, IconBookUpload, IconBookDownload, IconCheck, IconClipboard, IconClipboardCheck } from '@tabler/icons';
 import React, { useEffect, useState } from 'react';
 import useProfessorState, { ProfessorActions, ProfessorStateType } from 'state_providers/professor';
 import moment from 'moment';
@@ -163,6 +163,21 @@ export default function ViewQuizes() {
                                         onClick={() => openQuestionsModal(index)}
                                         variant='subtle'
                                         size='sm'> {quiz.questions.length} questions </Button>
+                                    <Group spacing={5}>
+                                        <Text color='dimmed'> Quiz code: </Text>
+                                        <CopyButton value={quiz._id.slice(0, 6)}>
+                                            {({ copied, copy }) => (
+                                                <Button
+                                                    rightIcon={copied ? <IconClipboardCheck /> : <IconClipboard />}
+                                                    radius={50}
+                                                    variant='light'
+                                                    color={copied ? 'teal' : 'blue'}
+                                                    onClick={copy}>
+                                                    {quiz._id.slice(0, 6)}
+                                                </Button>
+                                            )}
+                                        </CopyButton>
+                                    </Group>
                                 </Group>
                             </Stack>
 
