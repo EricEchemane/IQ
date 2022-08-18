@@ -17,8 +17,6 @@ export default function QuizRoom({ user, quiz }: {
             router.replace('/signin');
         }
     });
-    console.log(user, quiz);
-
 
     return (
         <div>quiz-room</div>
