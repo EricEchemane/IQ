@@ -1,5 +1,5 @@
 import { Accordion, ActionIcon, Button, CopyButton, Dialog, Group, Menu, Modal, Paper, Stack, Text, TextInput, Title, useMantineTheme } from '@mantine/core';
-import { IconTrash, IconDots, IconEdit, IconBookUpload, IconBookDownload, IconCheck, IconClipboard, IconClipboardCheck } from '@tabler/icons';
+import { IconTrash, IconDots, IconEdit, IconBookUpload, IconBookDownload, IconCheck, IconClipboard, IconClipboardCheck, IconDoorEnter, IconArrowRight } from '@tabler/icons';
 import React, { useEffect, useState } from 'react';
 import useProfessorState, { ProfessorActions, ProfessorStateType } from 'state_providers/professor';
 import moment from 'moment';
@@ -190,6 +190,13 @@ export default function ViewQuizes() {
 
                                 <Menu.Dropdown>
                                     <Menu.Label>Quiz options</Menu.Label>
+                                    <Menu.Item
+                                        onClick={() => {
+                                            // enter quiz room
+                                        }}
+                                        color='blue'
+                                        rightSection={<IconArrowRight size={15} />}
+                                        icon={<IconDoorEnter size={14} />}> Enter quiz room </Menu.Item>
                                     <Menu.Item
                                         onClick={() => {
                                             setSelectedQuiz(quiz);
