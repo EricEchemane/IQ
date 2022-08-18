@@ -72,13 +72,14 @@ export default function QuizRoom({ user, quiz }: {
                 radius={50}> Start </Button>
         </Group>
 
-        <Stack align='center' p='md' mt='4rem'>
+        <Stack align='center' p='md' mt='3rem'>
             <Loader size="xl" variant="bars" />
             <Text
                 align='center'
                 weight={'bold'}
                 size='xl'
                 color='dimmed'> Waiting for other participants to join </Text>
+            <Button variant='light' mt='xl'> Cancel and return home </Button>
         </Stack>
     </>;
 }
