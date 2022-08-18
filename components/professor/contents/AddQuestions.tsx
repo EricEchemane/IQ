@@ -152,7 +152,11 @@ export default function AddQuestions({ quizTitle, forSections, onSaveSuccess }: 
                                 </Group>
                             ))}
 
-                            <Stack mt='md' align='center' spacing={2}>
+                            <Group mt='md' align='center' position='right'>
+
+                                <Text color='dimmed'>
+                                    {form.values.choices.length === 4 ? 'Maximum of 4 choices' : 'Add another choice'}
+                                </Text>
 
                                 <ActionIcon
                                     onClick={() => {
@@ -170,11 +174,7 @@ export default function AddQuestions({ quizTitle, forSections, onSaveSuccess }: 
                                     <IconPlus />
                                 </ActionIcon>
 
-                                <Text color='dimmed'>
-                                    {form.values.choices.length === 4 ? 'Maximum of 4 choices' : 'Add another choice'}
-                                </Text>
-
-                            </Stack>
+                            </Group>
                         </Stack>
                     </Stack>
 
