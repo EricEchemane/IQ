@@ -8,7 +8,7 @@ export default function Error404() {
     return (
         <Center style={{ height: '100vh' }}>
             <Stack p='lg' align={'center'}>
-                <Title align={'center'}> 404 Error </Title>
+                <Title align={'center'}> 404 Not Found </Title>
                 <Text align={'center'} mb='xl'> Seems like the page you are looking for does not exist. Or the owner of this site removed that page. </Text>
                 <Button
                     onClick={() => {
