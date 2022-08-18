@@ -93,36 +93,41 @@ export default function QuizRoom({ user, quiz }: {
 
 
 export const getServerSideProps: GetServerSideProps = async (context) => {
-    const { params } = context;
-    if (!params) return redirectObject;
+    try {
+        const { params } = context;
+        if (!params) return redirectObject;
 
-    const { uid, qid } = params;
-    if (!uid || !qid) return redirectObject;
+        const { uid, qid } = params;
+        if (!uid || !qid) return redirectObject;
 
-    const db = await connectToDatabase();
-    if (!db) return redirectObject;
+        const db = await connectToDatabase();
+        if (!db) return redirectObject;
 
-    const { User, Quiz } = db.models;
+        const { User, Quiz } = db.models;
 
-    const user = await User.findById(uid);
-    if (!user) return redirectObject;
-    if (user.type !== 'professor') return redirectObject;
+        const user = await User.findById(uid);
+        if (!user) return redirectObject;
+        if (user.type !== 'professor') return redirectObject;
 
-    const quiz = await Quiz.findById(qid);
-    if (!quiz) return redirectObject;
+        const quiz = await Quiz.findById(qid);
+        if (!quiz) return redirectObject;
 
-    return {
-        props: {
-            user: JSON.parse(JSON.stringify(user)),
-            quiz: JSON.parse(JSON.stringify(quiz)),
-        }
-    };
+        return {
+            props: {
+                user: JSON.parse(JSON.stringify(user)),
+                quiz: JSON.parse(JSON.stringify(quiz)),
+            }
+        };
+
+    } catch (error) {
+        return redirectObject;
+    }
 };
 
 const redirectObject = {
     redirect: {
         permanent: false,
-        destination: "/",
+        destination: "/404",
     },
     props: {},
 };
