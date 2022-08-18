@@ -229,6 +229,7 @@ export default function ViewQuizes() {
             </Stack>
 
             <Modal
+                size={'550px'}
                 overlayColor={theme.colorScheme === 'dark' ? theme.colors.dark[9] : theme.colors.gray[2]}
                 overlayOpacity={0.55}
                 overlayBlur={3}
