@@ -1,14 +1,19 @@
+import { Avatar, Box, Button, CopyButton, Group, Loader, Paper, Stack, Text, Title } from '@mantine/core';
+import { IconClipboard, IconClipboardCheck, IconRocket } from '@tabler/icons';
 import connectToDatabase from 'db/connectToDatabase';
 import { IQuiz } from 'entities/quiz.entity';
 import { IUser } from 'entities/user.entity';
 import { GetServerSideProps } from 'next';
 import { useSession } from 'next-auth/react';
+import Head from 'next/head';
 import { useRouter } from 'next/router';
-import React from 'react';
+import React, { useState } from 'react';
+
+const parseRoomId = (id: string) => id.slice(id.length - 6);
 
 export default function QuizRoom({ user, quiz }: {
     user: IUser;
-    quiz: IQuiz;
+    quiz: IQuiz & { _id: string; };
 }) {
     const router = useRouter();
     const { data: session } = useSession({
@@ -17,10 +22,60 @@ export default function QuizRoom({ user, quiz }: {
             router.replace('/signin');
         }
     });
+    const [participants, setParticipants] = useState<IUser[]>([]);
 
-    return (
-        <div>quiz-room</div>
-    );
+    return <>
+        <Head> <title> Quiz Room - IQ </title> </Head>
+
+        {/* HEADER */}
+        <Paper p='sm' shadow={'sm'}>
+            <Group align={'center'} position='apart'>
+                <Group align={'center'}>
+                    <Avatar src={user.image} alt={`profile of ${user.name}`} radius={50} />
+                    <Stack spacing={0}>
+                        <Title order={6}> {user.name} </Title>
+                        <Text size='sm'> {user.email} </Text>
+                    </Stack>
+                </Group>
+                <Group spacing={5}>
+                    <Text color='dimmed'> Quiz Code: </Text>
+                    <CopyButton value={parseRoomId(quiz._id)}>
+                        {({ copied, copy }) => (
+                            <Button
+                                rightIcon={copied ? <IconClipboardCheck /> : <IconClipboard />}
+                                radius={50}
+                                variant='light'
+                                color={copied ? 'teal' : 'blue'}
+                                onClick={copy}>
+                                {parseRoomId(quiz._id)}
+                            </Button>
+                        )}
+                    </CopyButton>
+                </Group>
+            </Group>
+        </Paper>
+
+        <Group align={'center'} position='apart' mt='sm' p='md'>
+            <Stack spacing={4}>
+                <Title order={3}>
+                    {quiz.title}
+                </Title>
+                <Text>
+                    {participants.length} {participants.length === 1 ? 'Participant' : 'Participants'}
+                </Text>
+            </Stack>
+
+            <Button
+                rightIcon={<IconRocket strokeWidth={1.5} />}
+                size='md'
+                radius={50}> Start </Button>
+        </Group>
+
+        <Stack align='center'>
+            <Text weight={'bold'} size='xl' color='dimmed'> waiting for other participants </Text>
+            <Loader size="xl" variant="dots" />
+        </Stack>
+    </>;
 }
 
 
