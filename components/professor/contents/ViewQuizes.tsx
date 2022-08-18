@@ -158,11 +158,7 @@ export default function ViewQuizes() {
                             <Stack style={{ flex: 1 }}>
                                 <Title order={5}> {quiz.title} </Title>
                                 <Group>
-                                    <Text size='sm'> Created on {moment(quiz.date_created).format('LL')} </Text>
-                                    <Button
-                                        onClick={() => openQuestionsModal(index)}
-                                        variant='subtle'
-                                        size='sm'> {quiz.questions.length} questions </Button>
+                                    <Text size='sm' mr='md'> Created on {moment(quiz.date_created).format('LL')} </Text>
                                     <Group spacing={5}>
                                         <Text color='dimmed'> Quiz code: </Text>
                                         <CopyButton value={quiz._id.slice(quiz._id.length - 6)}>
@@ -178,6 +174,10 @@ export default function ViewQuizes() {
                                             )}
                                         </CopyButton>
                                     </Group>
+                                    <Button
+                                        onClick={() => openQuestionsModal(index)}
+                                        variant='subtle'
+                                        size='sm'> {quiz.questions.length} questions </Button>
                                 </Group>
                             </Stack>
 
