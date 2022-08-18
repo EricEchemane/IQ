@@ -48,7 +48,7 @@ export default function QuizRoom({ user, quiz }: {
                             <Button
                                 rightIcon={copied ? <IconClipboardCheck /> : <IconClipboard />}
                                 radius={50}
-                                variant='light'
+                                variant='subtle'
                                 color={copied ? 'teal' : 'blue'}
                                 onClick={copy}>
                                 {parseRoomId(quiz._id)}
