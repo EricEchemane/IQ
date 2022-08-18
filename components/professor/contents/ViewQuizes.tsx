@@ -9,6 +9,7 @@ import QuizAdapter, { deleteQuizPayload, publishQuizPayload, unpublishQuizPayloa
 import { showNotification } from '@mantine/notifications';
 import { openConfirmModal } from '@mantine/modals';
 import { useRouter } from 'next/router';
+import { parseQuizId } from 'lib/quiz_helpers';
 
 export default function ViewQuizes() {
     const theme = useMantineTheme();
@@ -163,7 +164,7 @@ export default function ViewQuizes() {
                                     <Text size='sm' mr='md'> Created on {moment(quiz.date_created).format('LL')} </Text>
                                     <Group spacing={5}>
                                         <Text color='dimmed'> Quiz code: </Text>
-                                        <CopyButton value={quiz._id.slice(quiz._id.length - 6)}>
+                                        <CopyButton value={parseQuizId(quiz._id)}>
                                             {({ copied, copy }) => (
                                                 <Button
                                                     rightIcon={copied ? <IconClipboardCheck /> : <IconClipboard />}
@@ -171,7 +172,7 @@ export default function ViewQuizes() {
                                                     variant='light'
                                                     color={copied ? 'teal' : 'blue'}
                                                     onClick={copy}>
-                                                    {quiz._id.slice(quiz._id.length - 6)}
+                                                    {parseQuizId(quiz._id)}
                                                 </Button>
                                             )}
                                         </CopyButton>

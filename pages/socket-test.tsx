@@ -15,7 +15,7 @@ export default function Home() {
     const [messages, setMessages] = useState<Array<Message>>([]);
 
     const socketInitializer = useCallback(async () => {
-        await fetch("/api/socket");
+        await fetch("/api/room");
         socket = io();
         socket.on("newIncomingMessage", (msg) => {
             setMessages((currentMsg) => [

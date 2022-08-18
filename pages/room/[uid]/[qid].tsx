@@ -3,13 +3,12 @@ import { IconClipboard, IconClipboardCheck, IconRocket } from '@tabler/icons';
 import connectToDatabase from 'db/connectToDatabase';
 import { IQuiz } from 'entities/quiz.entity';
 import { IUser } from 'entities/user.entity';
+import { parseQuizId } from 'lib/quiz_helpers';
 import { GetServerSideProps } from 'next';
 import { useSession } from 'next-auth/react';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 import React, { useState } from 'react';
-
-const parseRoomId = (id: string) => id.slice(id.length - 6);
 
 export default function QuizRoom({ user, quiz }: {
     user: IUser;
@@ -44,7 +43,7 @@ export default function QuizRoom({ user, quiz }: {
                     </Group>
                     <Group spacing={5}>
                         <Text color='dimmed'> Quiz Code: </Text>
-                        <CopyButton value={parseRoomId(quiz._id)}>
+                        <CopyButton value={parseQuizId(quiz._id)}>
                             {({ copied, copy }) => (
                                 <Button
                                     rightIcon={copied ? <IconClipboardCheck /> : <IconClipboard />}
@@ -52,7 +51,7 @@ export default function QuizRoom({ user, quiz }: {
                                     variant='subtle'
                                     color={copied ? 'teal' : 'blue'}
                                     onClick={copy}>
-                                    {parseRoomId(quiz._id)}
+                                    {parseQuizId(quiz._id)}
                                 </Button>
                             )}
                         </CopyButton>

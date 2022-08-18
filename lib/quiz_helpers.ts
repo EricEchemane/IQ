@@ -1,0 +1,1 @@
+export const parseQuizId = (id: string) => id.slice(id.length - 7);
