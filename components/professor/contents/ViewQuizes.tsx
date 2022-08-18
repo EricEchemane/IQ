@@ -190,13 +190,13 @@ export default function ViewQuizes() {
 
                                 <Menu.Dropdown>
                                     <Menu.Label>Quiz options</Menu.Label>
-                                    <Menu.Item
+                                    {quiz.published && <Menu.Item
                                         onClick={() => {
                                             // enter quiz room
                                         }}
                                         color='blue'
                                         rightSection={<IconArrowRight size={15} />}
-                                        icon={<IconDoorEnter size={14} />}> Enter quiz room </Menu.Item>
+                                        icon={<IconDoorEnter size={14} />}> Enter quiz room </Menu.Item>}
                                     <Menu.Item
                                         onClick={() => {
                                             setSelectedQuiz(quiz);
