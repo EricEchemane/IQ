@@ -72,8 +72,7 @@ export default function QuizRoom({ user, quiz }: {
             <Button
                 disabled={participants.length === 0}
                 rightIcon={<IconRocket strokeWidth={1.5} />}
-                size='md'
-                radius={50}> Start </Button>
+                size='md'> Start </Button>
         </Group>
 
         <Stack align='center' p='md' mt='3rem'>
