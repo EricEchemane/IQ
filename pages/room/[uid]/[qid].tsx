@@ -8,7 +8,11 @@ import { GetServerSideProps } from 'next';
 import { useSession } from 'next-auth/react';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
-import React, { useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
+import io, { Socket } from "socket.io-client";
+import { ProfessorEvents } from 'lib/quiz_room/types';
+
+let socket: Socket;
 
 export default function QuizRoom({ user, quiz }: {
     user: IUser;
@@ -22,10 +26,27 @@ export default function QuizRoom({ user, quiz }: {
         }
     });
     const [participants, setParticipants] = useState<IUser[]>([]);
+    const [roomIsCreated, setRoomIsCreated] = useState(false);
+
+    const socketInitializer = useCallback(async () => {
+        await fetch("/api/room");
+        socket = io();
+        socket.on('connect', () => {
+            socket.emit(ProfessorEvents.join_quiz_room, user, parseQuizId(quiz._id), (message: string) => {
+                console.log(message);
+                setRoomIsCreated(true);
+            });
+        });
+    }, [quiz, user]);
 
     const cancelQuiz = () => {
         router.replace('/');
     };
+
+    useEffect(() => {
+        socketInitializer();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
     return <>
         <Head> <title> Quiz Room - IQ </title> </Head>
@@ -62,7 +83,7 @@ export default function QuizRoom({ user, quiz }: {
 
         <Container p='md'>
             <Group align={'center'} position='apart' mt='sm'>
-                <Stack spacing={4}>
+                <Stack spacing={6}>
                     <Title order={3}>
                         {quiz.title}
                     </Title>
@@ -72,6 +93,15 @@ export default function QuizRoom({ user, quiz }: {
                         </Text>
                         <Divider size={'sm'} orientation='vertical' />
                         <Text> {quiz.questions.length} Questions </Text>
+                        <Divider size={'sm'} orientation='vertical' />
+                        <Text>
+                            {roomIsCreated
+                                ? <Text weight={'bold'} color={'green'}> Your room is active </Text>
+                                : <Group>
+                                    <Text color={'blue'}> Creating room </Text>
+                                    <Loader variant='dots' />
+                                </Group>}
+                        </Text>
                     </Group>
                 </Stack>
 
