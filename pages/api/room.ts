@@ -15,6 +15,7 @@ export default function SocketHandler(req: NextApiRequest, res: SocketRes) {
 
     // Define actions inside
     io.on("connection", (socket: Socket) => {
+        console.log(socket.id, 'joined');
 
         socket.on(ProfessorEvents.join_quiz_room, (user: IUser, room: string, callback: Function) => {
             if (user.type !== 'professor') {
@@ -24,7 +25,12 @@ export default function SocketHandler(req: NextApiRequest, res: SocketRes) {
             socket.join(room);
             callback(Room.joined);
         });
+
+        socket.on('disconnect', () => {
+            console.log(socket.id, 'is disconnected');
+        });
     });
+
 
     console.log("Setting up socket");
     res.end();

@@ -29,17 +29,18 @@ export default function QuizRoom({ user, quiz }: {
     const [roomIsCreated, setRoomIsCreated] = useState(false);
 
     const socketInitializer = useCallback(async () => {
+        if (socket) return;
         await fetch("/api/room");
         socket = io();
         socket.on('connect', () => {
             socket.emit(ProfessorEvents.join_quiz_room, user, parseQuizId(quiz._id), (message: string) => {
-                console.log(message);
                 setRoomIsCreated(true);
             });
         });
     }, [quiz, user]);
 
     const cancelQuiz = () => {
+        socket.disconnect();
         router.replace('/');
     };
 
