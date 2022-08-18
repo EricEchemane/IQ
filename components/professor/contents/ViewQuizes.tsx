@@ -8,9 +8,11 @@ import useHttpAdapter from 'http_adapters/useHttpAdapter';
 import QuizAdapter, { deleteQuizPayload, publishQuizPayload, unpublishQuizPayload, updateQuizTitlePayload } from 'http_adapters/adapters/quiz.adapter';
 import { showNotification } from '@mantine/notifications';
 import { openConfirmModal } from '@mantine/modals';
+import { useRouter } from 'next/router';
 
 export default function ViewQuizes() {
     const theme = useMantineTheme();
+    const router = useRouter();
     const { state, dispatch }: ProfessorStateType = useProfessorState();
     const [viewQuestionsModelIsOpen, setViewQuestionsModelIsOpen] = useState(false);
     const [editTitleModalIsOpen, setEditTitleModalIsOpen] = useState(false);
@@ -192,7 +194,7 @@ export default function ViewQuizes() {
                                     <Menu.Label>Quiz options</Menu.Label>
                                     {quiz.published && <Menu.Item
                                         onClick={() => {
-                                            // enter quiz room
+                                            router.push(`/room/${state._id}/${quiz._id}`);
                                         }}
                                         color='blue'
                                         rightSection={<IconArrowRight size={15} />}
