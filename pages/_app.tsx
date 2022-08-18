@@ -4,6 +4,7 @@ import { SessionProvider } from "next-auth/react";
 import { MantineProvider } from '@mantine/core';
 import { NotificationsProvider } from '@mantine/notifications';
 import { ModalsProvider } from '@mantine/modals';
+import { NavigationProgress } from '@mantine/nprogress';
 
 function MyApp({ Component, pageProps: { session, ...pageProps }, }: AppProps) {
   return (
@@ -16,6 +17,7 @@ function MyApp({ Component, pageProps: { session, ...pageProps }, }: AppProps) {
           colorScheme: 'light',
         }}
       >
+        <NavigationProgress />
         <ModalsProvider>
           <NotificationsProvider>
             <Component {...pageProps} />
