@@ -35,7 +35,6 @@ export default function QuizRoom({ user, quiz }: {
     const socketInitializer = useCallback(async () => {
         await fetch("/api/room");
         socket = io();
-
         socket.on('connect', () => {
             console.info(`Client connect with id`, socket.id);
         });
@@ -43,11 +42,21 @@ export default function QuizRoom({ user, quiz }: {
             console.info(socket.id, `disconnected`);
         });
 
+        socket.emit('create:room', {
+            room: parseQuizId(quiz._id),
+            user
+        }, (err: Error, data: any) => {
+            if (data) {
+                setRoomIsCreated(true);
+            }
+            if (err) console.error(err);
+        });
+
         return () => {
             socket.off('connect');
             socket.off('disconnect');
         };
-    }, []);
+    }, [quiz._id, user]);
 
     const cancelQuiz = () => {
         socket.disconnect();
