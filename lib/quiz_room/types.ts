@@ -1,10 +1,16 @@
 import { IUser } from "entities/user.entity";
 import { NextApiResponse } from "next";
 
+export type Participant = IUser & {
+    socketId: string;
+};
+
 export class QuizRoom {
+    quizCode: string;
     hostId: string;
-    participants: IUser[] = [];
-    constructor(hostId: string) {
+    participants: Participant[] = [];
+    constructor(quizCode: string, hostId: string) {
+        this.quizCode = quizCode;
         this.hostId = hostId;
     }
 }

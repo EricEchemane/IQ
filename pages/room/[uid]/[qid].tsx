@@ -10,7 +10,6 @@ import Head from 'next/head';
 import { useRouter } from 'next/router';
 import React, { useCallback, useEffect, useState } from 'react';
 import io, { Socket } from "socket.io-client";
-import { ProfessorEvents, StudentEvents } from 'lib/quiz_room/types';
 
 let socket: Socket;
 
@@ -32,15 +31,9 @@ export default function QuizRoom({ user, quiz }: {
         await fetch("/api/room");
         socket = io();
         socket.on('connect', () => {
-            socket.emit(ProfessorEvents.join_quiz_room, user, parseQuizId(quiz._id), (message: string) => {
-                setRoomIsCreated(true);
-            });
 
-            socket.on('new-participant', (participants: IUser[]) => {
-                setParticipants(participants);
-            });
         });
-    }, [quiz._id, user]);
+    }, []);
 
     const cancelQuiz = () => {
         socket.disconnect();

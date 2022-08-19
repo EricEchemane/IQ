@@ -21,7 +21,7 @@ export default async function connectToDatabase(): Promise<typeof mongoose | nul
         const connection = await mongoose.connect(process.env.MONGODB_URI);
 
         database = connection;
-        console.log('connection created');
+        // console.log('connection created');
 
         return database;
     } catch (error) {

@@ -1,7 +1,6 @@
 import { Avatar, Button, Container, Divider, Group, Indicator, Paper, Stack, Text, Title } from '@mantine/core';
 import connectToDatabase from 'db/connectToDatabase';
 import { IUser } from 'entities/user.entity';
-import { RoomExceptions, StudentEvents } from 'lib/quiz_room/types';
 import { GetServerSideProps } from 'next';
 import { getToken } from 'next-auth/jwt';
 import Head from 'next/head';
@@ -20,15 +19,9 @@ export default function StudentRoom({ user }: { user: IUser; }) {
         await fetch("/api/room");
         socket = io();
         socket.on('connect', () => {
-            socket.emit(StudentEvents.student_join_quiz_room, user, room, (quizRoom: any) => {
-                if (quizRoom === RoomExceptions.room_not_found) {
-                    router.replace('/404');
-                    return;
-                }
-                setConnected(true);
-            });
+
         });
-    }, [room, router, user]);
+    }, []);
 
     useEffect(() => {
         socketInitializer();
