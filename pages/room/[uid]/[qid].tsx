@@ -8,14 +8,15 @@ import connectToDatabase from 'db/connectToDatabase';
 import { IQuiz } from 'entities/quiz.entity';
 import { IUser } from 'entities/user.entity';
 import { parseQuizId } from 'lib/quiz_helpers';
+import { ClientSocket } from 'lib/socket/types';
 import { GetServerSideProps } from 'next';
 import { useSession } from 'next-auth/react';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 import React, { useCallback, useEffect, useState } from 'react';
-import io, { Socket } from "socket.io-client";
+import io from "socket.io-client";
 
-let socket: Socket;
+let socket: ClientSocket;
 
 export default function QuizRoom({ user, quiz }: {
     user: IUser;

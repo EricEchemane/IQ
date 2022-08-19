@@ -1,14 +1,15 @@
 import { Avatar, Button, Container, Divider, Group, Indicator, Paper, Stack, Text, Title } from '@mantine/core';
 import connectToDatabase from 'db/connectToDatabase';
 import { IUser } from 'entities/user.entity';
+import { ClientSocket } from 'lib/socket/types';
 import { GetServerSideProps } from 'next';
 import { getToken } from 'next-auth/jwt';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 import React, { useCallback, useEffect, useState } from 'react';
-import io, { Socket } from "socket.io-client";
+import io from "socket.io-client";
 
-let socket: Socket;
+let socket: ClientSocket;
 
 export default function StudentRoom({ user }: { user: IUser; }) {
     const router = useRouter();
