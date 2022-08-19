@@ -10,7 +10,7 @@ import Head from 'next/head';
 import { useRouter } from 'next/router';
 import React, { useCallback, useEffect, useState } from 'react';
 import io, { Socket } from "socket.io-client";
-import { ProfessorEvents } from 'lib/quiz_room/types';
+import { ProfessorEvents, StudentEvents } from 'lib/quiz_room/types';
 
 let socket: Socket;
 
@@ -29,15 +29,18 @@ export default function QuizRoom({ user, quiz }: {
     const [roomIsCreated, setRoomIsCreated] = useState(false);
 
     const socketInitializer = useCallback(async () => {
-        if (socket) return;
         await fetch("/api/room");
         socket = io();
         socket.on('connect', () => {
             socket.emit(ProfessorEvents.join_quiz_room, user, parseQuizId(quiz._id), (message: string) => {
                 setRoomIsCreated(true);
             });
+
+            socket.on('new-participant', (participants: IUser[]) => {
+                setParticipants(participants);
+            });
         });
-    }, [quiz, user]);
+    }, [quiz._id, user]);
 
     const cancelQuiz = () => {
         socket.disconnect();
@@ -46,8 +49,7 @@ export default function QuizRoom({ user, quiz }: {
 
     useEffect(() => {
         socketInitializer();
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+    }, [socketInitializer]);
 
     return <>
         <Head> <title> Quiz Room - IQ </title> </Head>

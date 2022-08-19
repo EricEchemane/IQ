@@ -19,7 +19,8 @@ export enum StudentEvents {
 
 export enum RoomExceptions {
     not_a_professor = 'not_a_professor',
-    room_already_exists = 'room_already_exists'
+    room_already_exists = 'room_already_exists',
+    room_not_found = 'room_not_found'
 }
 
 export enum Room {

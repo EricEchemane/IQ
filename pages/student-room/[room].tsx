@@ -1,7 +1,7 @@
-import { Avatar, Container, Divider, Group, Indicator, Paper, Stack, Text, Title } from '@mantine/core';
+import { Avatar, Button, Container, Divider, Group, Indicator, Paper, Stack, Text, Title } from '@mantine/core';
 import connectToDatabase from 'db/connectToDatabase';
 import { IUser } from 'entities/user.entity';
-import { StudentEvents } from 'lib/quiz_room/types';
+import { RoomExceptions, StudentEvents } from 'lib/quiz_room/types';
 import { GetServerSideProps } from 'next';
 import { getToken } from 'next-auth/jwt';
 import Head from 'next/head';
@@ -17,18 +17,30 @@ export default function StudentRoom({ user }: { user: IUser; }) {
     const [connected, setConnected] = useState(false);
 
     const socketInitializer = useCallback(async () => {
-        if (socket) return;
         await fetch("/api/room");
         socket = io();
         socket.on('connect', () => {
-            setConnected(true);
+            socket.emit(StudentEvents.student_join_quiz_room, user, room, (quizRoom: any) => {
+                if (quizRoom === RoomExceptions.room_not_found) {
+                    router.replace('/404');
+                    return;
+                }
+                setConnected(true);
+            });
         });
-    }, []);
+    }, [room, router, user]);
 
     useEffect(() => {
         socketInitializer();
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+    }, [socketInitializer]);
+
+    const leave = () => {
+        const userWantsToLeave = confirm('Are you sure you want to leave this quiz room?');
+        if (userWantsToLeave) {
+            socket.disconnect();
+            router.replace('/');
+        }
+    };
 
     return <>
         <Head> <title> Student Room | IQ </title> </Head>
@@ -53,8 +65,9 @@ export default function StudentRoom({ user }: { user: IUser; }) {
                             </Group>
                         </Stack>
                     </Group>
-                    <Group spacing={5}>
-                        {/* <Text color='dimmed'> Quiz Code: </Text> */}
+                    <Group spacing={5} align='center'>
+                        {/* <Text color='blue' weight='bold'> {room} </Text> */}
+                        <Button variant='subtle' onClick={leave}> Leave </Button>
                     </Group>
                 </Group>
             </Container>
