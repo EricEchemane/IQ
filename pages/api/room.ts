@@ -1,6 +1,6 @@
-import { Server, Socket } from "socket.io";
+import { Server } from "socket.io";
 import type { NextApiRequest } from 'next';
-import { SocketRes } from "lib/socket/types";
+import { ServerSocket, SocketRes } from "lib/socket/types";
 
 export default function SocketHandler(req: NextApiRequest, res: SocketRes) {
     // It means that socket server was already initialised
@@ -13,7 +13,7 @@ export default function SocketHandler(req: NextApiRequest, res: SocketRes) {
     res.socket.server.io = io;
 
     // Define actions inside
-    io.on("connection", (socket: Socket) => {
+    io.on("connection", (socket: ServerSocket) => {
         console.log(`${socket.id} connnects from the server`);
 
         socket.on('disconnect', () => {

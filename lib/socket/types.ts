@@ -1,5 +1,6 @@
 import { NextApiResponse } from "next";
-import { Socket } from "socket.io-client";
+import { Socket as SSocket } from "socket.io";
+import { Socket as CSocket } from "socket.io-client";
 
 export type SocketRes = NextApiResponse & {
     socket: {
@@ -8,11 +9,12 @@ export type SocketRes = NextApiResponse & {
 };
 
 export interface ServerEvents {
-
+    "room:join": () => void;
 }
 
 export interface ClientEvents {
-    "quizRoom:join": () => void;
+    "create:room": () => void;
 }
 
-export type ClientSocket = Socket<ServerEvents, ClientEvents>;
+export type ClientSocket = CSocket<ServerEvents, ClientEvents>;
+export type ServerSocket = SSocket<ClientEvents, ServerEvents>;
