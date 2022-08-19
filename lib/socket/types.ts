@@ -5,3 +5,7 @@ export type SocketRes = NextApiResponse & {
         server: any;
     };
 };
+
+export interface ServerEvents {
+
+}

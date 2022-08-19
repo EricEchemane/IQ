@@ -18,9 +18,19 @@ export default function StudentRoom({ user }: { user: IUser; }) {
     const socketInitializer = useCallback(async () => {
         await fetch("/api/room");
         socket = io();
-        socket.on('connect', () => {
 
+        socket.on('connect', () => {
+            console.info(`Client connect with id`, socket.id);
         });
+
+        socket.on('disconnect', () => {
+            console.info(socket.id, `disconnected`);
+        });
+
+        return () => {
+            socket.off('connect');
+            socket.off('disconnect');
+        };
     }, []);
 
     useEffect(() => {

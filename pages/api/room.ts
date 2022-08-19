@@ -14,7 +14,11 @@ export default function SocketHandler(req: NextApiRequest, res: SocketRes) {
 
     // Define actions inside
     io.on("connection", (socket: Socket) => {
+        console.log(`${socket.id} connnects from the server`);
 
+        socket.on('disconnect', () => {
+            console.log(`${socket.id} disconnected from the server`);
+        });
     });
 
     res.end();

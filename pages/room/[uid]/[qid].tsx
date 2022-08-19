@@ -1,4 +1,8 @@
-import { Avatar, Button, Container, CopyButton, Divider, Group, Loader, Paper, Stack, Text, Title } from '@mantine/core';
+import {
+    Avatar, Button, Container,
+    CopyButton, Divider, Group,
+    Loader, Paper, Stack, Text, Title
+} from '@mantine/core';
 import { IconClipboard, IconClipboardCheck, IconRocket } from '@tabler/icons';
 import connectToDatabase from 'db/connectToDatabase';
 import { IQuiz } from 'entities/quiz.entity';
@@ -30,9 +34,18 @@ export default function QuizRoom({ user, quiz }: {
     const socketInitializer = useCallback(async () => {
         await fetch("/api/room");
         socket = io();
-        socket.on('connect', () => {
 
+        socket.on('connect', () => {
+            console.info(`Client connect with id`, socket.id);
         });
+        socket.on('disconnect', () => {
+            console.info(socket.id, `disconnected`);
+        });
+
+        return () => {
+            socket.off('connect');
+            socket.off('disconnect');
+        };
     }, []);
 
     const cancelQuiz = () => {
