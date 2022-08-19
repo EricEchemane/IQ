@@ -41,6 +41,10 @@ export default function QuizRoomComponent({ user, quiz }: {
         socket.on('disconnect', () => {
             console.info(socket.id, `disconnected`);
         });
+        socket.on('participant:joined', (newQuizRoom: QuizRoom) => {
+            setQuizRoom(newQuizRoom);
+            console.log(newQuizRoom);
+        });
 
         socket.emit('create:room', {
             room: parseQuizId(quiz._id),
@@ -110,8 +114,8 @@ export default function QuizRoomComponent({ user, quiz }: {
                     </Title>
                     <Group>
                         <Text>
-                            {quizRoom?.participants.size || 0}
-                            {quizRoom?.participants.size === 1 ? ' Participant' : ' Participants'}
+                            {quizRoom?.participants.length}
+                            {quizRoom?.participants.length === 1 ? ' Participant' : ' Participants'}
                         </Text>
                         <Divider size={'sm'} orientation='vertical' />
                         <Text> {quiz.questions.length} Questions </Text>
@@ -128,7 +132,7 @@ export default function QuizRoomComponent({ user, quiz }: {
                 </Stack>
 
                 <Button
-                    disabled={quizRoom?.participants.size === 0}
+                    disabled={quizRoom?.participants.length === 0}
                     rightIcon={<IconRocket strokeWidth={1.5} />}
                     size='md'> Start </Button>
             </Group>

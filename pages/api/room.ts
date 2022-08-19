@@ -54,7 +54,7 @@ export default function SocketHandler(req: NextApiRequest, res: SocketRes) {
         ) => {
             const { room, user } = payload;
 
-            const quizRoom = quizRooms.get(room);
+            let quizRoom = quizRooms.get(room);
             if (!quizRoom) {
                 callback(new Error('Room does not exist'), null);
                 return;
@@ -68,8 +68,9 @@ export default function SocketHandler(req: NextApiRequest, res: SocketRes) {
             quizRoom.participate(socket.id, user);
 
             socket.join(room);
-            console.log(`${socket.id} joins the room ${room}`);
+            socket.to(room).emit('participant:joined', quizRoom);
 
+            console.log(`${socket.id} joins the room ${room}`);
             callback(null, quizRoom.getParticipant(socket.id));
         });
     });

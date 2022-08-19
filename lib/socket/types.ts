@@ -22,7 +22,7 @@ export type joinRoomPayload = {
 };
 
 export interface ServerEvents {
-
+    "participant:joined": (quizRoom: QuizRoom) => void;
 }
 
 export interface ClientEvents {
@@ -39,16 +39,19 @@ export interface ClientEvents {
 export type ClientSocket = CSocket<ServerEvents, ClientEvents>;
 export type ServerSocket = SSocket<ClientEvents, ServerEvents>;
 
+type participant = {
+    socketId: string;
+    answers: string[];
+    student: IUser;
+    final_score: number;
+    number_of_correct_answers: number;
+};
+
 export class QuizRoom {
     room: string;
     user: IUser;
     quiz: IQuiz;
-    participants: Map<string, {
-        answers: string[];
-        student: IUser;
-        final_score: number;
-        number_of_correct_answers: number;
-    }>;
+    participants: participant[] = [];
     isStarted: boolean = false;
     isEnded: boolean = false;
     currentIndexOfQuestion: number = -1; // -1 means not yet started
@@ -61,20 +64,24 @@ export class QuizRoom {
         this.room = room;
         this.user = user;
         this.quiz = quiz;
-        this.participants = new Map();
     }
 
     participate(socketId: string, user: IUser) {
-        this.participants.set(socketId, {
+        const isPresent = this.participants.find(p => p.student.email === user.email);
+        if (isPresent) return;
+
+        this.participants.push({
             answers: [],
             final_score: 0,
+            number_of_correct_answers: 0,
             student: user,
-            number_of_correct_answers: 0
+            socketId
         });
         return this;
     }
 
-    getParticipant(socketId: string) {
-        return this.participants.get(socketId);
+    getParticipant(socketId: string): participant | undefined {
+
+        return this.participants.find(p => p.socketId === socketId);
     }
 }
