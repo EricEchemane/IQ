@@ -1,6 +1,6 @@
 import { Server, Socket } from "socket.io";
 import type { NextApiRequest } from 'next';
-import { SocketRes } from "lib/quiz_room/types";
+import { SocketRes } from "lib/socket/types";
 
 export default function SocketHandler(req: NextApiRequest, res: SocketRes) {
     // It means that socket server was already initialised
