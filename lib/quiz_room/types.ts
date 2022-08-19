@@ -1,4 +1,13 @@
+import { IUser } from "entities/user.entity";
 import { NextApiResponse } from "next";
+
+export class QuizRoom {
+    hostId: string;
+    participants: IUser[] = [];
+    constructor(hostId: string) {
+        this.hostId = hostId;
+    }
+}
 
 export enum ProfessorEvents {
     join_quiz_room = 'join_quiz_room'
@@ -9,7 +18,8 @@ export enum StudentEvents {
 }
 
 export enum RoomExceptions {
-    not_a_professor = 'not_a_professor'
+    not_a_professor = 'not_a_professor',
+    room_already_exists = 'room_already_exists'
 }
 
 export enum Room {

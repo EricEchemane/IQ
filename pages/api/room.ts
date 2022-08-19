@@ -1,7 +1,9 @@
-import { ProfessorEvents, Room, RoomExceptions, SocketRes } from 'lib/quiz_room/types';
+import { ProfessorEvents, QuizRoom, Room, RoomExceptions, SocketRes } from 'lib/quiz_room/types';
 import { Server, Socket } from "socket.io";
 import type { NextApiRequest } from 'next';
 import { IUser } from 'entities/user.entity';
+
+const rooms = new Map<string, QuizRoom>();
 
 export default function SocketHandler(req: NextApiRequest, res: SocketRes) {
     // It means that socket server was already initialised
@@ -15,23 +17,34 @@ export default function SocketHandler(req: NextApiRequest, res: SocketRes) {
 
     // Define actions inside
     io.on("connection", (socket: Socket) => {
-        console.log(socket.id, 'joined');
+
+        let _room: string;
 
         socket.on(ProfessorEvents.join_quiz_room, (user: IUser, room: string, callback: Function) => {
+            _room = room;
+
             if (user.type !== 'professor') {
                 callback(RoomExceptions.not_a_professor);
                 return;
             }
-            socket.join(room);
-            callback(Room.joined);
+
+            if (rooms.has(room)) {
+                callback(RoomExceptions.room_already_exists);
+                return;
+            }
+            else {
+                const quizRoom = new QuizRoom(socket.id);
+                rooms.set(room, quizRoom);
+                socket.join(room);
+                callback(Room.joined);
+            }
+
         });
 
         socket.on('disconnect', () => {
-            console.log(socket.id, 'is disconnected');
+            rooms.delete(_room);
         });
     });
 
-
-    console.log("Setting up socket");
     res.end();
 }
