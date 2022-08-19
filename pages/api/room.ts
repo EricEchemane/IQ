@@ -1,6 +1,9 @@
+import { QuizRoom } from 'lib/socket/types';
 import { Server } from "socket.io";
 import type { NextApiRequest } from 'next';
 import { createRoomPayload, ServerSocket, SocketRes } from "lib/socket/types";
+
+const quizRooms = new Map<string, QuizRoom>();
 
 export default function SocketHandler(req: NextApiRequest, res: SocketRes) {
     // It means that socket server was already initialised
@@ -22,9 +25,9 @@ export default function SocketHandler(req: NextApiRequest, res: SocketRes) {
 
         socket.on('create:room', (
             payload: createRoomPayload,
-            callback: (err: any, data: any) => void
+            callback: (err: Error | null, data: QuizRoom | null) => void
         ) => {
-            const { room, user } = payload;
+            const { room, user, quiz } = payload;
             console.log(`${socket.id} creates a room ${room}`);
 
             // dont create the room if user is not a professor
@@ -32,9 +35,17 @@ export default function SocketHandler(req: NextApiRequest, res: SocketRes) {
                 callback(new Error('Only professors can create rooms'), null);
                 return;
             }
+
+            let quizRoom = quizRooms.get(room);
+            if (!quizRoom) {
+                quizRoom = new QuizRoom(room, user, quiz);
+                quizRooms.set(room, quizRoom);
+            }
+
             socket.join(room);
             console.log(`${socket.id} joins the room ${room}`);
-            callback(null, { success: true });
+
+            callback(null, quizRoom);
         });
     });
 

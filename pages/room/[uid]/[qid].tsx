@@ -8,7 +8,7 @@ import connectToDatabase from 'db/connectToDatabase';
 import { IQuiz } from 'entities/quiz.entity';
 import { IUser } from 'entities/user.entity';
 import { parseQuizId } from 'lib/quiz_helpers';
-import { ClientSocket } from 'lib/socket/types';
+import { ClientSocket, QuizRoom } from 'lib/socket/types';
 import { GetServerSideProps } from 'next';
 import { useSession } from 'next-auth/react';
 import Head from 'next/head';
@@ -18,7 +18,7 @@ import io from "socket.io-client";
 
 let socket: ClientSocket;
 
-export default function QuizRoom({ user, quiz }: {
+export default function QuizRoomComponent({ user, quiz }: {
     user: IUser;
     quiz: IQuiz & { _id: string; };
 }) {
@@ -29,8 +29,8 @@ export default function QuizRoom({ user, quiz }: {
             router.replace('/signin');
         }
     });
-    const [participants, setParticipants] = useState<IUser[]>([]);
     const [roomIsCreated, setRoomIsCreated] = useState(false);
+    const [quizRoom, setQuizRoom] = useState<QuizRoom>();
 
     const socketInitializer = useCallback(async () => {
         await fetch("/api/room");
@@ -44,19 +44,21 @@ export default function QuizRoom({ user, quiz }: {
 
         socket.emit('create:room', {
             room: parseQuizId(quiz._id),
-            user
-        }, (err: Error, data: any) => {
-            if (data) {
+            user, quiz
+        }, (err: Error, quizRoom: QuizRoom) => {
+            if (quizRoom) {
                 setRoomIsCreated(true);
+                setQuizRoom(quizRoom);
+                console.info(quizRoom);
             }
-            if (err) console.error(err);
+            if (err) console.error(err.message);
         });
 
         return () => {
             socket.off('connect');
             socket.off('disconnect');
         };
-    }, [quiz._id, user]);
+    }, [quiz, user]);
 
     const cancelQuiz = () => {
         socket.disconnect();
@@ -108,7 +110,7 @@ export default function QuizRoom({ user, quiz }: {
                     </Title>
                     <Group>
                         <Text>
-                            {participants.length} {participants.length === 1 ? 'Participant' : 'Participants'}
+                            {quizRoom?.participants.length} {quizRoom?.participants.length === 1 ? 'Participant' : 'Participants'}
                         </Text>
                         <Divider size={'sm'} orientation='vertical' />
                         <Text> {quiz.questions.length} Questions </Text>
@@ -125,7 +127,7 @@ export default function QuizRoom({ user, quiz }: {
                 </Stack>
 
                 <Button
-                    disabled={participants.length === 0}
+                    disabled={quizRoom?.participants.length === 0}
                     rightIcon={<IconRocket strokeWidth={1.5} />}
                     size='md'> Start </Button>
             </Group>
