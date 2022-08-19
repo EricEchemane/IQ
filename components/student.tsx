@@ -14,17 +14,25 @@ import {
     Group,
     Button,
     Tabs,
+    Stack,
+    TextInput,
+    Modal,
 } from '@mantine/core';
 import AppHeader from './student/AppHeader';
 import NavBar from './student/NavBar';
 import { IconBallpen, IconUserCircle, IconUsers } from '@tabler/icons';
 import Contents from './student/Contents';
+import { showNotification } from '@mantine/notifications';
+import { useRouter } from 'next/router';
 
 export default function Student({ data }: any) {
+    const router = useRouter();
     const { dispatch, state }: UserStateType = useUserState();
     const theme = useMantineTheme();
     const [opened, setOpened] = useState(false);
     const [activeTab, setActiveTab] = useState<string | null>('quizes');
+    const [quizCodeInputModal, setQuizCodeInputModal] = useState(false);
+    const [quizCode, setQuizCode] = useState('');
 
     useEffect(() => {
         dispatch({
@@ -34,7 +42,7 @@ export default function Student({ data }: any) {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [data]);
 
-    return (
+    return <>
         <AppShell
             styles={{
                 main: {
@@ -80,6 +88,7 @@ export default function Student({ data }: any) {
                 <Footer height={60} p="md">
                     <Group position='right'>
                         <Button variant='subtle' onClick={() => signOut()}> Sign out </Button>
+                        <Button onClick={() => setQuizCodeInputModal(true)}> Join a room </Button>
                     </Group>
                 </Footer>
             }
@@ -103,5 +112,41 @@ export default function Student({ data }: any) {
         >
             <Contents activeTab={activeTab} />
         </AppShell>
-    );
+
+        <Modal
+            withCloseButton={false}
+            overlayColor={theme.colorScheme === 'dark' ? theme.colors.dark[9] : theme.colors.gray[2]}
+            overlayOpacity={0.55}
+            overlayBlur={3}
+            overflow='inside'
+            closeOnEscape
+            opened={quizCodeInputModal}
+            onClose={() => setQuizCodeInputModal(false)}>
+
+            <Stack>
+                <Text weight='bold'> Enter the quiz code </Text>
+                <form onSubmit={e => {
+                    e.preventDefault();
+                    if (quizCode.length !== 7) {
+                        showNotification({
+                            message: 'Invalid quiz code',
+                            color: 'red'
+                        });
+                        return;
+                    }
+                    router.push('/student-room/' + quizCode);
+                }}>
+                    <Group>
+                        <TextInput
+                            autoFocus
+                            style={{ flex: 1 }}
+                            value={quizCode}
+                            onChange={e => setQuizCode(e.target.value)}
+                            placeholder="quiz code" />
+                        <Button type='submit'> Join </Button>
+                    </Group>
+                </form>
+            </Stack>
+        </Modal>
+    </>;
 }
