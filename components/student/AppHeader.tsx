@@ -50,6 +50,7 @@ export default function AppHeader({ data }: { data: IStudentState; }) {
                                 });
                                 return;
                             }
+                            router.push('/student-room/' + quizCode);
                         }}> Join </Button>
                 </Group>
             </Stack>
