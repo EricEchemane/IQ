@@ -1,7 +1,7 @@
 import { Avatar, Button, Container, Divider, Group, Indicator, Paper, Stack, Text, Title } from '@mantine/core';
 import connectToDatabase from 'db/connectToDatabase';
 import { IUser } from 'entities/user.entity';
-import { ClientSocket } from 'lib/socket/types';
+import { ClientSocket, QuizRoom } from 'lib/socket/types';
 import { GetServerSideProps } from 'next';
 import { getToken } from 'next-auth/jwt';
 import Head from 'next/head';
@@ -28,11 +28,20 @@ export default function StudentRoom({ user }: { user: IUser; }) {
             console.info(socket.id, `disconnected`);
         });
 
+        if (typeof room !== 'string') return;
+        socket.emit('join:room', { room, user }, (err: any, data: QuizRoom) => {
+            if (err) console.error(err.message);
+            if (data) {
+                setConnected(true);
+                console.log(data);
+            }
+        });
+
         return () => {
             socket.off('connect');
             socket.off('disconnect');
         };
-    }, []);
+    }, [room, user]);
 
     useEffect(() => {
         socketInitializer();

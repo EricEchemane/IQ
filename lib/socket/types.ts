@@ -16,6 +16,10 @@ export type createRoomPayload = {
     user: IUser;
     quiz: IQuiz;
 };
+export type joinRoomPayload = {
+    room: string;
+    user: IUser;
+};
 
 export interface ServerEvents {
 
@@ -24,6 +28,10 @@ export interface ServerEvents {
 export interface ClientEvents {
     "create:room": (
         payload: createRoomPayload,
+        callback: (err: any, data: any) => void
+    ) => void;
+    "join:room": (
+        payload: joinRoomPayload,
         callback: (err: any, data: any) => void
     ) => void;
 }
@@ -35,12 +43,12 @@ export class QuizRoom {
     room: string;
     user: IUser;
     quiz: IQuiz;
-    participants: {
+    participants: Map<string, {
         answers: string[];
         student: IUser;
         final_score: number;
         number_of_correct_answers: number;
-    }[] = [];
+    }>;
     isStarted: boolean = false;
     isEnded: boolean = false;
     currentIndexOfQuestion: number = -1; // -1 means not yet started
@@ -53,15 +61,20 @@ export class QuizRoom {
         this.room = room;
         this.user = user;
         this.quiz = quiz;
+        this.participants = new Map();
     }
 
-    participate(user: IUser) {
-        this.participants.push({
+    participate(socketId: string, user: IUser) {
+        this.participants.set(socketId, {
             answers: [],
             final_score: 0,
             student: user,
             number_of_correct_answers: 0
         });
         return this;
+    }
+
+    getParticipant(socketId: string) {
+        return this.participants.get(socketId);
     }
 }

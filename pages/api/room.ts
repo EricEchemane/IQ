@@ -1,4 +1,4 @@
-import { QuizRoom } from 'lib/socket/types';
+import { joinRoomPayload, QuizRoom } from 'lib/socket/types';
 import { Server } from "socket.io";
 import type { NextApiRequest } from 'next';
 import { createRoomPayload, ServerSocket, SocketRes } from "lib/socket/types";
@@ -46,6 +46,31 @@ export default function SocketHandler(req: NextApiRequest, res: SocketRes) {
             console.log(`${socket.id} joins the room ${room}`);
 
             callback(null, quizRoom);
+        });
+
+        socket.on('join:room', (
+            payload: joinRoomPayload,
+            callback: (err: Error | null, data: any) => void
+        ) => {
+            const { room, user } = payload;
+
+            const quizRoom = quizRooms.get(room);
+            if (!quizRoom) {
+                callback(new Error('Room does not exist'), null);
+                return;
+            }
+            // dont join the room if user is not a student
+            if (user.type !== 'student') {
+                callback(new Error('Only students can join rooms'), null);
+                return;
+            }
+
+            quizRoom.participate(socket.id, user);
+
+            socket.join(room);
+            console.log(`${socket.id} joins the room ${room}`);
+
+            callback(null, quizRoom.getParticipant(socket.id));
         });
     });
 
