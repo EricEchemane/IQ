@@ -1,15 +1,22 @@
+import { Container, Paper } from '@mantine/core';
 import connectToDatabase from 'db/connectToDatabase';
 import { IUser } from 'entities/user.entity';
 import { GetServerSideProps } from 'next';
 import { getToken } from 'next-auth/jwt';
+import Head from 'next/head';
 import { useRouter } from 'next/router';
 import React from 'react';
 
 export default function StudentRoom({ user }: { user: IUser; }) {
     const router = useRouter();
+    const { room } = router.query;
 
     return <>
+        <Head> <title> Quiz Room - {room} </title> </Head>
 
+        <Container p='sm'>
+            <Paper>  </Paper>
+        </Container>
     </>;
 }
 
