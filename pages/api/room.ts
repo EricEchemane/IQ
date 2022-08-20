@@ -1,4 +1,4 @@
-import { joinRoomPayload, QuizRoom } from 'lib/socket/types';
+import { joinRoomPayload, QuizRoom, participant } from 'lib/socket/types';
 import { Server } from "socket.io";
 import type { NextApiRequest } from 'next';
 import { createRoomPayload, ServerSocket, SocketRes } from "lib/socket/types";
@@ -92,7 +92,10 @@ export default function SocketHandler(req: NextApiRequest, res: SocketRes) {
             socket.to(room).emit('participant:joined', quizRoom);
 
             console.log(`${socket.id} joins the room ${room}`);
-            callback(null, quizRoom.getParticipant(socket.id));
+            callback(null, {
+                quizRoom,
+                participant: quizRoom.getParticipant(socket.id)
+            });
         });
 
         socket.on('destroy:room', (

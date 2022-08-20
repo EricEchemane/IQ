@@ -19,7 +19,6 @@ export default function StudentRoom({ user }: { user: IUser; }) {
     const router = useRouter();
     const { room } = router.query;
     const [connected, setConnected] = useState(false);
-    const [started, setStarted] = useState(false);
     const [quizData, setQuizData] = useState<participant>();
     const [quizRoom, setQuizRoom] = useState<QuizRoom>();
 
@@ -39,17 +38,19 @@ export default function StudentRoom({ user }: { user: IUser; }) {
             router.replace('/');
         });
         socket.on('quiz:started', (quizRoom: QuizRoom) => {
-            setStarted(true);
             setQuizRoom(quizRoom);
+            console.log(quizRoom);
         });
         socket.on('quiz:stopped', (quizRoom: QuizRoom) => {
-            setStarted(false);
             setQuizRoom(quizRoom);
             alert('The host stopped the quiz');
         });
 
         if (typeof room === 'string') {
-            socket.emit('join:room', { room, user }, (error: string, data: participant) => {
+            socket.emit('join:room', { room, user }, (error: string, data: {
+                participant: participant,
+                quizRoom: QuizRoom;
+            }) => {
                 if (error) {
                     console.error(error);
                     alert('This room is not yet created. Please check the code or ask your professor');
@@ -57,7 +58,8 @@ export default function StudentRoom({ user }: { user: IUser; }) {
                 }
                 if (data) {
                     setConnected(true);
-                    setQuizData(data);
+                    setQuizData(data.participant);
+                    setQuizRoom(data.quizRoom);
                     console.log(data);
                 }
             });
@@ -106,7 +108,6 @@ export default function StudentRoom({ user }: { user: IUser; }) {
                         </Stack>
                     </Group>
                     <Group spacing={5} align='center'>
-                        {/* <Text color='blue' weight='bold'> {room} </Text> */}
                         <Button variant='subtle' onClick={leave}> Leave </Button>
                     </Group>
                 </Group>
@@ -114,7 +115,7 @@ export default function StudentRoom({ user }: { user: IUser; }) {
         </Paper>
 
         <Container p='sm'>
-            {!started && <Stack align='center'>
+            {!quizRoom?.isStarted && <Stack align='center'>
                 <Text
                     mt='4rem'
                     style={{ fontSize: '2.5rem' }}
