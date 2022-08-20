@@ -37,7 +37,8 @@ export default function QuizRoomComponent({ user, quiz }: {
     const countDown = useCountDown({
         onCountDownEnd: () => { },
         onCounChange: (count: number) => {
-            console.log(count);
+            if (!quizRoom) return;
+            socket.emit('timer:change', count, quizRoom.room);
         },
         seconds: quizRoom?.quiz.default_question_timer || 5
     });

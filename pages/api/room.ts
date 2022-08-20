@@ -129,6 +129,10 @@ export default function SocketHandler(req: NextApiRequest, res: SocketRes) {
             socket.to(room).emit('quiz:stopped', quizRoom);
             callback(null, quizRoom);
         });
+
+        socket.on('timer:change', (count: number, room: string) => {
+            socket.to(room).emit('timer:changed', count);
+        });
     });
 
     res.end();

@@ -27,6 +27,7 @@ export interface ServerEvents {
     "room:destroyed": (room: string) => void;
     "quiz:started": (quizRoom: QuizRoom) => void;
     "quiz:stopped": (quizRoom: QuizRoom) => void;
+    "timer:changed": (count: number) => void;
 }
 
 export interface ClientEvents {
@@ -50,6 +51,7 @@ export interface ClientEvents {
         room: string,
         callback: (err: any, data: any) => void
     ) => void;
+    "timer:change": (count: number, room: string) => void;
 }
 
 export type ClientSocket = CSocket<ServerEvents, ClientEvents>;

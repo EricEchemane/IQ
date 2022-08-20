@@ -45,6 +45,9 @@ export default function StudentRoom({ user }: { user: IUser; }) {
             setQuizRoom(quizRoom);
             alert('The host stopped the quiz');
         });
+        socket.on('timer:changed', count => {
+            console.log(count);
+        });
 
         if (typeof room === 'string') {
             socket.emit('join:room', { room, user }, (error: string, data: {
