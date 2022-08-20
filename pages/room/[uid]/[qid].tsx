@@ -4,7 +4,7 @@ import {
     Loader, Paper, Stack, Text, Title
 } from '@mantine/core';
 import { showNotification } from '@mantine/notifications';
-import { IconClipboard, IconClipboardCheck, IconRocket } from '@tabler/icons';
+import { IconArrowRight, IconClipboard, IconClipboardCheck, IconRocket } from '@tabler/icons';
 import connectToDatabase from 'db/connectToDatabase';
 import { IQuestion } from 'entities/question.entity';
 import { IQuiz } from 'entities/quiz.entity';
@@ -155,11 +155,11 @@ export default function QuizRoomComponent({ user, quiz }: {
                     </Group>
                 </Stack>
 
-                <Button
+                {!quizRoom?.isStarted && <Button
                     onClick={startQuiz}
                     disabled={quizRoom?.participants.length === 0}
                     rightIcon={<IconRocket strokeWidth={1.5} />}
-                    size='md'> Start </Button>
+                    size='md'> Start </Button>}
             </Group>
 
             {!quizRoom?.isStarted && <Stack align='center' p='md' mt='3rem'>
@@ -180,6 +180,12 @@ export default function QuizRoomComponent({ user, quiz }: {
                 <Stack align='center'>
                     <Title> {quizRoom?.currentQuestion?.question} </Title>
                 </Stack>
+                <Group position='right' mt='xl'>
+                    <Button
+                        variant='subtle'
+                        rightIcon={<IconArrowRight strokeWidth={1.5} />}
+                        size='md'> Next question </Button>
+                </Group>
             </Paper>}
         </Container>
     </>;
