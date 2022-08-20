@@ -42,6 +42,10 @@ export default function StudentRoom({ user }: { user: IUser; }) {
             setStarted(true);
             setQuizRoom(quizRoom);
         });
+        socket.on('quiz:stopped', (quizRoom: QuizRoom) => {
+            setStarted(false);
+            setQuizRoom(quizRoom);
+        });
 
         if (typeof room === 'string') {
             socket.emit('join:room', { room, user }, (error: string, data: participant) => {
