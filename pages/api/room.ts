@@ -36,12 +36,7 @@ export default function SocketHandler(req: NextApiRequest, res: SocketRes) {
             const userRoom = usersParticipatedQuizRooms.get(socket.id);
             if (!userRoom) return;
 
-            if (userRoom.type === 'professor') {
-                // delete quizRoom
-                quizRooms.delete(userRoom.room);
-                usersParticipatedQuizRooms.delete(socket.id);
-            }
-            else {
+            if (userRoom.type === 'student') {
                 const quizRoom = quizRooms.get(userRoom.room);
                 if (!quizRoom) return;
                 quizRoom.removeParticipant(userRoom.email);
