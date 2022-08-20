@@ -34,8 +34,6 @@ export default function QuizRoomComponent({ user, quiz }: {
     });
     const [roomIsCreated, setRoomIsCreated] = useState(false);
     const [quizRoom, setQuizRoom] = useState<QuizRoom>();
-    const [currentQuestionIndex, setCurrentQuestionIndex] = useState(-1);
-    const [currentQuestion, setCurrentQuestion] = useState<IQuestion>();
 
     const socketInitializer = useCallback(async () => {
         await fetch("/api/room");
@@ -91,16 +89,8 @@ export default function QuizRoomComponent({ user, quiz }: {
         const startConfirmed = confirm('Are you sure to start the quiz?');
         if (!startConfirmed) return;
 
-        socket.emit('start:quiz', quizRoom.room, (error: string, data: {
-            currentQuestionIndex: number;
-            currentQuestion: IQuestion;
-            quizRoom: QuizRoom;
-        }) => {
-            if (data) {
-                setQuizRoom(data.quizRoom);
-                setCurrentQuestionIndex(data.currentQuestionIndex);
-                setCurrentQuestion(data.currentQuestion);
-            }
+        socket.emit('start:quiz', quizRoom.room, (error: string, data: QuizRoom) => {
+            if (data) { setQuizRoom(data); }
             if (error) console.error(error);
         });
     };
@@ -186,9 +176,9 @@ export default function QuizRoomComponent({ user, quiz }: {
             </Stack>}
 
             {quizRoom?.isStarted && <Paper shadow='md' mt='md' p='md' withBorder radius={10}>
-                <Badge> {currentQuestionIndex + 1} of {quizRoom.quiz.questions.length} </Badge>
+                <Badge> {quizRoom?.currentIndexOfQuestion + 1} of {quizRoom.quiz.questions.length} </Badge>
                 <Stack align='center'>
-                    <Title> {currentQuestion?.question} </Title>
+                    <Title> {quizRoom?.currentQuestion?.question} </Title>
                 </Stack>
             </Paper>}
         </Container>

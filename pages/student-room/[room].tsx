@@ -5,7 +5,7 @@ import {
 } from '@mantine/core';
 import connectToDatabase from 'db/connectToDatabase';
 import { IUser } from 'entities/user.entity';
-import { ClientSocket, participant } from 'lib/socket/types';
+import { ClientSocket, participant, QuizRoom } from 'lib/socket/types';
 import { GetServerSideProps } from 'next';
 import { getToken } from 'next-auth/jwt';
 import Head from 'next/head';
@@ -19,9 +19,9 @@ export default function StudentRoom({ user }: { user: IUser; }) {
     const router = useRouter();
     const { room } = router.query;
     const [connected, setConnected] = useState(false);
-    const [quizData, setQuizData] = useState<participant>();
-
     const [started, setStarted] = useState(false);
+    const [quizData, setQuizData] = useState<participant>();
+    const [quizRoom, setQuizRoom] = useState<QuizRoom>();
 
     const socketInitializer = useCallback(async () => {
         await fetch("/api/room");
@@ -38,7 +38,7 @@ export default function StudentRoom({ user }: { user: IUser; }) {
             alert('This room has been destroyed by the host. You will be redirected to the home page');
             router.replace('/');
         });
-        socket.on('quiz:started', () => {
+        socket.on('quiz:started', (payload: QuizRoom) => {
             setStarted(true);
         });
 
