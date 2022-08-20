@@ -73,13 +73,13 @@ export default function SocketHandler(req: NextApiRequest, res: SocketRes) {
 
         socket.on('join:room', (
             payload: joinRoomPayload,
-            callback: (err: Error | null, data: any) => void
+            callback: (err: any | null, data: any) => void
         ) => {
             const { room, user } = payload;
 
             let quizRoom = quizRooms.get(room);
             if (!quizRoom) {
-                callback(new Error('Room does not exist'), null);
+                callback('Room does not exist', null);
                 return;
             }
             // dont join the room if user is not a student

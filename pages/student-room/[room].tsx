@@ -33,8 +33,12 @@ export default function StudentRoom({ user }: { user: IUser; }) {
         });
 
         if (typeof room !== 'string') return;
-        socket.emit('join:room', { room, user }, (err: any, data: QuizRoom) => {
-            if (err) console.error(err.message);
+        socket.emit('join:room', { room, user }, (error: string, data: QuizRoom) => {
+            if (error) {
+                console.error(error);
+                alert('This room is not yet created. Please check the code or ask your professor');
+                router.replace('/');
+            }
             if (data) {
                 setConnected(true);
                 console.log(data);
