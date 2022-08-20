@@ -36,6 +36,9 @@ export default function QuizRoomComponent({ user, quiz }: {
     const [quizRoom, setQuizRoom] = useState<QuizRoom>();
     const countDown = useCountDown({
         onCountDownEnd: () => { },
+        onCounChange: (count: number) => {
+            console.log(count);
+        },
         seconds: quizRoom?.quiz.default_question_timer || 5
     });
 

@@ -14,6 +14,7 @@ let _seconds: number;
 
 export default function useCountDown(props: {
     onCountDownEnd: Function;
+    onCounChange: (count: number) => void;
     seconds: number;
 }) {
     const [started, setStarted] = useState(false);
@@ -33,6 +34,7 @@ export default function useCountDown(props: {
             props.onCountDownEnd();
             setFinished(true);
         }
+        props.onCounChange(count);
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [count]);
 
