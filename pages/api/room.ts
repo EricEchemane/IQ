@@ -71,10 +71,7 @@ export default function SocketHandler(req: NextApiRequest, res: SocketRes) {
             callback(null, quizRoom);
         });
 
-        socket.on('join:room', (
-            payload: joinRoomPayload,
-            callback: (err: any | null, data: any) => void
-        ) => {
+        socket.on('join:room', (payload: joinRoomPayload, callback: (err: any | null, data: any) => void) => {
             const { room, user } = payload;
 
             let quizRoom = quizRooms.get(room);
