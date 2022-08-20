@@ -21,6 +21,7 @@ export default function StudentRoom({ user }: { user: IUser; }) {
     const [connected, setConnected] = useState(false);
     const [quizData, setQuizData] = useState<participant>();
     const [quizRoom, setQuizRoom] = useState<QuizRoom>();
+    const [currentTimer, setCurrentTimer] = useState(0);
 
     const socketInitializer = useCallback(async () => {
         await fetch("/api/room");
@@ -46,7 +47,7 @@ export default function StudentRoom({ user }: { user: IUser; }) {
             alert('The host stopped the quiz');
         });
         socket.on('timer:changed', count => {
-            console.log(count);
+            setCurrentTimer(count);
         });
 
         if (typeof room === 'string') {
@@ -71,6 +72,12 @@ export default function StudentRoom({ user }: { user: IUser; }) {
         return () => {
             socket.off('connect');
             socket.off('disconnect');
+            socket.off('participant:joined');
+            socket.off('participant:leave');
+            socket.off('quiz:started');
+            socket.off('quiz:stopped');
+            socket.off('room:destroyed');
+            socket.off('timer:changed');
         };
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
