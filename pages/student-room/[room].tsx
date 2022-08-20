@@ -17,6 +17,8 @@ export default function StudentRoom({ user }: { user: IUser; }) {
     const [connected, setConnected] = useState(false);
     const [quizData, setQuizData] = useState<participant>();
 
+    const [started, setStarted] = useState(false);
+
     const socketInitializer = useCallback(async () => {
         await fetch("/api/room");
         socket = io();
@@ -99,7 +101,7 @@ export default function StudentRoom({ user }: { user: IUser; }) {
         </Paper>
 
         <Container p='sm'>
-            <Stack align='center'>
+            {!started && <Stack align='center'>
                 <Text
                     mt='4rem'
                     style={{ fontSize: '2.5rem' }}
@@ -108,7 +110,7 @@ export default function StudentRoom({ user }: { user: IUser; }) {
                 <Badge> Room {room} </Badge>
                 {connected && <Text color='dimmed' mt='xl'> The host will start the quiz soon </Text>}
                 <Loader variant='dots' />
-            </Stack>
+            </Stack>}
         </Container>
     </>;
 }
