@@ -84,6 +84,8 @@ export default function QuizRoomComponent({ user, quiz }: {
     };
     const startQuiz = () => {
         if (!quizRoom) return;
+        const startConfirmed = confirm('Are you sure to start the quiz?');
+        if (!startConfirmed) return;
         socket.emit('start:quiz', quizRoom.room, (error: string, data: QuizRoom) => {
             if (data) {
                 setQuizRoom(data);
