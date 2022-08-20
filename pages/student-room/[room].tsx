@@ -1,4 +1,4 @@
-import { Avatar, Button, Container, Divider, Group, Indicator, Paper, Stack, Text, Title } from '@mantine/core';
+import { Avatar, Badge, Button, Container, Divider, Group, Indicator, Loader, Paper, Stack, Text, Title } from '@mantine/core';
 import connectToDatabase from 'db/connectToDatabase';
 import { IUser } from 'entities/user.entity';
 import { ClientSocket, QuizRoom } from 'lib/socket/types';
@@ -94,6 +94,19 @@ export default function StudentRoom({ user }: { user: IUser; }) {
                 </Group>
             </Container>
         </Paper>
+
+        <Container p='sm'>
+            <Stack align='center'>
+                <Text
+                    mt='4rem'
+                    style={{ fontSize: '2.5rem' }}
+                    color={connected ? 'green' : 'yellow'}
+                    weight='bold'> {connected ? "You're in" : "Connecting to"} </Text>
+                <Badge> Room {room} </Badge>
+                {connected && <Text color='dimmed' mt='xl'> The host will start the quiz soon </Text>}
+                <Loader variant='dots' />
+            </Stack>
+        </Container>
     </>;
 }
 
