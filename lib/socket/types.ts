@@ -23,6 +23,7 @@ export type joinRoomPayload = {
 
 export interface ServerEvents {
     "participant:joined": (quizRoom: QuizRoom) => void;
+    "participant:leave": (quizRoom: QuizRoom) => void;
 }
 
 export interface ClientEvents {
@@ -82,5 +83,9 @@ export class QuizRoom {
 
     getParticipant(socketId: string): participant | undefined {
         return this.participants.find(p => p.socketId === socketId);
+    }
+
+    removeParticipant(socketId: string) {
+        this.participants = this.participants.filter(p => p.socketId !== socketId);
     }
 }

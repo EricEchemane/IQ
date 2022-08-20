@@ -37,11 +37,11 @@ export default function SocketHandler(req: NextApiRequest, res: SocketRes) {
 
             if (userRoom.type === 'professor') {
                 // delete quizRoom
-                quizRooms.delete(socket.id);
+                quizRooms.delete(userRoom.room);
                 usersParticipatedQuizRooms.delete(socket.id);
             }
             else {
-                // delete participant from thq quizRoom
+                quizRooms.get(userRoom.room)?.removeParticipant(socket.id);
                 usersParticipatedQuizRooms.delete(socket.id);
             }
         });
