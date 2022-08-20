@@ -38,8 +38,9 @@ export default function StudentRoom({ user }: { user: IUser; }) {
             alert('This room has been destroyed by the host. You will be redirected to the home page');
             router.replace('/');
         });
-        socket.on('quiz:started', (payload: QuizRoom) => {
+        socket.on('quiz:started', (quizRoom: QuizRoom) => {
             setStarted(true);
+            setQuizRoom(quizRoom);
         });
 
         if (typeof room === 'string') {
