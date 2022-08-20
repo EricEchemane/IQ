@@ -113,7 +113,11 @@ export default function SocketHandler(req: NextApiRequest, res: SocketRes) {
 
             quizRoom.start();
             socket.to(room).emit('quiz:started', quizRoom);
-            callback(null, quizRoom);
+            callback(null, {
+                currentQuestionIndex: quizRoom.currentIndexOfQuestion,
+                currentQuestion: quizRoom.currentQuestion,
+                quizRoom: quizRoom
+            });
         });
     });
 

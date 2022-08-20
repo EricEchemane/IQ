@@ -1,13 +1,15 @@
 import {
-    Avatar, Button, Container,
+    Avatar, Badge, Button, Container,
     CopyButton, Divider, Group,
     Loader, Paper, Stack, Text, Title
 } from '@mantine/core';
 import { showNotification } from '@mantine/notifications';
 import { IconClipboard, IconClipboardCheck, IconRocket } from '@tabler/icons';
 import connectToDatabase from 'db/connectToDatabase';
+import { IQuestion } from 'entities/question.entity';
 import { IQuiz } from 'entities/quiz.entity';
 import { IUser } from 'entities/user.entity';
+import useCountDown from 'lib/hooks/useCountDown';
 import { parseQuizId } from 'lib/quiz_helpers';
 import { ClientSocket, QuizRoom } from 'lib/socket/types';
 import { GetServerSideProps } from 'next';
@@ -32,6 +34,8 @@ export default function QuizRoomComponent({ user, quiz }: {
     });
     const [roomIsCreated, setRoomIsCreated] = useState(false);
     const [quizRoom, setQuizRoom] = useState<QuizRoom>();
+    const [currentQuestionIndex, setCurrentQuestionIndex] = useState(-1);
+    const [currentQuestion, setCurrentQuestion] = useState<IQuestion>();
 
     const socketInitializer = useCallback(async () => {
         await fetch("/api/room");
@@ -86,9 +90,16 @@ export default function QuizRoomComponent({ user, quiz }: {
         if (!quizRoom) return;
         const startConfirmed = confirm('Are you sure to start the quiz?');
         if (!startConfirmed) return;
-        socket.emit('start:quiz', quizRoom.room, (error: string, data: QuizRoom) => {
+
+        socket.emit('start:quiz', quizRoom.room, (error: string, data: {
+            currentQuestionIndex: number;
+            currentQuestion: IQuestion;
+            quizRoom: QuizRoom;
+        }) => {
             if (data) {
-                setQuizRoom(data);
+                setQuizRoom(data.quizRoom);
+                setCurrentQuestionIndex(data.currentQuestionIndex);
+                setCurrentQuestion(data.currentQuestion);
             }
             if (error) console.error(error);
         });
@@ -173,6 +184,13 @@ export default function QuizRoomComponent({ user, quiz }: {
                     variant='light'
                     mt='xl'> Cancel and return home </Button>
             </Stack>}
+
+            {quizRoom?.isStarted && <Paper shadow='md' mt='md' p='md' withBorder radius={10}>
+                <Badge> {currentQuestionIndex + 1} of {quizRoom.quiz.questions.length} </Badge>
+                <Stack align='center'>
+                    <Title> {currentQuestion?.question} </Title>
+                </Stack>
+            </Paper>}
         </Container>
     </>;
 }

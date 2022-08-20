@@ -1,5 +1,4 @@
-import { ProfessorAction } from './../../state_providers/professor/index';
-import { IQuizParticipant } from "entities/quiz-participant.entity";
+import { IQuestion } from 'entities/question.entity';
 import { IQuiz } from "entities/quiz.entity";
 import { IUser } from "entities/user.entity";
 import { NextApiResponse } from "next";
@@ -67,6 +66,7 @@ export class QuizRoom {
     isStarted: boolean = false;
     isEnded: boolean = false;
     currentIndexOfQuestion: number = -1; // -1 means not yet started
+    currentQuestion: IQuestion | undefined;
 
     constructor(
         room: string,
@@ -80,6 +80,8 @@ export class QuizRoom {
 
     start() {
         this.isStarted = true;
+        this.currentIndexOfQuestion = 0;
+        this.currentQuestion = this.quiz.questions[0];
     }
 
     participate(socketId: string, user: IUser) {
