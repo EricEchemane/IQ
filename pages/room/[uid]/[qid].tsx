@@ -103,6 +103,8 @@ export default function QuizRoomComponent({ user, quiz }: {
     };
     const stopQuiz = () => {
         if (!quizRoom) return;
+        const confirmStop = confirm('Are you sure you want to stop the running quiz?');
+        if (!confirmStop) return;
         socket.emit('quiz:stop', quizRoom.room, (error: string, data: QuizRoom) => {
             if (data) { setQuizRoom(data); }
             if (error) console.error(error);
