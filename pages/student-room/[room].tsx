@@ -45,6 +45,7 @@ export default function StudentRoom({ user }: { user: IUser; }) {
         socket.on('quiz:stopped', (quizRoom: QuizRoom) => {
             setStarted(false);
             setQuizRoom(quizRoom);
+            alert('The host stopped the quiz');
         });
 
         if (typeof room === 'string') {
