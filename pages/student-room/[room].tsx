@@ -1,7 +1,11 @@
-import { Avatar, Badge, Button, Container, Divider, Group, Indicator, Loader, Paper, Stack, Text, Title } from '@mantine/core';
+import {
+    Avatar, Badge, Button, Container,
+    Divider, Group, Indicator, Loader,
+    Paper, Stack, Text, Title
+} from '@mantine/core';
 import connectToDatabase from 'db/connectToDatabase';
 import { IUser } from 'entities/user.entity';
-import { ClientSocket, participant, QuizRoom } from 'lib/socket/types';
+import { ClientSocket, participant } from 'lib/socket/types';
 import { GetServerSideProps } from 'next';
 import { getToken } from 'next-auth/jwt';
 import Head from 'next/head';
@@ -33,6 +37,9 @@ export default function StudentRoom({ user }: { user: IUser; }) {
             if (_room !== room) return;
             alert('This room has been destroyed by the host. You will be redirected to the home page');
             router.replace('/');
+        });
+        socket.on('quiz:started', () => {
+            setStarted(true);
         });
 
         if (typeof room === 'string') {

@@ -26,6 +26,7 @@ export interface ServerEvents {
     "participant:joined": (quizRoom: QuizRoom) => void;
     "participant:leave": (quizRoom: QuizRoom) => void;
     "room:destroyed": (room: string) => void;
+    "quiz:started": (quizRoom: QuizRoom) => void;
 }
 
 export interface ClientEvents {
@@ -38,6 +39,10 @@ export interface ClientEvents {
         callback: (err: any, data: any) => void
     ) => void;
     "destroy:room": (
+        room: string,
+        callback: (err: any, data: any) => void
+    ) => void;
+    "start:quiz": (
         room: string,
         callback: (err: any, data: any) => void
     ) => void;
@@ -71,6 +76,10 @@ export class QuizRoom {
         this.room = room;
         this.user = user;
         this.quiz = quiz;
+    }
+
+    start() {
+        this.isStarted = true;
     }
 
     participate(socketId: string, user: IUser) {

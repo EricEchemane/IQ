@@ -82,6 +82,15 @@ export default function QuizRoomComponent({ user, quiz }: {
                 else console.error(err.message);
             });
     };
+    const startQuiz = () => {
+        if (!quizRoom) return;
+        socket.emit('start:quiz', quizRoom.room, (error: string, data: QuizRoom) => {
+            if (data) {
+                setQuizRoom(data);
+            }
+            if (error) console.error(error);
+        });
+    };
 
     useEffect(() => {
         socketInitializer();
@@ -123,9 +132,7 @@ export default function QuizRoomComponent({ user, quiz }: {
         <Container p='md'>
             <Group align={'center'} position='apart' mt='sm'>
                 <Stack spacing={6}>
-                    <Title order={3}>
-                        {quiz.title}
-                    </Title>
+                    <Title order={3}> {quiz.title} </Title>
                     <Group>
                         <Text>
                             {quizRoom?.participants.length}
@@ -146,12 +153,13 @@ export default function QuizRoomComponent({ user, quiz }: {
                 </Stack>
 
                 <Button
+                    onClick={startQuiz}
                     disabled={quizRoom?.participants.length === 0}
                     rightIcon={<IconRocket strokeWidth={1.5} />}
                     size='md'> Start </Button>
             </Group>
 
-            <Stack align='center' p='md' mt='3rem'>
+            {!quizRoom?.isStarted && <Stack align='center' p='md' mt='3rem'>
                 <Loader size="xl" variant="bars" />
                 <Text
                     align='center'
@@ -162,7 +170,7 @@ export default function QuizRoomComponent({ user, quiz }: {
                     onClick={cancelQuiz}
                     variant='light'
                     mt='xl'> Cancel and return home </Button>
-            </Stack>
+            </Stack>}
         </Container>
     </>;
 }

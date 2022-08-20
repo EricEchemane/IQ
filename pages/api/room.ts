@@ -106,6 +106,15 @@ export default function SocketHandler(req: NextApiRequest, res: SocketRes) {
             socket.to(room).emit('room:destroyed', room);
             callback(null, quizRoom);
         });
+
+        socket.on('start:quiz', (room: string, callback: Function) => {
+            const quizRoom = quizRooms.get(room);
+            if (!quizRoom) return;
+
+            quizRoom.start();
+            socket.to(room).emit('quiz:started', quizRoom);
+            callback(null, quizRoom);
+        });
     });
 
     res.end();
