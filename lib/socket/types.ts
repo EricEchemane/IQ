@@ -85,7 +85,7 @@ export class QuizRoom {
         return this.participants.find(p => p.socketId === socketId);
     }
 
-    removeParticipant(socketId: string) {
-        this.participants = this.participants.filter(p => p.socketId !== socketId);
+    removeParticipant(email: string) {
+        this.participants = this.participants.filter(p => p.student.email !== email);
     }
 }

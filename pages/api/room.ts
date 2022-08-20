@@ -13,6 +13,7 @@ const quizRooms = new Map<string, QuizRoom>();
  */
 const usersParticipatedQuizRooms = new Map<string, {
     room: string;
+    email: string;
     type: 'professor' | 'student';
 }>();
 
@@ -41,8 +42,11 @@ export default function SocketHandler(req: NextApiRequest, res: SocketRes) {
                 usersParticipatedQuizRooms.delete(socket.id);
             }
             else {
-                quizRooms.get(userRoom.room)?.removeParticipant(socket.id);
+                const quizRoom = quizRooms.get(userRoom.room);
+                if (!quizRoom) return;
+                quizRoom.removeParticipant(userRoom.email);
                 usersParticipatedQuizRooms.delete(socket.id);
+                socket.in(userRoom.room).emit('participant:leave', quizRoom);
             }
         });
 
@@ -66,7 +70,7 @@ export default function SocketHandler(req: NextApiRequest, res: SocketRes) {
             }
 
             socket.join(room);
-            usersParticipatedQuizRooms.set(socket.id, { room, type: 'professor' });
+            usersParticipatedQuizRooms.set(socket.id, { room, type: 'professor', email: user.email });
             console.log(`${socket.id} joins the room ${room}`);
 
             callback(null, quizRoom);
@@ -92,7 +96,7 @@ export default function SocketHandler(req: NextApiRequest, res: SocketRes) {
             quizRoom.participate(socket.id, user);
 
             socket.join(room);
-            usersParticipatedQuizRooms.set(socket.id, { room, type: 'student' });
+            usersParticipatedQuizRooms.set(socket.id, { room, type: 'student', email: user.email });
             socket.to(room).emit('participant:joined', quizRoom);
 
             console.log(`${socket.id} joins the room ${room}`);

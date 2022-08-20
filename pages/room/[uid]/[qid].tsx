@@ -45,6 +45,10 @@ export default function QuizRoomComponent({ user, quiz }: {
             setQuizRoom(newQuizRoom);
             console.log(newQuizRoom);
         });
+        socket.on('participant:leave', (newQuizRoom: QuizRoom) => {
+            setQuizRoom(newQuizRoom);
+            console.log(newQuizRoom);
+        });
 
         socket.emit('create:room', {
             room: parseQuizId(quiz._id),
