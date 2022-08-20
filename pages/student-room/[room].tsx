@@ -23,9 +23,13 @@ export default function StudentRoom({ user }: { user: IUser; }) {
         socket.on('connect', () => {
             console.info(`Client connect with id`, socket.id);
         });
-
         socket.on('disconnect', () => {
             console.info(socket.id, `disconnected`);
+        });
+        socket.on('room:destroyed', (_room: string) => {
+            if (_room !== room) return;
+            alert('This room has been destroyed by the host. You will be redirected to the home page');
+            router.replace('/');
         });
 
         if (typeof room !== 'string') return;
@@ -41,7 +45,8 @@ export default function StudentRoom({ user }: { user: IUser; }) {
             socket.off('connect');
             socket.off('disconnect');
         };
-    }, [room, user]);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
     useEffect(() => {
         socketInitializer();

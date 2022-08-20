@@ -97,6 +97,18 @@ export default function SocketHandler(req: NextApiRequest, res: SocketRes) {
             console.log(`${socket.id} joins the room ${room}`);
             callback(null, quizRoom.getParticipant(socket.id));
         });
+
+        socket.on('destroy:room', (
+            room: string,
+            callback: (err: Error | null, data: any) => void
+        ) => {
+            const quizRoom = quizRooms.get(room);
+            quizRooms.delete(room);
+            usersParticipatedQuizRooms.delete(socket.id);
+            socket.leave(room);
+            socket.to(room).emit('room:destroyed', room);
+            callback(null, quizRoom);
+        });
     });
 
     res.end();

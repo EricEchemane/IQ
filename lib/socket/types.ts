@@ -1,3 +1,4 @@
+import { ProfessorAction } from './../../state_providers/professor/index';
 import { IQuizParticipant } from "entities/quiz-participant.entity";
 import { IQuiz } from "entities/quiz.entity";
 import { IUser } from "entities/user.entity";
@@ -24,6 +25,7 @@ export type joinRoomPayload = {
 export interface ServerEvents {
     "participant:joined": (quizRoom: QuizRoom) => void;
     "participant:leave": (quizRoom: QuizRoom) => void;
+    "room:destroyed": (room: string) => void;
 }
 
 export interface ClientEvents {
@@ -33,6 +35,10 @@ export interface ClientEvents {
     ) => void;
     "join:room": (
         payload: joinRoomPayload,
+        callback: (err: any, data: any) => void
+    ) => void;
+    "destroy:room": (
+        room: string,
         callback: (err: any, data: any) => void
     ) => void;
 }

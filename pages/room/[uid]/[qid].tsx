@@ -75,8 +75,12 @@ export default function QuizRoomComponent({ user, quiz }: {
     }, []);
 
     const cancelQuiz = () => {
-        socket.disconnect();
-        router.replace('/');
+        if (!quizRoom) return;
+        socket.emit('destroy:room', quizRoom.room,
+            (err: any, data: any) => {
+                if (data) router.replace('/');
+                else console.error(err.message);
+            });
     };
 
     useEffect(() => {
