@@ -34,6 +34,10 @@ export default function QuizRoomComponent({ user, quiz }: {
     });
     const [roomIsCreated, setRoomIsCreated] = useState(false);
     const [quizRoom, setQuizRoom] = useState<QuizRoom>();
+    const countDown = useCountDown({
+        onCountDownEnd: () => { },
+        seconds: quizRoom?.quiz.default_question_timer || 5
+    });
 
     const socketInitializer = useCallback(async () => {
         await fetch("/api/room");
@@ -90,7 +94,10 @@ export default function QuizRoomComponent({ user, quiz }: {
         if (!startConfirmed) return;
 
         socket.emit('start:quiz', quizRoom.room, (error: string, data: QuizRoom) => {
-            if (data) { setQuizRoom(data); }
+            if (data) {
+                setQuizRoom(data);
+                countDown.start();
+            }
             if (error) console.error(error);
         });
     };
@@ -179,9 +186,11 @@ export default function QuizRoomComponent({ user, quiz }: {
                 <Badge> {quizRoom?.currentIndexOfQuestion + 1} of {quizRoom.quiz.questions.length} </Badge>
                 <Stack align='center'>
                     <Title> {quizRoom?.currentQuestion?.question} </Title>
+                    <Title color='dimmed'> {countDown.currentCount} </Title>
                 </Stack>
                 <Group position='right' mt='xl'>
                     <Button
+                        disabled={!countDown.finished}
                         variant='subtle'
                         rightIcon={<IconArrowRight strokeWidth={1.5} />}
                         size='md'> Next question </Button>
