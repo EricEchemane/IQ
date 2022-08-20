@@ -3,6 +3,7 @@ import {
     CopyButton, Divider, Group,
     Loader, Paper, Stack, Text, Title
 } from '@mantine/core';
+import { showNotification } from '@mantine/notifications';
 import { IconClipboard, IconClipboardCheck, IconRocket } from '@tabler/icons';
 import connectToDatabase from 'db/connectToDatabase';
 import { IQuiz } from 'entities/quiz.entity';
@@ -43,7 +44,11 @@ export default function QuizRoomComponent({ user, quiz }: {
         });
         socket.on('participant:joined', (newQuizRoom: QuizRoom) => {
             setQuizRoom(newQuizRoom);
-            console.log(newQuizRoom);
+            const newParticipant = newQuizRoom.participants[newQuizRoom.participants.length - 1];
+            showNotification({
+                id: newParticipant.student.email,
+                message: `${newParticipant.student.name} joined`,
+            });
         });
         socket.on('participant:leave', (newQuizRoom: QuizRoom) => {
             setQuizRoom(newQuizRoom);
@@ -66,7 +71,8 @@ export default function QuizRoomComponent({ user, quiz }: {
             socket.off('connect');
             socket.off('disconnect');
         };
-    }, [quiz, user]);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
     const cancelQuiz = () => {
         socket.disconnect();
