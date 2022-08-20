@@ -5,6 +5,17 @@ import { createRoomPayload, ServerSocket, SocketRes } from "lib/socket/types";
 
 const quizRooms = new Map<string, QuizRoom>();
 
+/**
+ * Map<socketId, {
+ *  room: string;
+ *  type: 'professor' | 'student';
+ * }>
+ */
+const usersParticipatedQuizRooms = new Map<string, {
+    room: string;
+    type: 'professor' | 'student';
+}>();
+
 export default function SocketHandler(req: NextApiRequest, res: SocketRes) {
     // It means that socket server was already initialised
     if (res.socket.server.io) {
@@ -43,6 +54,7 @@ export default function SocketHandler(req: NextApiRequest, res: SocketRes) {
             }
 
             socket.join(room);
+            usersParticipatedQuizRooms.set(socket.id, { room, type: 'professor' });
             console.log(`${socket.id} joins the room ${room}`);
 
             callback(null, quizRoom);
@@ -68,6 +80,7 @@ export default function SocketHandler(req: NextApiRequest, res: SocketRes) {
             quizRoom.participate(socket.id, user);
 
             socket.join(room);
+            usersParticipatedQuizRooms.set(socket.id, { room, type: 'student' });
             socket.to(room).emit('participant:joined', quizRoom);
 
             console.log(`${socket.id} joins the room ${room}`);
