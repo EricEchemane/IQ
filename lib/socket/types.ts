@@ -81,7 +81,6 @@ export class QuizRoom {
     }
 
     getParticipant(socketId: string): participant | undefined {
-
         return this.participants.find(p => p.socketId === socketId);
     }
 }

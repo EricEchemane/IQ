@@ -32,6 +32,18 @@ export default function SocketHandler(req: NextApiRequest, res: SocketRes) {
 
         socket.on('disconnect', () => {
             console.log(`${socket.id} disconnected from the server`);
+            const userRoom = usersParticipatedQuizRooms.get(socket.id);
+            if (!userRoom) return;
+
+            if (userRoom.type === 'professor') {
+                // delete quizRoom
+                quizRooms.delete(socket.id);
+                usersParticipatedQuizRooms.delete(socket.id);
+            }
+            else {
+                // delete participant from thq quizRoom
+                usersParticipatedQuizRooms.delete(socket.id);
+            }
         });
 
         socket.on('create:room', (
