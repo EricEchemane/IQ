@@ -20,12 +20,17 @@ export type joinRoomPayload = {
     room: string;
     user: IUser;
 };
+export type quizStartedPayload = {
+    currentQuestionIndex: number;
+    currentQuestion: IQuestion;
+    quizRoom: QuizRoom;
+};
 
 export interface ServerEvents {
     "participant:joined": (quizRoom: QuizRoom) => void;
     "participant:leave": (quizRoom: QuizRoom) => void;
     "room:destroyed": (room: string) => void;
-    "quiz:started": (quizRoom: QuizRoom) => void;
+    "quiz:started": (payload: quizStartedPayload) => void;
 }
 
 export interface ClientEvents {

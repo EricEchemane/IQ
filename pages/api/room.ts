@@ -1,4 +1,4 @@
-import { joinRoomPayload, QuizRoom } from 'lib/socket/types';
+import { joinRoomPayload, QuizRoom, quizStartedPayload } from 'lib/socket/types';
 import { Server } from "socket.io";
 import type { NextApiRequest } from 'next';
 import { createRoomPayload, ServerSocket, SocketRes } from "lib/socket/types";
@@ -112,12 +112,15 @@ export default function SocketHandler(req: NextApiRequest, res: SocketRes) {
             if (!quizRoom) return;
 
             quizRoom.start();
-            socket.to(room).emit('quiz:started', quizRoom);
-            callback(null, {
+            if (!quizRoom.currentQuestion) return;
+
+            const payload: quizStartedPayload = {
                 currentQuestionIndex: quizRoom.currentIndexOfQuestion,
                 currentQuestion: quizRoom.currentQuestion,
                 quizRoom: quizRoom
-            });
+            };
+            socket.to(room).emit('quiz:started', payload);
+            callback(null, payload);
         });
     });
 
