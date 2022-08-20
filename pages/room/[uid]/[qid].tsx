@@ -101,6 +101,13 @@ export default function QuizRoomComponent({ user, quiz }: {
             if (error) console.error(error);
         });
     };
+    const stopQuiz = () => {
+        if (!quizRoom) return;
+        socket.emit('quiz:stop', quizRoom.room, (error: string, data: QuizRoom) => {
+            if (data) { setQuizRoom(data); }
+            if (error) console.error(error);
+        });
+    };
 
     useEffect(() => {
         socketInitializer();
@@ -167,6 +174,11 @@ export default function QuizRoomComponent({ user, quiz }: {
                     disabled={quizRoom?.participants.length === 0}
                     rightIcon={<IconRocket strokeWidth={1.5} />}
                     size='md'> Start </Button>}
+                {quizRoom?.isStarted && <Button
+                    onClick={stopQuiz}
+                    variant='light'
+                    color='red'
+                    size='md'> Stop the quiz </Button>}
             </Group>
 
             {!quizRoom?.isStarted && <Stack align='center' p='md' mt='3rem'>

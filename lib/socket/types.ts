@@ -26,6 +26,7 @@ export interface ServerEvents {
     "participant:leave": (quizRoom: QuizRoom) => void;
     "room:destroyed": (room: string) => void;
     "quiz:started": (quizRoom: QuizRoom) => void;
+    "quiz:stopped": (quizRoom: QuizRoom) => void;
 }
 
 export interface ClientEvents {
@@ -42,6 +43,10 @@ export interface ClientEvents {
         callback: (err: any, data: any) => void
     ) => void;
     "start:quiz": (
+        room: string,
+        callback: (err: any, data: any) => void
+    ) => void;
+    "quiz:stop": (
         room: string,
         callback: (err: any, data: any) => void
     ) => void;
@@ -64,6 +69,7 @@ export class QuizRoom {
     quiz: IQuiz;
     participants: participant[] = [];
     isStarted: boolean = false;
+    stopped: boolean = false;
     isEnded: boolean = false;
     currentIndexOfQuestion: number = -1; // -1 means not yet started
     currentQuestion: IQuestion | undefined;
@@ -82,6 +88,10 @@ export class QuizRoom {
         this.isStarted = true;
         this.currentIndexOfQuestion = 0;
         this.currentQuestion = this.quiz.questions[0];
+    }
+    stop() {
+        this.isStarted = false;
+        this.stopped = true;
     }
 
     participate(socketId: string, user: IUser) {

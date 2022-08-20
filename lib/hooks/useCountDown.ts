@@ -31,7 +31,6 @@ export default function useCountDown(props: {
         if (count === 0) {
             clearCountdown();
             props.onCountDownEnd();
-            setCount(props.seconds);
             setFinished(true);
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
