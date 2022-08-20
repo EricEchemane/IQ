@@ -1,7 +1,7 @@
 import { Avatar, Badge, Button, Container, Divider, Group, Indicator, Loader, Paper, Stack, Text, Title } from '@mantine/core';
 import connectToDatabase from 'db/connectToDatabase';
 import { IUser } from 'entities/user.entity';
-import { ClientSocket, QuizRoom } from 'lib/socket/types';
+import { ClientSocket, participant, QuizRoom } from 'lib/socket/types';
 import { GetServerSideProps } from 'next';
 import { getToken } from 'next-auth/jwt';
 import Head from 'next/head';
@@ -15,6 +15,7 @@ export default function StudentRoom({ user }: { user: IUser; }) {
     const router = useRouter();
     const { room } = router.query;
     const [connected, setConnected] = useState(false);
+    const [quizData, setQuizData] = useState<participant>();
 
     const socketInitializer = useCallback(async () => {
         await fetch("/api/room");

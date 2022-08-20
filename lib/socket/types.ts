@@ -46,7 +46,7 @@ export interface ClientEvents {
 export type ClientSocket = CSocket<ServerEvents, ClientEvents>;
 export type ServerSocket = SSocket<ClientEvents, ServerEvents>;
 
-type participant = {
+export type participant = {
     socketId: string;
     answers: string[];
     student: IUser;
