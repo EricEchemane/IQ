@@ -16,6 +16,9 @@ export default function useCountDown(props: {
     onCountDownEnd: Function;
     seconds: number;
 }) {
+    const [started, setStarted] = useState(false);
+    const [finished, setFinished] = useState(false);
+
     useEffect(() => {
         _seconds = props.seconds;
         validateCount(props.seconds);
@@ -29,17 +32,19 @@ export default function useCountDown(props: {
             clearCountdown();
             props.onCountDownEnd();
             setCount(props.seconds);
+            setFinished(true);
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [count]);
 
     const start = useCallback((seconds: number = props.seconds) => {
         setCount(seconds);
+        setStarted(true);
         interval = setInterval(() => {
             setCount(c => c - 1);
         }, 1000);
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-    return { start, count };
+    return { start, currentCount: count, started, finished };
 }
