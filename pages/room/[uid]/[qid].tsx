@@ -34,6 +34,7 @@ export default function QuizRoomComponent({ user, quiz }: {
     });
     const [roomIsCreated, setRoomIsCreated] = useState(false);
     const [quizRoom, setQuizRoom] = useState<QuizRoom>();
+    const [noMoreQuestion, setNoMoreQuestion] = useState(false);
     const countDown = useCountDown({
         onCountDownEnd: () => { },
         onCounChange: (count: number) => {
@@ -112,6 +113,22 @@ export default function QuizRoomComponent({ user, quiz }: {
         socket.emit('quiz:stop', quizRoom.room, (error: string, data: QuizRoom) => {
             if (data) { setQuizRoom(data); }
             if (error) console.error(error);
+        });
+    };
+    const nextQuestion = () => {
+        if (!quizRoom) return;
+        socket.emit('next:question', quizRoom.room, (error: string, data: QuizRoom) => {
+            if (error) {
+                console.log(error);
+                return;
+            }
+            if (data) {
+                if (data.currentIndexOfQuestion + 1 === data.quiz.questions.length) {
+                    setNoMoreQuestion(true);
+                }
+                setQuizRoom(data);
+                countDown.start();
+            }
         });
     };
 
@@ -207,11 +224,12 @@ export default function QuizRoomComponent({ user, quiz }: {
                     <Title color='dimmed'> {countDown.currentCount} </Title>
                 </Stack>
                 <Group position='right' mt='xl'>
-                    <Button
+                    {!noMoreQuestion && <Button
+                        onClick={nextQuestion}
                         disabled={!countDown.finished}
                         variant='subtle'
                         rightIcon={<IconArrowRight strokeWidth={1.5} />}
-                        size='md'> Next question </Button>
+                        size='md'> Next question </Button>}
                 </Group>
             </Paper>}
         </Container>

@@ -133,6 +133,20 @@ export default function SocketHandler(req: NextApiRequest, res: SocketRes) {
         socket.on('timer:change', (count: number, room: string) => {
             socket.to(room).emit('timer:changed', count);
         });
+
+        socket.on('next:question', (room: string, callback: Function) => {
+            const quizRoom = quizRooms.get(room);
+            if (!quizRoom) return;
+
+            try {
+                quizRoom.next();
+
+                socket.to(room).emit('question:next', quizRoom);
+                callback(null, quizRoom);
+            } catch (error: any) {
+                callback(error.message, null);
+            }
+        });
     });
 
     res.end();

@@ -28,6 +28,7 @@ export interface ServerEvents {
     "quiz:started": (quizRoom: QuizRoom) => void;
     "quiz:stopped": (quizRoom: QuizRoom) => void;
     "timer:changed": (count: number) => void;
+    "question:next": (quizRoom: QuizRoom) => void;
 }
 
 export interface ClientEvents {
@@ -52,6 +53,10 @@ export interface ClientEvents {
         callback: (err: any, data: any) => void
     ) => void;
     "timer:change": (count: number, room: string) => void;
+    "next:question": (
+        room: string,
+        callback: (err: any, data: QuizRoom) => void
+    ) => void;
 }
 
 export type ClientSocket = CSocket<ServerEvents, ClientEvents>;
@@ -96,7 +101,10 @@ export class QuizRoom {
         this.stopped = true;
     }
     next() {
-        this.currentIndexOfQuestion++;
+        if (this.currentIndexOfQuestion + 1 === this.quiz.questions.length) {
+            throw new Error("No more questions");
+        }
+        this.currentIndexOfQuestion = this.currentIndexOfQuestion + 1;
         this.currentQuestion = this.quiz.questions[this.currentIndexOfQuestion];
     }
 
