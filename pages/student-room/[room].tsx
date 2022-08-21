@@ -50,6 +50,7 @@ export default function StudentRoom({ user }: { user: IUser; }) {
             setCurrentTimer(count);
         });
 
+        // join room
         if (typeof room === 'string') {
             socket.emit('join:room', { room, user }, (error: string, data: {
                 participant: participant,

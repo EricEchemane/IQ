@@ -95,6 +95,10 @@ export class QuizRoom {
         this.isStarted = false;
         this.stopped = true;
     }
+    next() {
+        this.currentIndexOfQuestion++;
+        this.currentQuestion = this.quiz.questions[this.currentIndexOfQuestion];
+    }
 
     participate(socketId: string, user: IUser) {
         const isPresent = this.participants.find(p => p.student.email === user.email);
