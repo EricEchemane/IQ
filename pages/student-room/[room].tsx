@@ -1,7 +1,7 @@
 import {
     Avatar, Badge, Button, Container,
     Divider, Group, Indicator, Loader,
-    Paper, Stack, Text, Title
+    Paper, Radio, Stack, Text, Title
 } from '@mantine/core';
 import connectToDatabase from 'db/connectToDatabase';
 import { IUser } from 'entities/user.entity';
@@ -140,13 +140,25 @@ export default function StudentRoom({ user }: { user: IUser; }) {
                 <Loader variant='dots' />
             </Stack>}
 
-            {quizRoom?.isStarted && <Paper shadow='md' mt='md' p='md' withBorder radius={10}>
-                <Badge> {quizRoom?.currentIndexOfQuestion + 1} of {quizRoom.quiz.questions.length} </Badge>
-                <Stack align='center' mt='xl'>
-                    <Title order={2}> {quizRoom?.currentQuestion?.question} </Title>
-                    <Title color='dimmed'> {currentTimer} </Title>
-                </Stack>
-            </Paper>}
+            {quizRoom?.isStarted && <>
+                <Paper mt='md' p='md' mb='md' withBorder radius={10}>
+                    <Group position='apart'>
+                        <Title color='dimmed'> {currentTimer} </Title>
+                        <Badge> {quizRoom?.currentIndexOfQuestion + 1} of {quizRoom.quiz.questions.length} </Badge>
+                    </Group>
+                    <Radio.Group
+                        mt='md'
+                        orientation="vertical"
+                        label={quizRoom?.currentQuestion?.question}
+                        offset="md"
+                        size="md"
+                    >
+                        {quizRoom.currentQuestion?.choices.map((choice: string, index: number) => (
+                            <Radio value={choice} label={choice} key={index} />
+                        ))}
+                    </Radio.Group>
+                </Paper>
+            </>}
         </Container>
     </>;
 }
