@@ -3,6 +3,7 @@ import { IUser } from "entities/user.entity";
 import { NextApiResponse } from "next";
 import { Socket as SSocket } from "socket.io";
 import { Socket as CSocket } from "socket.io-client";
+import { ClientEvents } from "./clientEvents";
 import { QuizRoom } from './quizRoom';
 
 export type SocketRes = NextApiResponse & {
@@ -29,34 +30,6 @@ export interface ServerEvents {
     "quiz:stopped": (quizRoom: QuizRoom) => void;
     "timer:changed": (count: number) => void;
     "question:next": (quizRoom: QuizRoom) => void;
-}
-
-export interface ClientEvents {
-    "create:room": (
-        payload: createRoomPayload,
-        callback: (err: any, data: any) => void
-    ) => void;
-    "join:room": (
-        payload: joinRoomPayload,
-        callback: (err: any, data: any) => void
-    ) => void;
-    "destroy:room": (
-        room: string,
-        callback: (err: any, data: any) => void
-    ) => void;
-    "start:quiz": (
-        room: string,
-        callback: (err: any, data: any) => void
-    ) => void;
-    "quiz:stop": (
-        room: string,
-        callback: (err: any, data: any) => void
-    ) => void;
-    "timer:change": (count: number, room: string) => void;
-    "next:question": (
-        room: string,
-        callback: (err: any, data: QuizRoom) => void
-    ) => void;
 }
 
 export type ClientSocket = CSocket<ServerEvents, ClientEvents>;
