@@ -144,6 +144,7 @@ export default function StudentRoom({ user }: { user: IUser; }) {
                 <Badge> {quizRoom?.currentIndexOfQuestion + 1} of {quizRoom.quiz.questions.length} </Badge>
                 <Stack align='center' mt='xl'>
                     <Title order={2}> {quizRoom?.currentQuestion?.question} </Title>
+                    <Title color='dimmed'> {currentTimer} </Title>
                 </Stack>
             </Paper>}
         </Container>
