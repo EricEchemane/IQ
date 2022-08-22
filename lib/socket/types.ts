@@ -4,7 +4,7 @@ import { NextApiResponse } from "next";
 import { Socket as SSocket } from "socket.io";
 import { Socket as CSocket } from "socket.io-client";
 import { ClientEvents } from "./clientEvents";
-import { QuizRoom } from './quizRoom';
+import { ServerEvents } from "./serverEvents";
 
 export type SocketRes = NextApiResponse & {
     socket: {
@@ -21,16 +21,6 @@ export type joinRoomPayload = {
     room: string;
     user: IUser;
 };
-
-export interface ServerEvents {
-    "participant:joined": (quizRoom: QuizRoom) => void;
-    "participant:leave": (quizRoom: QuizRoom) => void;
-    "room:destroyed": (room: string) => void;
-    "quiz:started": (quizRoom: QuizRoom) => void;
-    "quiz:stopped": (quizRoom: QuizRoom) => void;
-    "timer:changed": (count: number) => void;
-    "question:next": (quizRoom: QuizRoom) => void;
-}
 
 export type ClientSocket = CSocket<ServerEvents, ClientEvents>;
 export type ServerSocket = SSocket<ClientEvents, ServerEvents>;
