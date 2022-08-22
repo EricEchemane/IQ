@@ -8,4 +8,5 @@ export interface ServerEvents {
     "quiz:stopped": (quizRoom: QuizRoom) => void;
     "timer:changed": (count: number) => void;
     "question:next": (quizRoom: QuizRoom) => void;
+    "reveal:correct-answer": (answer: string) => void;
 }

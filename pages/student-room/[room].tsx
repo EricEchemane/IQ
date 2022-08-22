@@ -1,8 +1,10 @@
 import {
     Avatar, Badge, Button, Container,
     Divider, Group, Indicator, Loader,
-    Paper, Radio, Stack, Text, Title
+    Modal,
+    Paper, Radio, Stack, Text, Title, useMantineTheme
 } from '@mantine/core';
+import { useLogger } from '@mantine/hooks';
 import { IconClock } from '@tabler/icons';
 import connectToDatabase from 'db/connectToDatabase';
 import { IUser } from 'entities/user.entity';
@@ -18,6 +20,7 @@ import io from "socket.io-client";
 let socket: ClientSocket;
 
 export default function StudentRoom({ user }: { user: IUser; }) {
+    const theme = useMantineTheme();
     const router = useRouter();
     const { room } = router.query;
     const [connected, setConnected] = useState(false);
@@ -25,6 +28,7 @@ export default function StudentRoom({ user }: { user: IUser; }) {
     const [quizRoom, setQuizRoom] = useState<QuizRoom>();
     const [currentTimer, setCurrentTimer] = useState(0);
     const [answer, setAnswer] = useState('');
+    const [answerStatus, setAnswerStatus] = useState<'unchecked' | 'correct' | 'wrong'>('unchecked');
 
     const socketInitializer = useCallback(async () => {
         await fetch("/api/room");
@@ -54,6 +58,12 @@ export default function StudentRoom({ user }: { user: IUser; }) {
         });
         socket.on('question:next', (quizRoom: QuizRoom) => {
             setQuizRoom(quizRoom);
+            setAnswerStatus('unchecked');
+        });
+        socket.on('reveal:correct-answer', (correctAnswer: string) => {
+            const answerIsCorrect = correctAnswer === answer;
+            if (answerIsCorrect) setAnswerStatus('correct');
+            else setAnswerStatus('wrong');
         });
 
         // join room
@@ -85,9 +95,10 @@ export default function StudentRoom({ user }: { user: IUser; }) {
             socket.off('quiz:stopped');
             socket.off('room:destroyed');
             socket.off('timer:changed');
+            socket.off('reveal:correct-answer');
         };
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+    }, [answer]);
 
     useEffect(() => {
         socketInitializer();
@@ -168,6 +179,26 @@ export default function StudentRoom({ user }: { user: IUser; }) {
                 </Paper>
             </>}
         </Container>
+
+        <Modal
+            withCloseButton={false}
+            onClose={() => { }}
+            size={'550px'}
+            overlayColor={theme.colorScheme === 'dark' ? theme.colors.dark[9] : theme.colors.gray[2]}
+            overlayOpacity={0.55}
+            overlayBlur={3}
+            overflow='inside'
+            opened={answerStatus !== 'unchecked'}
+            title={<Text weight='bold' color='dimmed'> Your answer is... </Text>}
+        >
+            {answerStatus === 'correct' && <>
+                <Text size={'xl'} color='green'> Correct! </Text>
+            </>}
+            {answerStatus === 'wrong' && <>
+                <Text size={'xl'} color='red'> Wrong </Text>
+                <Text color='dimmed'> The correct answer is {quizRoom?.currentQuestion?.correct_choice} </Text>
+            </>}
+        </Modal>
     </>;
 }
 

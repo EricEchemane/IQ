@@ -148,6 +148,12 @@ export default function SocketHandler(req: NextApiRequest, res: SocketRes) {
                 callback(error.message, null);
             }
         });
+
+        socket.on('check:answers', (room: string) => {
+            const quizRoom = quizRooms.get(room);
+            if (!quizRoom || !quizRoom.currentQuestion) return;
+            socket.to(room).emit('reveal:correct-answer', quizRoom.currentQuestion.correct_choice);
+        });
     });
 
     res.end();

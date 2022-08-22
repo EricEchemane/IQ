@@ -37,7 +37,8 @@ export default function QuizRoomComponent({ user, quiz }: {
     const [noMoreQuestion, setNoMoreQuestion] = useState(false);
 
     const checkAnswers = () => {
-        // check answers
+        if (!quizRoom) return;
+        socket.emit('check:answers', quizRoom.room);
     };
 
     const countDown = useCountDown({

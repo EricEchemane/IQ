@@ -27,4 +27,5 @@ export interface ClientEvents {
         room: string,
         callback: (err: any, data: QuizRoom) => void
     ) => void;
+    "check:answers": (room: string) => void;
 }
