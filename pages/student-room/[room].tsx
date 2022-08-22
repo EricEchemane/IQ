@@ -3,6 +3,7 @@ import {
     Divider, Group, Indicator, Loader,
     Paper, Radio, Stack, Text, Title
 } from '@mantine/core';
+import { IconClock } from '@tabler/icons';
 import connectToDatabase from 'db/connectToDatabase';
 import { IUser } from 'entities/user.entity';
 import { ClientSocket, participant, QuizRoom } from 'lib/socket/types';
@@ -144,7 +145,10 @@ export default function StudentRoom({ user }: { user: IUser; }) {
             {quizRoom?.isStarted && <>
                 <Paper mt='md' p='md' mb='md' withBorder radius={10}>
                     <Group position='apart'>
-                        <Title color='dimmed'> {currentTimer} </Title>
+                        <Group align='center'>
+                            <IconClock size={35} style={{ transform: 'translateY(2px)' }} />
+                            <Title color='dimmed'> {currentTimer} </Title>
+                        </Group>
                         <Badge> {quizRoom?.currentIndexOfQuestion + 1} of {quizRoom.quiz.questions.length} </Badge>
                     </Group>
                     <Radio.Group
