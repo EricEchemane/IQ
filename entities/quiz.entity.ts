@@ -40,7 +40,7 @@ const quizSchema = new mongoose.Schema<IQuiz>({
     },
     default_question_timer: { // seconds
         type: Number,
-        default: 5,
+        default: 10,
     },
     forSections: {
         type: [String],
