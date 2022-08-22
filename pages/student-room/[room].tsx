@@ -22,6 +22,7 @@ export default function StudentRoom({ user }: { user: IUser; }) {
     const [quizData, setQuizData] = useState<participant>();
     const [quizRoom, setQuizRoom] = useState<QuizRoom>();
     const [currentTimer, setCurrentTimer] = useState(0);
+    const [answer, setAnswer] = useState('');
 
     const socketInitializer = useCallback(async () => {
         await fetch("/api/room");
@@ -148,6 +149,8 @@ export default function StudentRoom({ user }: { user: IUser; }) {
                     </Group>
                     <Radio.Group
                         mt='md'
+                        value={answer}
+                        onChange={setAnswer}
                         orientation="vertical"
                         label={quizRoom?.currentQuestion?.question}
                         offset="md"
