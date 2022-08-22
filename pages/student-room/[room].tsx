@@ -6,7 +6,8 @@ import {
 import { IconClock } from '@tabler/icons';
 import connectToDatabase from 'db/connectToDatabase';
 import { IUser } from 'entities/user.entity';
-import { ClientSocket, participant, QuizRoom } from 'lib/socket/types';
+import { QuizRoom } from 'lib/socket/quizRoom';
+import { ClientSocket, participant } from 'lib/socket/types';
 import { GetServerSideProps } from 'next';
 import { getToken } from 'next-auth/jwt';
 import Head from 'next/head';

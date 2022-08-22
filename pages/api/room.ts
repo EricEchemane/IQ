@@ -1,7 +1,8 @@
-import { joinRoomPayload, QuizRoom, participant } from 'lib/socket/types';
+import { joinRoomPayload, participant } from 'lib/socket/types';
 import { Server } from "socket.io";
 import type { NextApiRequest } from 'next';
 import { createRoomPayload, ServerSocket, SocketRes } from "lib/socket/types";
+import { QuizRoom } from 'lib/socket/quizRoom';
 
 const quizRooms = new Map<string, QuizRoom>();
 

@@ -6,12 +6,12 @@ import {
 import { showNotification } from '@mantine/notifications';
 import { IconArrowRight, IconClipboard, IconClipboardCheck, IconRocket } from '@tabler/icons';
 import connectToDatabase from 'db/connectToDatabase';
-import { IQuestion } from 'entities/question.entity';
 import { IQuiz } from 'entities/quiz.entity';
 import { IUser } from 'entities/user.entity';
 import useCountDown from 'lib/hooks/useCountDown';
 import { parseQuizId } from 'lib/quiz_helpers';
-import { ClientSocket, QuizRoom } from 'lib/socket/types';
+import { QuizRoom } from 'lib/socket/quizRoom';
+import { ClientSocket } from 'lib/socket/types';
 import { GetServerSideProps } from 'next';
 import { useSession } from 'next-auth/react';
 import Head from 'next/head';
