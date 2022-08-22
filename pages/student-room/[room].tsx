@@ -49,6 +49,9 @@ export default function StudentRoom({ user }: { user: IUser; }) {
         socket.on('timer:changed', count => {
             setCurrentTimer(count);
         });
+        socket.on('question:next', (quizRoom: QuizRoom) => {
+            setQuizRoom(quizRoom);
+        });
 
         // join room
         if (typeof room === 'string') {
@@ -136,6 +139,13 @@ export default function StudentRoom({ user }: { user: IUser; }) {
                 {connected && <Text color='dimmed' mt='xl'> The host will start the quiz soon </Text>}
                 <Loader variant='dots' />
             </Stack>}
+
+            {quizRoom?.isStarted && <Paper shadow='md' mt='md' p='md' withBorder radius={10}>
+                <Badge> {quizRoom?.currentIndexOfQuestion + 1} of {quizRoom.quiz.questions.length} </Badge>
+                <Stack align='center' mt='xl'>
+                    <Title order={2}> {quizRoom?.currentQuestion?.question} </Title>
+                </Stack>
+            </Paper>}
         </Container>
     </>;
 }

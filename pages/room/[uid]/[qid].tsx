@@ -220,7 +220,7 @@ export default function QuizRoomComponent({ user, quiz }: {
             {quizRoom?.isStarted && <Paper shadow='md' mt='md' p='md' withBorder radius={10}>
                 <Badge> {quizRoom?.currentIndexOfQuestion + 1} of {quizRoom.quiz.questions.length} </Badge>
                 <Stack align='center' mt='xl'>
-                    <Title> {quizRoom?.currentQuestion?.question} </Title>
+                    <Title order={2}> {quizRoom?.currentQuestion?.question} </Title>
                     <Title color='dimmed'> {countDown.currentCount} </Title>
                 </Stack>
                 <Group position='right' mt='xl'>
