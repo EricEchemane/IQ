@@ -52,7 +52,8 @@ export class QuizRoom {
             student: user,
             socketId
         });
-        return this;
+        // return the index of the participant
+        return this.participants.length - 1;
     }
 
     getParticipant(socketId: string): participant | undefined {

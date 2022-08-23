@@ -86,17 +86,14 @@ export default function SocketHandler(req: NextApiRequest, res: SocketRes) {
                 return;
             }
 
-            quizRoom.participate(socket.id, user);
+            const participantIndex = quizRoom.participate(socket.id, user);
 
             socket.join(room);
             usersParticipatedQuizRooms.set(socket.id, { room, type: 'student', email: user.email });
             socket.to(room).emit('participant:joined', quizRoom);
 
             console.log(`${socket.id} joins the room ${room}`);
-            callback(null, {
-                quizRoom,
-                participant: quizRoom.getParticipant(socket.id)
-            });
+            callback(null, { quizRoom, participantIndex });
         });
 
         socket.on('destroy:room', (

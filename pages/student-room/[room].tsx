@@ -26,6 +26,7 @@ export default function StudentRoom({ user }: { user: IUser; }) {
     const [quizRoom, setQuizRoom] = useState<QuizRoom>();
     const [currentTimer, setCurrentTimer] = useState(0);
     const [answer, setAnswer] = useState('');
+    const [participantIndex, setParticipantIndex] = useState(-1);
     const [answerStatus, setAnswerStatus] = useState<'unchecked' | 'correct' | 'wrong'>('unchecked');
 
     const socketInitializer = useCallback(async () => {
@@ -68,8 +69,8 @@ export default function StudentRoom({ user }: { user: IUser; }) {
         // join room
         if (typeof room === 'string') {
             socket.emit('join:room', { room, user }, (error: string, data: {
-                participant: participant,
                 quizRoom: QuizRoom;
+                participantIndex: number,
             }) => {
                 if (error) {
                     console.error(error);
@@ -79,6 +80,7 @@ export default function StudentRoom({ user }: { user: IUser; }) {
                 if (data) {
                     setConnected(true);
                     setQuizRoom(data.quizRoom);
+                    setParticipantIndex(data.participantIndex);
                     console.log(data);
                 }
             });
