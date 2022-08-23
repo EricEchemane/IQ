@@ -1,5 +1,5 @@
-import { Accordion, ActionIcon, Button, CopyButton, Dialog, Group, Menu, Modal, Paper, Stack, Text, TextInput, Title, useMantineTheme } from '@mantine/core';
-import { IconTrash, IconDots, IconEdit, IconBookUpload, IconBookDownload, IconCheck, IconClipboard, IconClipboardCheck, IconDoorEnter, IconArrowRight } from '@tabler/icons';
+import { Accordion, ActionIcon, Button, Dialog, Group, Menu, Modal, Paper, Stack, Text, TextInput, Title, useMantineTheme } from '@mantine/core';
+import { IconTrash, IconDots, IconEdit, IconBookUpload, IconBookDownload, IconCheck, IconArrowRight, IconUsers } from '@tabler/icons';
 import React, { useEffect, useState } from 'react';
 import useProfessorState, { ProfessorActions, ProfessorStateType } from 'state_providers/professor';
 import moment from 'moment';
@@ -9,7 +9,6 @@ import QuizAdapter, { deleteQuizPayload, publishQuizPayload, unpublishQuizPayloa
 import { showNotification } from '@mantine/notifications';
 import { openConfirmModal } from '@mantine/modals';
 import { useRouter } from 'next/router';
-import { parseQuizId } from 'lib/quiz_helpers';
 
 export default function ViewQuizes() {
     const theme = useMantineTheme();
@@ -207,7 +206,11 @@ export default function ViewQuizes() {
                                                 publish(quiz._id);
                                             }}
                                             icon={<IconBookUpload size={14} />}> Publish this quiz </Menu.Item>}
-
+                                    <Menu.Item
+                                        onClick={() => {
+                                            alert('view participants');
+                                        }}
+                                        icon={<IconUsers size={14} />}> View participants </Menu.Item>
                                     <Menu.Divider />
 
                                     <Menu.Label>Danger zone</Menu.Label>
