@@ -23,6 +23,7 @@ const quizParticipantSchema = new mongoose.Schema<IQuizParticipant>({
     },
     date_finished: {
         type: Date,
+        default: Date.now,
     },
     answers: {
         type: [String]
