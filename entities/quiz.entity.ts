@@ -2,6 +2,7 @@ import mongoose from "mongoose";
 import questionSchema, { IQuestion } from "./question.entity";
 
 export interface IQuiz {
+    _id?: string;
     title: string;
     author: mongoose.Schema.Types.ObjectId;
     questions: IQuestion[];
