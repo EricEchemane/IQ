@@ -6,6 +6,7 @@ export enum EUserType {
     professor = 'professor',
 }
 export interface IUser {
+    _id?: string;
     type: EUserType;
     email: string;
     name: string;
