@@ -26,7 +26,6 @@ export default function StudentRoom({ user }: { user: IUser; }) {
     const [quizRoom, setQuizRoom] = useState<QuizRoom>();
     const [currentTimer, setCurrentTimer] = useState(0);
     const [answer, setAnswer] = useState('');
-    const [participantIndex, setParticipantIndex] = useState(-1);
     const [answerStatus, setAnswerStatus] = useState<'unchecked' | 'correct' | 'wrong'>('unchecked');
 
     const socketInitializer = useCallback(async () => {
@@ -74,6 +73,13 @@ export default function StudentRoom({ user }: { user: IUser; }) {
                 if (error) console.error(error);
             });
         });
+        socket.on('quiz:saved', (quizRoom: QuizRoom) => {
+
+            socket.emit('get:ranking', quizRoom.room, user._id || '', (error: string, data: any) => {
+                if (error) console.error(error);
+                console.log('ranking:', data);
+            });
+        });
 
         // join room
         if (typeof room === 'string') {
@@ -89,7 +95,6 @@ export default function StudentRoom({ user }: { user: IUser; }) {
                 if (data) {
                     setConnected(true);
                     setQuizRoom(data.quizRoom);
-                    setParticipantIndex(data.participantIndex);
                     console.log(data);
                 }
             });

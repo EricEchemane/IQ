@@ -173,10 +173,16 @@ export default function SocketHandler(req: NextApiRequest, res: SocketRes) {
             quizRoom.sortPartcipantsByScore();
             // TODO: save quiz participants to database
 
-            // TODO: emit the student ranking
+            socket.to(room).emit('quiz:saved', quizRoom);
 
-            // get stats
             callback(null, quizRoom);
+        });
+
+        socket.on('get:ranking', (room: string, userId: string, callback: Function) => {
+            const quizRoom = quizRooms.get(room);
+            if (!quizRoom) return;
+
+            callback(null, quizRoom.getStudentRanking(userId));
         });
     });
 

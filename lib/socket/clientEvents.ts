@@ -36,4 +36,9 @@ export interface ClientEvents {
         room: string,
         callback: (err: any, data: any) => void
     ) => void;
+    "get:ranking": (
+        room: string,
+        userId: string,
+        callback: (err: any, data: any) => void
+    ) => void;
 }
