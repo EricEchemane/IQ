@@ -152,7 +152,7 @@ export default function SocketHandler(req: NextApiRequest, res: SocketRes) {
             socket.to(room).emit('reveal:correct-answer', quizRoom.currentQuestion.correct_choice);
         });
 
-        socket.on('submit:answer', (payload: submitAnswerPayload, callback: Function) => {
+        socket.on('submit:answer', async (payload: submitAnswerPayload, callback: Function) => {
 
             const quizRoom = quizRooms.get(payload.room);
             if (!quizRoom) return;
@@ -165,13 +165,15 @@ export default function SocketHandler(req: NextApiRequest, res: SocketRes) {
             }
         });
 
-        socket.on('save:quiz', (room: string, callback: Function) => {
+        socket.on('save:quiz', async (room: string, callback: Function) => {
             const quizRoom = quizRooms.get(room);
             if (!quizRoom) return;
 
             quizRoom.isEnded = true;
             quizRoom.sortPartcipantsByScore();
+
             // TODO: save quiz participants to database
+
 
             socket.to(room).emit('quiz:saved', quizRoom);
 
