@@ -1,10 +1,8 @@
 import {
     Avatar, Badge, Button, Container,
     Divider, Group, Indicator, Loader,
-    Modal,
-    Paper, Radio, Stack, Text, Title, useMantineTheme
+    Modal, Paper, Radio, Stack, Text, Title, useMantineTheme
 } from '@mantine/core';
-import { useLogger } from '@mantine/hooks';
 import { IconClock } from '@tabler/icons';
 import connectToDatabase from 'db/connectToDatabase';
 import { IUser } from 'entities/user.entity';
@@ -24,13 +22,12 @@ export default function StudentRoom({ user }: { user: IUser; }) {
     const router = useRouter();
     const { room } = router.query;
     const [connected, setConnected] = useState(false);
-    const [quizData, setQuizData] = useState<participant>();
     const [quizRoom, setQuizRoom] = useState<QuizRoom>();
     const [currentTimer, setCurrentTimer] = useState(0);
     const [answer, setAnswer] = useState('');
     const [answerStatus, setAnswerStatus] = useState<'unchecked' | 'correct' | 'wrong'>('unchecked');
 
-    const socketInitializer = useCallback(async () => {
+    const socketInitializer = async () => {
         await fetch("/api/room");
         socket = io();
 
@@ -59,8 +56,12 @@ export default function StudentRoom({ user }: { user: IUser; }) {
         socket.on('question:next', (quizRoom: QuizRoom) => {
             setQuizRoom(quizRoom);
             setAnswerStatus('unchecked');
+            setAnswer('');
         });
         socket.on('reveal:correct-answer', (correctAnswer: string) => {
+            console.log('my answer:', answer);
+            console.log('correct:', correctAnswer);
+
             const answerIsCorrect = correctAnswer === answer;
             if (answerIsCorrect) setAnswerStatus('correct');
             else setAnswerStatus('wrong');
@@ -79,7 +80,6 @@ export default function StudentRoom({ user }: { user: IUser; }) {
                 }
                 if (data) {
                     setConnected(true);
-                    setQuizData(data.participant);
                     setQuizRoom(data.quizRoom);
                     console.log(data);
                 }
@@ -98,11 +98,12 @@ export default function StudentRoom({ user }: { user: IUser; }) {
             socket.off('reveal:correct-answer');
         };
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [answer]);
+    };
 
     useEffect(() => {
         socketInitializer();
-    }, [socketInitializer]);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
     const leave = () => {
         const userWantsToLeave = confirm('Are you sure you want to leave this quiz room?');
