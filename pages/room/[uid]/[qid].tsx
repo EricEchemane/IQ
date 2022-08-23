@@ -140,7 +140,8 @@ export default function QuizRoomComponent({ user, quiz }: {
 
     useEffect(() => {
         socketInitializer();
-    }, [socketInitializer]);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
     return <>
         <Head> <title> Quiz Room - IQ </title> </Head>
