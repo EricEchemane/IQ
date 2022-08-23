@@ -3,6 +3,8 @@ import { Server } from "socket.io";
 import type { NextApiRequest } from 'next';
 import { createRoomPayload, ServerSocket, SocketRes } from "lib/socket/types";
 import { QuizRoom } from 'lib/socket/quizRoom';
+import connectToDatabase from 'db/connectToDatabase';
+import { IQuizParticipant } from 'entities/quiz-participant.entity';
 
 const quizRooms = new Map<string, QuizRoom>();
 
@@ -173,7 +175,21 @@ export default function SocketHandler(req: NextApiRequest, res: SocketRes) {
             quizRoom.sortPartcipantsByScore();
 
             // TODO: save quiz participants to database
-
+            const db = await connectToDatabase();
+            if (!db) {
+                callback('unable to connect to database', null);
+                return;
+            }
+            const { QuizParticipant } = db.models;
+            quizRoom.participants.forEach(async (participant) => {
+                const quizParticipant = new QuizParticipant({
+                    answers: participant.answers,
+                    quiz: quizRoom.quiz._id || '',
+                    student: participant.student._id || '',
+                    final_score: participant.final_score,
+                });
+                await quizParticipant.save();
+            });
 
             socket.to(room).emit('quiz:saved', quizRoom);
 
