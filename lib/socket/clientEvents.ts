@@ -1,5 +1,5 @@
 import { QuizRoom } from "./quizRoom";
-import { createRoomPayload, joinRoomPayload, submitAnswerPayload } from "./types";
+import { createRoomPayload, joinRoomPayload, quizResult, submitAnswerPayload } from "./types";
 
 export interface ClientEvents {
     "create:room": (
@@ -36,9 +36,9 @@ export interface ClientEvents {
         room: string,
         callback: (err: any, data: any) => void
     ) => void;
-    "get:ranking": (
+    "get:quiz-results": (
         room: string,
         userId: string,
-        callback: (err: any, data: any) => void
+        callback: (err: any, data: quizResult) => void
     ) => void;
 }

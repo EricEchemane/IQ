@@ -1,4 +1,4 @@
-import { joinRoomPayload, participant, submitAnswerPayload } from 'lib/socket/types';
+import { joinRoomPayload, participant, quizResult, submitAnswerPayload } from 'lib/socket/types';
 import { Server } from "socket.io";
 import type { NextApiRequest } from 'next';
 import { createRoomPayload, ServerSocket, SocketRes } from "lib/socket/types";
@@ -196,11 +196,16 @@ export default function SocketHandler(req: NextApiRequest, res: SocketRes) {
             callback(null, quizRoom);
         });
 
-        socket.on('get:ranking', (room: string, userId: string, callback: Function) => {
+        socket.on('get:quiz-results', (room: string, userId: string, callback: Function) => {
             const quizRoom = quizRooms.get(room);
             if (!quizRoom) return;
 
-            callback(null, quizRoom.getStudentRanking(userId));
+            const results: quizResult = {
+                finalScore: quizRoom.getParticipant(userId)?.final_score || 0,
+                ranking: quizRoom.getStudentRanking(userId),
+            };
+
+            callback(null, results);
         });
     });
 

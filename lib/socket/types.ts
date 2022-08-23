@@ -27,6 +27,10 @@ export type submitAnswerPayload = {
     userId: string;
     isCorrect: boolean;
 };
+export type quizResult = {
+    ranking: number;
+    finalScore: number;
+};
 
 export type ClientSocket = CSocket<ServerEvents, ClientEvents>;
 export type ServerSocket = SSocket<ClientEvents, ServerEvents>;

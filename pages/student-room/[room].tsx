@@ -7,7 +7,7 @@ import { IconClock } from '@tabler/icons';
 import connectToDatabase from 'db/connectToDatabase';
 import { IUser } from 'entities/user.entity';
 import { QuizRoom } from 'lib/socket/quizRoom';
-import { ClientSocket, participant } from 'lib/socket/types';
+import { ClientSocket, participant, quizResult } from 'lib/socket/types';
 import { GetServerSideProps } from 'next';
 import { getToken } from 'next-auth/jwt';
 import Head from 'next/head';
@@ -26,6 +26,7 @@ export default function StudentRoom({ user }: { user: IUser; }) {
     const [quizRoom, setQuizRoom] = useState<QuizRoom>();
     const [currentTimer, setCurrentTimer] = useState(0);
     const [answer, setAnswer] = useState('');
+    const [quizResults, setQuizResults] = useState<quizResult | null>(null);
     const [answerStatus, setAnswerStatus] = useState<'unchecked' | 'correct' | 'wrong'>('unchecked');
 
     const socketInitializer = useCallback(async () => {
@@ -75,9 +76,11 @@ export default function StudentRoom({ user }: { user: IUser; }) {
         });
         socket.on('quiz:saved', (quizRoom: QuizRoom) => {
 
-            socket.emit('get:ranking', quizRoom.room, user._id || '', (error: string, data: any) => {
+            socket.emit('get:quiz-results', quizRoom.room, user._id || '', (error: string, result: quizResult) => {
                 if (error) console.error(error);
-                console.log('ranking:', data);
+                if (result) {
+                    setQuizResults(result);
+                }
             });
         });
 
@@ -217,6 +220,21 @@ export default function StudentRoom({ user }: { user: IUser; }) {
                 <Text size={'xl'} color='red'> Wrong </Text>
                 <Text color='dimmed'> The correct answer is {quizRoom?.currentQuestion?.correct_choice} </Text>
             </>}
+        </Modal>
+
+        <Modal
+            withCloseButton={false}
+            onClose={() => { }}
+            size={'550px'}
+            overlayColor={theme.colorScheme === 'dark' ? theme.colors.dark[9] : theme.colors.gray[2]}
+            overlayOpacity={0.55}
+            overlayBlur={3}
+            overflow='inside'
+            opened={quizResults !== null}
+            title={<Text weight='bold' color='dimmed'> Quiz Results </Text>}
+        >
+            <Title> Your Ranking: {quizResults?.ranking} </Title>
+            <Title order={2} color='green'> Final Score: {quizResults?.finalScore} </Title>
         </Modal>
     </>;
 }
