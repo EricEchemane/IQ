@@ -32,4 +32,8 @@ export interface ClientEvents {
         payload: submitAnswerPayload,
         callback: (err: any, data: any) => void
     ) => void;
+    "save:quiz": (
+        room: string,
+        callback: (err: any, data: any) => void
+    ) => void;
 }

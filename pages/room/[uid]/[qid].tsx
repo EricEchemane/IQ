@@ -71,7 +71,6 @@ export default function QuizRoomComponent({ user, quiz }: {
             setQuizRoom(newQuizRoom);
             console.log(newQuizRoom);
         });
-
         socket.emit('create:room', {
             room: parseQuizId(quiz._id),
             user, quiz
@@ -135,6 +134,12 @@ export default function QuizRoomComponent({ user, quiz }: {
                 setQuizRoom(data);
                 countDown.start();
             }
+        });
+    };
+    const saveQuizStats = () => {
+        if (!quizRoom) return;
+        socket.emit('save:quiz', quizRoom.room, (error: string, quizRoom: QuizRoom) => {
+            setQuizRoom(quizRoom);
         });
     };
 
@@ -237,6 +242,10 @@ export default function QuizRoomComponent({ user, quiz }: {
                         variant='subtle'
                         rightIcon={<IconArrowRight strokeWidth={1.5} />}
                         size='md'> Next question </Button>}
+                    {noMoreQuestion && <Button
+                        onClick={saveQuizStats}
+                        disabled={!countDown.finished}
+                        size='md'> Done </Button>}
                 </Group>
             </Paper>}
         </Container>

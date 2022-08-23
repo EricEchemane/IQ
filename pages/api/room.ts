@@ -164,6 +164,14 @@ export default function SocketHandler(req: NextApiRequest, res: SocketRes) {
                 callback('unable to submit answer', null);
             }
         });
+
+        socket.on('save:quiz', (room: string, callback: Function) => {
+            const quizRoom = quizRooms.get(room);
+            if (!quizRoom) return;
+
+            quizRoom.isEnded = true;
+            callback(null, quizRoom);
+        });
     });
 
     res.end();
