@@ -12,7 +12,7 @@ import { GetServerSideProps } from 'next';
 import { getToken } from 'next-auth/jwt';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import io from "socket.io-client";
 
 let socket: ClientSocket;
