@@ -12,10 +12,11 @@ import { GetServerSideProps } from 'next';
 import { getToken } from 'next-auth/jwt';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import io from "socket.io-client";
 
 let socket: ClientSocket;
+let outsideAnswer = '';
 
 export default function StudentRoom({ user }: { user: IUser; }) {
     const theme = useMantineTheme();
@@ -27,7 +28,7 @@ export default function StudentRoom({ user }: { user: IUser; }) {
     const [answer, setAnswer] = useState('');
     const [answerStatus, setAnswerStatus] = useState<'unchecked' | 'correct' | 'wrong'>('unchecked');
 
-    const socketInitializer = async () => {
+    const socketInitializer = useCallback(async () => {
         await fetch("/api/room");
         socket = io();
 
@@ -59,10 +60,7 @@ export default function StudentRoom({ user }: { user: IUser; }) {
             setAnswer('');
         });
         socket.on('reveal:correct-answer', (correctAnswer: string) => {
-            console.log('my answer:', answer);
-            console.log('correct:', correctAnswer);
-
-            const answerIsCorrect = correctAnswer === answer;
+            const answerIsCorrect = correctAnswer === outsideAnswer;
             if (answerIsCorrect) setAnswerStatus('correct');
             else setAnswerStatus('wrong');
         });
@@ -85,7 +83,12 @@ export default function StudentRoom({ user }: { user: IUser; }) {
                 }
             });
         }
-    };
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
+
+    useEffect(() => {
+        outsideAnswer = answer;
+    }, [answer]);
 
     useEffect(() => {
         socketInitializer();
