@@ -1,7 +1,7 @@
 import {
     Avatar, Badge, Button, Container,
     CopyButton, Divider, Group,
-    Loader, Paper, Stack, Text, Title
+    Loader, Modal, Paper, Stack, Text, Title
 } from '@mantine/core';
 import { showNotification } from '@mantine/notifications';
 import { IconArrowRight, IconClipboard, IconClipboardCheck, IconRocket } from '@tabler/icons';
@@ -11,7 +11,7 @@ import { IUser } from 'entities/user.entity';
 import useCountDown from 'lib/hooks/useCountDown';
 import { parseQuizId } from 'lib/quiz_helpers';
 import { QuizRoom } from 'lib/socket/quizRoom';
-import { ClientSocket } from 'lib/socket/types';
+import { ClientSocket, participant } from 'lib/socket/types';
 import { GetServerSideProps } from 'next';
 import { useSession } from 'next-auth/react';
 import Head from 'next/head';
@@ -35,6 +35,10 @@ export default function QuizRoomComponent({ user, quiz }: {
     const [roomIsCreated, setRoomIsCreated] = useState(false);
     const [quizRoom, setQuizRoom] = useState<QuizRoom>();
     const [noMoreQuestion, setNoMoreQuestion] = useState(false);
+    const [quizSummary, setQuizSummary] = useState<{
+        rankings: participant[],
+        frequencyOfCorrectAnswer: number[];
+    } | null>(null);
 
     const checkAnswers = () => {
         if (!quizRoom) return;
@@ -142,10 +146,14 @@ export default function QuizRoomComponent({ user, quiz }: {
     };
     const saveQuizStats = () => {
         if (!quizRoom) return;
-        socket.emit('save:quiz', quizRoom.room, (error: string, data: any) => {
+        socket.emit('save:quiz', quizRoom.room, (error: string, data: QuizRoom) => {
             if (error) console.error(error);
             if (data) {
-                console.log(data);
+                const summary = {
+                    rankings: data.participants,
+                    frequencyOfCorrectAnswer: data.frequencyOfCorrectAnswers
+                };
+                setQuizSummary(summary);
             }
         });
     };
@@ -256,6 +264,34 @@ export default function QuizRoomComponent({ user, quiz }: {
                 </Group>
             </Paper>}
         </Container>
+
+        <Modal
+            withCloseButton={false}
+            onClose={() => { }}
+            size={'550px'}
+            overlayOpacity={0.55}
+            overlayBlur={3}
+            overflow='inside'
+            opened={quizSummary !== null}
+            title={<Text weight='bold' color='dimmed'> Quiz Summary </Text>}
+        >
+            <>
+                <Title mb='md' order={2}> Rankings </Title>
+                {quizSummary?.rankings.map((participant, index) => (
+                    <Group key={index} position='apart' align='center'>
+                        <Title order={4}> {participant.student.name} </Title>
+                        <Title order={3}> {participant.final_score} </Title>
+                    </Group>
+                ))}
+                <Group position='right'>
+                    <Button variant='light' onClick={() => {
+                        router.replace('/');
+                    }}>
+                        Return home
+                    </Button>
+                </Group>
+            </>
+        </Modal>
     </>;
 }
 
