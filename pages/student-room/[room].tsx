@@ -71,7 +71,7 @@ export default function StudentRoom({ user }: { user: IUser; }) {
                 room: typeof room === 'string' ? room : '',
                 userId: user._id || ''
             }, (error: string, data: any) => {
-                console.log(data);
+                if (error) console.error(error);
             });
         });
 
