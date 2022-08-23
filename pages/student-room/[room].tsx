@@ -85,7 +85,11 @@ export default function StudentRoom({ user }: { user: IUser; }) {
                 }
             });
         }
+    };
 
+    useEffect(() => {
+        socketInitializer();
+        if (!socket) return;
         return () => {
             socket.off('connect');
             socket.off('disconnect');
@@ -97,11 +101,6 @@ export default function StudentRoom({ user }: { user: IUser; }) {
             socket.off('timer:changed');
             socket.off('reveal:correct-answer');
         };
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    };
-
-    useEffect(() => {
-        socketInitializer();
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
