@@ -76,4 +76,12 @@ export class QuizRoom {
         }
         return participant;
     }
+
+    sortPartcipantsByScore() {
+        if (!this.isEnded) throw new Error("Quiz is not yet finished");
+
+        this.participants.sort((a, b) => {
+            return b.final_score - a.final_score;
+        });
+    }
 }

@@ -170,6 +170,8 @@ export default function SocketHandler(req: NextApiRequest, res: SocketRes) {
             if (!quizRoom) return;
 
             quizRoom.isEnded = true;
+            quizRoom.sortPartcipantsByScore();
+            // get stats
             callback(null, quizRoom);
         });
     });

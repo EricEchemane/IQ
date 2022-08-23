@@ -106,7 +106,9 @@ export default function QuizRoomComponent({ user, quiz }: {
         socket.emit('start:quiz', quizRoom.room, (error: string, data: QuizRoom) => {
             if (data) {
                 setQuizRoom(data);
-                countDown.start();
+                countDown.start(quizRoom.quiz.questions[0].timer === 'inherit'
+                    ? quizRoom.quiz.default_question_timer
+                    : quizRoom.quiz.questions[0].timer);
             }
             if (error) console.error(error);
         });
@@ -132,14 +134,19 @@ export default function QuizRoomComponent({ user, quiz }: {
                     setNoMoreQuestion(true);
                 }
                 setQuizRoom(data);
-                countDown.start();
+                countDown.start(quizRoom.currentQuestion?.timer === 'inherit'
+                    ? quizRoom.quiz.default_question_timer
+                    : quizRoom.currentQuestion?.timer);
             }
         });
     };
     const saveQuizStats = () => {
         if (!quizRoom) return;
-        socket.emit('save:quiz', quizRoom.room, (error: string, quizRoom: QuizRoom) => {
-            setQuizRoom(quizRoom);
+        socket.emit('save:quiz', quizRoom.room, (error: string, data: any) => {
+            if (error) console.error(error);
+            if (data) {
+                console.log(data);
+            }
         });
     };
 
