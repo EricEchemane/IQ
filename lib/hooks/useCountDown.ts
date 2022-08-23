@@ -41,6 +41,7 @@ export default function useCountDown(props: {
     const start = useCallback((seconds: number = props.seconds) => {
         setCount(seconds);
         setStarted(true);
+        setFinished(false);
         interval = setInterval(() => {
             setCount(c => c - 1);
         }, 1000);
