@@ -1,10 +1,9 @@
-import { joinRoomPayload, participant, quizResult, submitAnswerPayload } from 'lib/socket/types';
+import { joinRoomPayload, quizResult, submitAnswerPayload } from 'lib/socket/types';
 import { Server } from "socket.io";
 import type { NextApiRequest } from 'next';
 import { createRoomPayload, ServerSocket, SocketRes } from "lib/socket/types";
 import { QuizRoom } from 'lib/socket/quizRoom';
 import connectToDatabase from 'db/connectToDatabase';
-import { IQuizParticipant } from 'entities/quiz-participant.entity';
 
 const quizRooms = new Map<string, QuizRoom>();
 
