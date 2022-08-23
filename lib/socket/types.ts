@@ -21,12 +21,17 @@ export type joinRoomPayload = {
     room: string;
     user: IUser;
 };
+export type submitAnswerPayload = {
+    room: string;
+    answer: string;
+    userId: string;
+    isCorrect: boolean;
+};
 
 export type ClientSocket = CSocket<ServerEvents, ClientEvents>;
 export type ServerSocket = SSocket<ClientEvents, ServerEvents>;
 
 export type participant = {
-    socketId: string;
     answers: string[];
     student: IUser;
     final_score: number;

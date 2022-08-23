@@ -1,4 +1,4 @@
-import { joinRoomPayload, participant } from 'lib/socket/types';
+import { joinRoomPayload, participant, submitAnswerPayload } from 'lib/socket/types';
 import { Server } from "socket.io";
 import type { NextApiRequest } from 'next';
 import { createRoomPayload, ServerSocket, SocketRes } from "lib/socket/types";
@@ -86,7 +86,7 @@ export default function SocketHandler(req: NextApiRequest, res: SocketRes) {
                 return;
             }
 
-            const participantIndex = quizRoom.participate(socket.id, user);
+            const participantIndex = quizRoom.participate(user);
 
             socket.join(room);
             usersParticipatedQuizRooms.set(socket.id, { room, type: 'student', email: user.email });
@@ -150,6 +150,19 @@ export default function SocketHandler(req: NextApiRequest, res: SocketRes) {
             const quizRoom = quizRooms.get(room);
             if (!quizRoom || !quizRoom.currentQuestion) return;
             socket.to(room).emit('reveal:correct-answer', quizRoom.currentQuestion.correct_choice);
+        });
+
+        socket.on('submit:answer', (payload: submitAnswerPayload, callback: Function) => {
+
+            const quizRoom = quizRooms.get(payload.room);
+            if (!quizRoom) return;
+
+            try {
+                const participant = quizRoom.submitAnswer(payload);
+                callback(null, participant);
+            } catch (error: any) {
+                callback('unable to submit answer', null);
+            }
         });
     });
 

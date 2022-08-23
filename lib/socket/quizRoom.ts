@@ -1,7 +1,7 @@
 import { IQuestion } from 'entities/question.entity';
 import { IQuiz } from "entities/quiz.entity";
 import { IUser } from "entities/user.entity";
-import { participant } from './types';
+import { participant, submitAnswerPayload } from './types';
 
 export class QuizRoom {
     room: string;
@@ -41,26 +41,39 @@ export class QuizRoom {
         this.currentQuestion = this.quiz.questions[this.currentIndexOfQuestion];
     }
 
-    participate(socketId: string, user: IUser) {
-        const isPresent = this.participants.find(p => p.student.email === user.email);
+    participate(user: IUser) {
+        const isPresent = this.participants.find(p => p.student._id === user._id);
         if (isPresent) return;
 
         this.participants.push({
             answers: [],
             final_score: 0,
             number_of_correct_answers: 0,
-            student: user,
-            socketId
+            student: user
         });
         // return the index of the participant
         return this.participants.length - 1;
     }
 
-    getParticipant(socketId: string): participant | undefined {
-        return this.participants.find(p => p.socketId === socketId);
+    getParticipant(userid: string): participant | undefined {
+        return this.participants.find(p => p.student._id === userid);
     }
 
     removeParticipant(email: string) {
         this.participants = this.participants.filter(p => p.student.email !== email);
+    }
+
+    submitAnswer(payload: submitAnswerPayload) {
+        const participant = this.getParticipant(payload.userId);
+        if (!participant) return;
+
+        if (participant.answers.length !== this.currentIndexOfQuestion) return;
+
+        participant.answers.push(payload.answer);
+        if (payload.isCorrect) {
+            participant.number_of_correct_answers = participant.number_of_correct_answers + 1;
+            participant.final_score = participant.final_score + (this.currentQuestion?.points || 1);
+        }
+        return participant;
     }
 }

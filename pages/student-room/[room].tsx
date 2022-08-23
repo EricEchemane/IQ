@@ -64,6 +64,15 @@ export default function StudentRoom({ user }: { user: IUser; }) {
             const answerIsCorrect = correctAnswer === outsideAnswer;
             if (answerIsCorrect) setAnswerStatus('correct');
             else setAnswerStatus('wrong');
+
+            socket.emit('submit:answer', {
+                answer: outsideAnswer,
+                isCorrect: answerIsCorrect,
+                room: typeof room === 'string' ? room : '',
+                userId: user._id || ''
+            }, (error: string, data: any) => {
+                console.log(data);
+            });
         });
 
         // join room
