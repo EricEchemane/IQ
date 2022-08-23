@@ -162,25 +162,20 @@ export default function ViewQuizes() {
                                 <Title order={5}> {quiz.title} </Title>
                                 <Group>
                                     <Text size='sm' mr='md'> Created on {moment(quiz.date_created).format('LL')} </Text>
-                                    <Group spacing={5}>
-                                        <Text color='dimmed'> Quiz code: </Text>
-                                        <CopyButton value={parseQuizId(quiz._id)}>
-                                            {({ copied, copy }) => (
-                                                <Button
-                                                    rightIcon={copied ? <IconClipboardCheck /> : <IconClipboard />}
-                                                    radius={50}
-                                                    variant='light'
-                                                    color={copied ? 'teal' : 'blue'}
-                                                    onClick={copy}>
-                                                    {parseQuizId(quiz._id)}
-                                                </Button>
-                                            )}
-                                        </CopyButton>
-                                    </Group>
                                     <Button
                                         onClick={() => openQuestionsModal(index)}
-                                        variant='subtle'
+                                        variant='light'
                                         size='sm'> {quiz.questions.length} questions </Button>
+                                    {quiz.published && <Button
+                                        onClick={() => {
+                                            router.push(`/room/${state._id}/${quiz._id}`);
+                                        }}
+                                        variant='light'
+                                        color='green'
+                                        size='sm'
+                                        rightIcon={<IconArrowRight size={15} />}>
+                                        Enter quiz room
+                                    </Button>}
                                 </Group>
                             </Stack>
 
@@ -193,13 +188,6 @@ export default function ViewQuizes() {
 
                                 <Menu.Dropdown>
                                     <Menu.Label>Quiz options</Menu.Label>
-                                    {quiz.published && <Menu.Item
-                                        onClick={() => {
-                                            router.push(`/room/${state._id}/${quiz._id}`);
-                                        }}
-                                        color='blue'
-                                        rightSection={<IconArrowRight size={15} />}
-                                        icon={<IconDoorEnter size={14} />}> Enter quiz room </Menu.Item>}
                                     <Menu.Item
                                         onClick={() => {
                                             setSelectedQuiz(quiz);
