@@ -13,6 +13,7 @@ export class QuizRoom {
     isEnded: boolean = false;
     currentIndexOfQuestion: number = -1; // -1 means not yet started
     currentQuestion: IQuestion | undefined;
+    frequencyOfCorrectAnswers: number[] = [];
 
     constructor(
         room: string,
@@ -22,6 +23,7 @@ export class QuizRoom {
         this.room = room;
         this.user = user;
         this.quiz = quiz;
+        this.frequencyOfCorrectAnswers = new Array(this.quiz.questions.length).fill(0);
     }
 
     start() {
@@ -73,6 +75,7 @@ export class QuizRoom {
         if (payload.isCorrect) {
             participant.number_of_correct_answers = participant.number_of_correct_answers + 1;
             participant.final_score = participant.final_score + (this.currentQuestion?.points || 1);
+            this.frequencyOfCorrectAnswers[this.currentIndexOfQuestion] = this.frequencyOfCorrectAnswers[this.currentIndexOfQuestion] + 1;
         }
         return participant;
     }
@@ -83,5 +86,13 @@ export class QuizRoom {
         this.participants.sort((a, b) => {
             return b.final_score - a.final_score;
         });
+    }
+
+    getStudentRanking(userId: string) {
+        if (!this.isEnded) throw new Error("Quiz is not yet finished");
+
+        const index = this.participants.findIndex(p => p.student._id === userId);
+        if (index === -1) return index;
+        return index + 1;
     }
 }

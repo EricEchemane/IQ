@@ -171,6 +171,10 @@ export default function SocketHandler(req: NextApiRequest, res: SocketRes) {
 
             quizRoom.isEnded = true;
             quizRoom.sortPartcipantsByScore();
+            // TODO: save quiz participants to database
+
+            // TODO: emit the student ranking
+
             // get stats
             callback(null, quizRoom);
         });
