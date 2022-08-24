@@ -283,7 +283,7 @@ export default function QuizRoomComponent({ user, quiz }: {
                         <Title order={3}> {participant.final_score} </Title>
                     </Group>
                 ))}
-                <Group position='right'>
+                <Group position='right' mt='xl'>
                     <Button variant='light' onClick={() => {
                         router.replace('/');
                     }}>
