@@ -5,8 +5,6 @@ import React from 'react';
 export default function Quizzes(props: {
     quizzes: any[];
 }) {
-    console.log(props.quizzes);
-
     return <>
         <Title order={3}> Your Quizzes </Title>
         <Stack my='lg'>
