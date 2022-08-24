@@ -24,6 +24,7 @@ export default function useHttpAdapter<PayloadType>(adapter: HttpAdapter) {
             if (response.ok) {
                 const data = await response.json();
                 setData(data.data);
+                return data;
             }
             else {
                 const error = await response.json();
