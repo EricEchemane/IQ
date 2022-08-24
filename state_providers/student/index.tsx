@@ -5,6 +5,7 @@ import Quiz from 'entities/quiz.entity';
 
 
 export interface IStudentState {
+    _id: string;
     email: string;
     name: string;
     image: string;
