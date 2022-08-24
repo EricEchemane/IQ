@@ -6,7 +6,6 @@ import {
     Navbar,
     Header,
     Footer,
-    Aside,
     Text,
     MediaQuery,
     Burger,
@@ -20,7 +19,7 @@ import {
 } from '@mantine/core';
 import AppHeader from './student/AppHeader';
 import NavBar from './student/NavBar';
-import { IconBallpen, IconUserCircle, IconUsers } from '@tabler/icons';
+import { IconBallpen, IconUserCircle } from '@tabler/icons';
 import Contents from './student/Contents';
 import { showNotification } from '@mantine/notifications';
 import { useRouter } from 'next/router';
@@ -66,10 +65,7 @@ export default function Student({ data }: any) {
                         <Tabs.List style={{ width: '100%' }}>
                             <Tabs.Tab
                                 icon={<IconBallpen strokeWidth={1} />}
-                                value="quizes"> Quizes </Tabs.Tab>
-                            <Tabs.Tab
-                                icon={<IconUsers strokeWidth={1} />}
-                                value="participants"> Participants </Tabs.Tab>
+                                value="quizes"> Quizzes </Tabs.Tab>
                             <Tabs.Tab
                                 icon={<IconUserCircle strokeWidth={1} />}
                                 value="account"> Edit account </Tabs.Tab>

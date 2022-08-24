@@ -9,7 +9,6 @@ import QuizAdapter, { deleteQuizPayload, getParticipantsPayload, publishQuizPayl
 import { showNotification } from '@mantine/notifications';
 import { openConfirmModal } from '@mantine/modals';
 import { useRouter } from 'next/router';
-import { IQuizParticipant } from 'entities/quiz-participant.entity';
 
 export default function ViewQuizes() {
     const theme = useMantineTheme();
