@@ -79,9 +79,6 @@ export default function Student({ data }: any) {
                             <Tabs.Tab
                                 icon={<IconPencilPlus strokeWidth={1} />}
                                 value={professorTabs.create_new_quiz}> Create new quiz </Tabs.Tab>
-                            <Tabs.Tab
-                                icon={<IconUsers strokeWidth={1} />}
-                                value={professorTabs.my_students}> My students </Tabs.Tab>
                         </Tabs.List>
                     </Tabs>
                 </Navbar>
