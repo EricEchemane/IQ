@@ -46,6 +46,7 @@ function reducer(state: IProfessorState, { type, payload }: ProfessorAction): IP
             _state = { ...state };
             _state.quizes = _state.quizes.filter((quiz: any) => quiz._id !== payload.quizId);
             return _state;
+        case ProfessorActions.set_participants:
         default:
             return state;
     }

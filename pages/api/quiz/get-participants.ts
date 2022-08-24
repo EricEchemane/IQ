@@ -14,7 +14,7 @@ async function hanlder(req: NextApiRequest) {
     }
     const { QuizParticipant } = db.models;
 
-    const participants = await QuizParticipant.find({ quiz: quizId });
+    const participants = await QuizParticipant.find({ quiz: quizId }).populate('student');
     if (!participants) {
         return [];
     }

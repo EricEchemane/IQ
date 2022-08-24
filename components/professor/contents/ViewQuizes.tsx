@@ -5,10 +5,11 @@ import useProfessorState, { ProfessorActions, ProfessorStateType } from 'state_p
 import moment from 'moment';
 import QuizView from './QuizView';
 import useHttpAdapter from 'http_adapters/useHttpAdapter';
-import QuizAdapter, { deleteQuizPayload, publishQuizPayload, unpublishQuizPayload, updateQuizTitlePayload } from 'http_adapters/adapters/quiz.adapter';
+import QuizAdapter, { deleteQuizPayload, getParticipantsPayload, publishQuizPayload, unpublishQuizPayload, updateQuizTitlePayload } from 'http_adapters/adapters/quiz.adapter';
 import { showNotification } from '@mantine/notifications';
 import { openConfirmModal } from '@mantine/modals';
 import { useRouter } from 'next/router';
+import { IQuizParticipant } from 'entities/quiz-participant.entity';
 
 export default function ViewQuizes() {
     const theme = useMantineTheme();
@@ -17,10 +18,13 @@ export default function ViewQuizes() {
     const [viewQuestionsModelIsOpen, setViewQuestionsModelIsOpen] = useState(false);
     const [editTitleModalIsOpen, setEditTitleModalIsOpen] = useState(false);
     const [selectedQuiz, setSelectedQuiz] = useState<any>();
+    const [viewParticipantsModalIsOpen, setViewParticipantsModalIsOpen] = useState(false);
+
     const updateQuizTitleAdapter = useHttpAdapter<updateQuizTitlePayload>(QuizAdapter.updateTitle);
     const publishQuizAdapter = useHttpAdapter<publishQuizPayload>(QuizAdapter.publish);
     const unpublishQuizAdapter = useHttpAdapter<unpublishQuizPayload>(QuizAdapter.unpublish);
     const deleteQuizAdapter = useHttpAdapter<deleteQuizPayload>(QuizAdapter.delete);
+    const getParticipantsAdapter = useHttpAdapter<getParticipantsPayload>(QuizAdapter.getParticipants);
 
     useEffect(() => {
         if (updateQuizTitleAdapter.data) {
@@ -148,6 +152,17 @@ export default function ViewQuizes() {
             },
         });
     };
+    const viewParticipants = async (quizId: string) => {
+        const data = await getParticipantsAdapter.execute({ quizId });
+        if (data.data.length > 0) {
+            setViewParticipantsModalIsOpen(true);
+        } else {
+            showNotification({
+                color: 'yellow',
+                message: 'This quiz has no participants yet'
+            });
+        }
+    };
 
     return (
         <>
@@ -207,9 +222,7 @@ export default function ViewQuizes() {
                                             }}
                                             icon={<IconBookUpload size={14} />}> Publish this quiz </Menu.Item>}
                                     <Menu.Item
-                                        onClick={() => {
-                                            alert('view participants');
-                                        }}
+                                        onClick={() => viewParticipants(quiz._id)}
                                         icon={<IconUsers size={14} />}> View participants </Menu.Item>
                                     <Menu.Divider />
 
@@ -245,6 +258,30 @@ export default function ViewQuizes() {
                         <QuizView quizId={selectedQuiz._id} key={index} index={index} question={question} />
                     ))}
                 </Accordion>
+            </Modal>
+
+            <Modal
+                size={'550px'}
+                overlayColor={theme.colorScheme === 'dark' ? theme.colors.dark[9] : theme.colors.gray[2]}
+                overlayOpacity={0.55}
+                overlayBlur={3}
+                overflow='inside'
+                closeOnEscape
+                closeOnClickOutside={false}
+                opened={viewParticipantsModalIsOpen}
+                onClose={() => setViewParticipantsModalIsOpen(false)}
+                title={<Text weight='bold' color='dimmed'> Quiz Participants </Text>}
+            >
+                <Group position='apart' mb='md'>
+                    <Title order={3} color='dimmed'> Student name </Title>
+                    <Title order={3} color='dimmed'> Final score </Title>
+                </Group>
+                {getParticipantsAdapter.data?.map((participant: any, index: number) => (
+                    <Group key={index} position='apart'>
+                        <Title order={4}> {participant.student.name} </Title>
+                        <Title order={4}> {participant.final_score} </Title>
+                    </Group>
+                ))}
             </Modal>
 
             <Dialog
