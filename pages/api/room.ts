@@ -139,7 +139,6 @@ export default function SocketHandler(req: NextApiRequest, res: SocketRes) {
 
             try {
                 quizRoom.next();
-
                 socket.to(room).emit('question:next', quizRoom);
                 callback(null, quizRoom);
             } catch (error: any) {
@@ -159,8 +158,11 @@ export default function SocketHandler(req: NextApiRequest, res: SocketRes) {
             if (!quizRoom) return;
 
             try {
-                const participant = quizRoom.submitAnswer(payload);
-                callback(null, participant);
+                quizRoom.submitAnswer(payload);
+                if (quizRoom.allAnswersSubmitted()) {
+                    quizRoom.sortRankings();
+                    socket.to(payload.room).emit('show:ranking', quizRoom.studentRankings);
+                }
             } catch (error: any) {
                 callback('unable to submit answer', null);
             }

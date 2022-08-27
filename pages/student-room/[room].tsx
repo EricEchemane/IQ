@@ -17,6 +17,8 @@ import io from "socket.io-client";
 
 let socket: ClientSocket;
 let outsideAnswer = '';
+let outSideDate = '';
+let outsideRanking = 0;
 
 export default function StudentRoom({ user }: { user: IUser; }) {
     const theme = useMantineTheme();
@@ -69,7 +71,8 @@ export default function StudentRoom({ user }: { user: IUser; }) {
                 answer: outsideAnswer,
                 isCorrect: answerIsCorrect,
                 room: typeof room === 'string' ? room : '',
-                userId: user._id || ''
+                userId: user._id || '',
+                dateSubmitted: outSideDate
             }, (error: string, data: any) => {
                 if (error) console.error(error);
             });
@@ -82,6 +85,10 @@ export default function StudentRoom({ user }: { user: IUser; }) {
                     setQuizResults(result);
                 }
             });
+        });
+        socket.on('show:ranking', (rankings: any[]) => {
+            const rank = rankings.findIndex(r => r.userId === user._id) + 1;
+            outsideRanking = rank;
         });
 
         // join room
@@ -98,7 +105,6 @@ export default function StudentRoom({ user }: { user: IUser; }) {
                 if (data) {
                     setConnected(true);
                     setQuizRoom(data.quizRoom);
-                    console.log(data);
                 }
             });
         }
@@ -107,6 +113,8 @@ export default function StudentRoom({ user }: { user: IUser; }) {
 
     useEffect(() => {
         outsideAnswer = answer;
+        if (answer !== '') outSideDate = new Date().toString();
+        else outSideDate = '';
     }, [answer]);
 
     useEffect(() => {
@@ -215,6 +223,7 @@ export default function StudentRoom({ user }: { user: IUser; }) {
         >
             {answerStatus === 'correct' && <>
                 <Text size={'xl'} color='green'> Correct! </Text>
+                <Text> Ranking: {outsideRanking} </Text>
             </>}
             {answerStatus === 'wrong' && <>
                 <Text size={'xl'} color='red'> Wrong </Text>
