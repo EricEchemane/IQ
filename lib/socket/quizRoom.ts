@@ -14,6 +14,7 @@ export class QuizRoom {
     currentIndexOfQuestion: number = -1; // -1 means not yet started
     currentQuestion: IQuestion | undefined;
     frequencyOfCorrectAnswers: number[] = [];
+    studentRankings: { userId: string, dateSubmitted: Date; }[] = [];
 
     constructor(
         room: string,
@@ -39,6 +40,7 @@ export class QuizRoom {
         if (this.currentIndexOfQuestion + 1 === this.quiz.questions.length) {
             throw new Error("No more questions");
         }
+        this.studentRankings = [];
         this.currentIndexOfQuestion = this.currentIndexOfQuestion + 1;
         this.currentQuestion = this.quiz.questions[this.currentIndexOfQuestion];
     }
@@ -76,6 +78,11 @@ export class QuizRoom {
             participant.number_of_correct_answers = participant.number_of_correct_answers + 1;
             participant.final_score = participant.final_score + (this.currentQuestion?.points || 1);
             this.frequencyOfCorrectAnswers[this.currentIndexOfQuestion] = this.frequencyOfCorrectAnswers[this.currentIndexOfQuestion] + 1;
+
+            this.studentRankings.push({
+                userId: payload.userId,
+                dateSubmitted: new Date(payload.dateSubmitted)
+            });
         }
         return participant;
     }
@@ -94,5 +101,13 @@ export class QuizRoom {
         const index = this.participants.findIndex(p => p.student._id === userId);
         if (index === -1) return index;
         return index + 1;
+    }
+
+    sortRankings() {
+        this.studentRankings.sort((a, b) => a.dateSubmitted.getTime() - b.dateSubmitted.getTime());
+    }
+
+    allAnswersSubmitted() {
+        return this.studentRankings.length === this.participants.length;
     }
 }
