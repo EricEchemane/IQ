@@ -10,4 +10,5 @@ export interface ServerEvents {
     "question:next": (quizRoom: QuizRoom) => void;
     "reveal:correct-answer": (answer: string) => void;
     "quiz:saved": (quizRoom: QuizRoom) => void;
+    "show:ranking": (rankings: any[]) => void;
 }
