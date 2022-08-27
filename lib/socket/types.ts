@@ -26,6 +26,7 @@ export type submitAnswerPayload = {
     answer: string;
     userId: string;
     isCorrect: boolean;
+    dateSubmitted: string;
 };
 export type quizResult = {
     ranking: number;
