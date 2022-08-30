@@ -3,6 +3,7 @@ import React, { useEffect } from 'react';
 import Quizzes from './contents/Quizzes';
 import useHttpAdapter from 'http_adapters/useHttpAdapter';
 import QuizAdapter, { getQuizzesByStudentIdPayload } from 'http_adapters/adapters/quiz.adapter';
+import { Box } from '@mantine/core';
 
 export default function Contents({ activeTab }: { activeTab: string | null; }) {
     const { state, dispatch }: UserStateType = useUserState();
@@ -21,6 +22,23 @@ export default function Contents({ activeTab }: { activeTab: string | null; }) {
         return <div>participants</div>;
     }
     else {
-        return <div> edit account </div>;
+        return <>
+            <div style={{
+                backgroundColor: 'red',
+                display: 'flex',
+                justifyContent: 'space-evenly',
+                flexWrap: 'wrap'
+            }}>
+                <Box p={4} style={{ backgroundColor: 'blue' }} m={5}>
+                    hello
+                </Box>
+                <Box p={4} style={{ backgroundColor: 'blue' }} m={5}>
+                    hello
+                </Box>
+                <Box p={4} style={{ backgroundColor: 'blue' }} m={5}>
+                    hello
+                </Box>
+            </div>
+        </>;
     }
 }
