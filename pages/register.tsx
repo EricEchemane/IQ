@@ -8,7 +8,7 @@ import { showNotification } from '@mantine/notifications';
 import useHttpAdapter from 'http_adapters/useHttpAdapter';
 import UserAdapter, { RegisterPayload } from 'http_adapters/adapters/user.adapter';
 
-export default function Register() {
+export default function Register() { // /register page
     const router = useRouter();
     const { data: session } = useSession({
         required: true,
@@ -16,6 +16,7 @@ export default function Register() {
             router.replace('/signin');
         }
     });
+    // useForm - setup ng form values, kada value dun sa initialValues
     const form = useForm({
         initialValues: {
             email: session?.user?.email,
@@ -27,8 +28,10 @@ export default function Register() {
             adminPasscode: ''
         },
     });
+    // uses register module
     const registerAdapter = useHttpAdapter<RegisterPayload>(UserAdapter.register);
 
+    // this function reruns or called everytime session.user is change
     useEffect(() => {
         form.setValues(values => ({
             ...values,
@@ -37,14 +40,15 @@ export default function Register() {
             image: session?.user?.image,
         }));
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [session?.user]);
+    }, [session?.user]); // ito yung session.user
 
     useEffect(() => {
+        // if successful yung register, may data, punta sa index page - '/'
         if (registerAdapter.data) {
             router.replace('/');
-            console.log(registerAdapter.data);
         }
-        if (registerAdapter.error) {
+        if (registerAdapter.error) { // pag hindi successful yung register kaya may error
+            // display notification sa screen
             showNotification({
                 title: 'Admin error',
                 message: registerAdapter.error.message,
@@ -54,10 +58,12 @@ export default function Register() {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [registerAdapter.data, registerAdapter.error]);
 
+    // a function to execute or trigger the register adapter
     const handleRegister = async (values: any) => {
         await registerAdapter.execute(values);
     };
 
+    // lahat ng nasa baba is yung mismong markup page
     return (
         <>
             <Head> <title> Register | Ayq </title> </Head>
@@ -66,6 +72,7 @@ export default function Register() {
 
                 <Title align='center' order={2}> Register </Title>
 
+                {/* call the register function kapag nasubmit */}
                 <form onSubmit={form.onSubmit(handleRegister)}>
                     <TextInput
                         label={session?.user?.name || 'Email'}
