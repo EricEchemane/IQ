@@ -8,28 +8,35 @@ import { UserStateProvider } from 'state_providers/student';
 import { ProfessorStateProvider } from 'state_providers/professor';
 import useHttpAdapter from 'http_adapters/useHttpAdapter';
 import UserAdapter, { LoginPayload } from 'http_adapters/adapters/user.adapter';
+// all code above is just imports from other folders
 
+// this is the Home page
 const Home = () => {
-  const router = useRouter();
-  const { data } = useSession({
+  const router = useRouter(); // uses the router for URL navigation
+  const { data } = useSession({ // requires user session
     required: true,
-    onUnauthenticated() {
-      router.replace('/signin');
+    onUnauthenticated() { // if there is no user session, redirect to /signin page
+      router.replace('/signin'); // go to /signin route
     }
   });
+  // uses the login adapter module
   const userLoginAdapter = useHttpAdapter<LoginPayload>(UserAdapter.login);
 
-  useEffect(() => {
+  useEffect(() => { // run this function after the initial page load
     if (data && data.user?.email && !userLoginAdapter.data) {
+      // userLoginAdapter.execute executes the login given the email from the data session
       userLoginAdapter.execute({ email: data.user.email });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data]);
 
+  // is may error sa login request, got the /register
   if (userLoginAdapter.error) {
     router.replace('/register');
   }
+  // pag successful may data na kaya irerender na yung pages depende sa type ng user
   else if (userLoginAdapter.data) {
+    // if yung user is student render yun Student component, else render yung Professor
     if (userLoginAdapter.data.type === 'student')
       return <>
         <Head> <title> Ayq | Student </title> </Head>
