@@ -23,21 +23,8 @@ export default function Contents({ activeTab }: { activeTab: string | null; }) {
     }
     else {
         return <>
-            <div style={{
-                backgroundColor: 'red',
-                display: 'flex',
-                justifyContent: 'space-evenly',
-                flexWrap: 'wrap'
-            }}>
-                <Box p={4} style={{ backgroundColor: 'blue' }} m={5}>
-                    hello
-                </Box>
-                <Box p={4} style={{ backgroundColor: 'blue' }} m={5}>
-                    hello
-                </Box>
-                <Box p={4} style={{ backgroundColor: 'blue' }} m={5}>
-                    hello
-                </Box>
+            <div>
+                Comming soon
             </div>
         </>;
     }
