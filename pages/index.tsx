@@ -53,4 +53,4 @@ const Home = () => {
   }
 };
 
-export default Home;
+export default Home; // export the home component so it can be imported in _app.tsx
