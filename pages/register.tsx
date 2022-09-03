@@ -11,6 +11,7 @@ import UserAdapter, { RegisterPayload } from 'http_adapters/adapters/user.adapte
 const courses = ['BSCS', 'BSIT', 'BSEd']
     .sort().map(c => ({ value: c, label: c }));
 const years = ['1st year', '2nd year', '3rd year', '4th year'].map(c => ({ value: c, label: c }));
+const sections = ['A', 'B', 'C', 'D', 'E'].map(c => ({ value: c, label: 'Section ' + c }));
 
 export default function Register() {
     const router = useRouter();
@@ -110,6 +111,14 @@ export default function Register() {
                             label="Year"
                             placeholder="select your year"
                             data={years}
+                        />
+                        <Select
+                            value={form.values.section}
+                            onChange={c => form.setFieldValue('section', c || '')}
+                            required
+                            label="Section"
+                            placeholder="select your section"
+                            data={sections}
                         />
                     </Box>}
 
