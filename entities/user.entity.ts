@@ -13,7 +13,7 @@ export interface IUser {
     image: string;
     course: string;
     section: string;
-    year: "1" | "2" | "3" | "4";
+    year: string;
 }
 
 const userSchema = new mongoose.Schema<IUser>({
@@ -39,7 +39,7 @@ const userSchema = new mongoose.Schema<IUser>({
     image: String,
     course: String || null,
     section: String || null,
-    year: "1" || "2" || "3" || "4" || null,
+    year: String || null,
 });
 
 export default userSchema;

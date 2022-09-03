@@ -10,7 +10,7 @@ import UserAdapter, { RegisterPayload } from 'http_adapters/adapters/user.adapte
 
 const courses = ['BSCS', 'BSIT', 'BSEd']
     .sort().map(c => ({ value: c, label: c }));
-const years = ['1st year', '2nd year', '3rd year', '4th year'].map(c => ({ value: c, label: c }));
+const years = ['1st year', '2nd year', '3rd year', '4th year'].map(c => ({ value: c[0], label: c }));
 const sections = ['A', 'B', 'C', 'D', 'E'].map(c => ({ value: c, label: 'Section ' + c }));
 
 export default function Register() {
