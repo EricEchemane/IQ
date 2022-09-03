@@ -10,6 +10,7 @@ import UserAdapter, { RegisterPayload } from 'http_adapters/adapters/user.adapte
 
 const courses = ['BSCS', 'BSIT', 'BSEd']
     .sort().map(c => ({ value: c, label: c }));
+const years = ['1st year', '2nd year', '3rd year', '4th year'].map(c => ({ value: c, label: c }));
 
 export default function Register() {
     const router = useRouter();
@@ -101,6 +102,14 @@ export default function Register() {
                             label="Course"
                             placeholder="select your course"
                             data={courses}
+                        />
+                        <Select
+                            value={form.values.year}
+                            onChange={c => form.setFieldValue('year', c || '')}
+                            required
+                            label="Year"
+                            placeholder="select your year"
+                            data={years}
                         />
                     </Box>}
 
