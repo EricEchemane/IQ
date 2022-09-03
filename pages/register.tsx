@@ -1,4 +1,4 @@
-import { Box, Button, Group, PasswordInput, Radio, Stack, TextInput, Title } from '@mantine/core';
+import { Box, Button, Group, PasswordInput, Radio, Select, Stack, TextInput, Title } from '@mantine/core';
 import { useForm } from '@mantine/form';
 import { signOut, useSession } from 'next-auth/react';
 import Head from 'next/head';
@@ -7,6 +7,9 @@ import React, { useEffect } from 'react';
 import { showNotification } from '@mantine/notifications';
 import useHttpAdapter from 'http_adapters/useHttpAdapter';
 import UserAdapter, { RegisterPayload } from 'http_adapters/adapters/user.adapter';
+
+const courses = ['BSCS', 'BSIT', 'BSEd']
+    .sort().map(c => ({ value: c, label: c }));
 
 export default function Register() {
     const router = useRouter();
@@ -91,15 +94,13 @@ export default function Register() {
                     </Radio.Group>
 
                     {form.values.type === 'student' && <Box>
-                        <TextInput
+                        <Select
+                            value={form.values.course}
+                            onChange={c => form.setFieldValue('course', c || '')}
                             required
-                            label='Course'
-                            {...form.getInputProps('course')}
-                        />
-                        <TextInput
-                            required
-                            label='Section'
-                            {...form.getInputProps('section')}
+                            label="Course"
+                            placeholder="select your course"
+                            data={courses}
                         />
                     </Box>}
 
