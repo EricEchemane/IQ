@@ -9,6 +9,7 @@ const initial_values: IStudentState = {
     image: photoPlaceHolderUrl,
     name: '',
     section: '',
+    year: '',
     quizes: []
 };
 

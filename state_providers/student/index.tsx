@@ -11,6 +11,7 @@ export interface IStudentState {
     image: string;
     course: string;
     section: string;
+    year: string;
     quizes: typeof Quiz[];
 }
 
