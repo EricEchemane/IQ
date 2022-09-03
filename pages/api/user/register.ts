@@ -20,7 +20,7 @@ async function handler(req: NextApiRequest, token: JWT) {
         adminPasscode,
     }: RegisterPayload = JSON.parse(req.body);
 
-    if (!email.endsWith('@dfcamclp.edu.ph')) {
+    if (process.env.NODE_ENV === 'production' && !email.endsWith('@dfcamclp.edu.ph')) {
         throw new RequestError(403, "Only students from DFCAMCLP are allowed to register");
     }
 
