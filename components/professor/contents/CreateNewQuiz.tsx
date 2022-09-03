@@ -1,19 +1,19 @@
-import useProfessorState, { ProfessorStateType } from 'state_providers/professor';
+import { ActionIcon, Badge, Button, Group, Paper, Select, Stack, Text, TextInput, Title } from '@mantine/core';
 import React, { useState } from 'react';
-import { ActionIcon, Badge, Button, Group, Paper, Stack, Text, TextInput, Title } from '@mantine/core';
-import { getHotkeyHandler } from '@mantine/hooks';
 import AddQuestions from './AddQuestions';
 import { IconX } from '@tabler/icons';
+import { courses, sections, years } from 'pages/register';
 
 export default function CreateNewQuiz({ onSaveSuccess }: { onSaveSuccess: Function; }) {
-    const { state, dispatch }: ProfessorStateType = useProfessorState();
     const [quizTitle, setQuizTitle] = useState<string>('');
+    const [course, setCourse] = useState<string>('');
+    const [year, setYear] = useState<string>('');
     const [section, setSection] = useState<string>('');
     const [forSections, setForSections] = useState<string[]>([]);
 
     const addSection = () => {
         if (section.trim().length <= 0) return;
-        setForSections(sections => [...sections, section]);
+        setForSections(sections => [...sections, `${course} ${year + section}`]);
         setSection('');
     };
     const removeSection = (section: string) => {
@@ -33,18 +33,37 @@ export default function CreateNewQuiz({ onSaveSuccess }: { onSaveSuccess: Functi
                 onChange={(event) => setQuizTitle(event.currentTarget.value)} />
 
             <Group align='flex-end' spacing={5}>
-                <TextInput
-                    placeholder='enter sections here'
-                    label='For Sections'
-                    style={{ flex: 1 }}
-                    value={section}
+                <Select
                     required
-                    onChange={(event) => setSection(event.currentTarget.value)}
-                    onKeyDown={getHotkeyHandler([
-                        ['enter', addSection]
-                    ])}
-                />
-                <Button variant='filled' disabled={section.trim().length === 0} onClick={addSection}>Add</Button>
+                    value={course}
+                    onChange={(v: string) => setCourse(v)}
+                    label="For course"
+                    placeholder="Select course"
+                    data={courses} />
+                <Select
+                    required
+                    value={year}
+                    onChange={(v: string) => setYear(v)}
+                    label="For year"
+                    placeholder="Select year"
+                    data={years} />
+                <Select
+                    required
+                    value={section}
+                    onChange={(v: string) => setSection(v)}
+                    label="For section"
+                    placeholder="Select section"
+                    data={sections} />
+                <Button
+                    variant='filled'
+                    disabled={
+                        course === '' ||
+                        year === '' ||
+                        section === ''
+                    }
+                    onClick={addSection}>
+                    Add
+                </Button>
             </Group>
 
             <Paper p='sm' radius={7} withBorder>
@@ -52,19 +71,21 @@ export default function CreateNewQuiz({ onSaveSuccess }: { onSaveSuccess: Functi
                     <Text color='dimmed' mb='sm'> Title: </Text>
                     <Text weight='bold'> {quizTitle} </Text>
                 </Group>
-                <Text color='dimmed'>For Sections: {forSections.map((section, index) => {
+                <Text color='dimmed'>For: {forSections.map((section, index) => {
                     return <Badge
                         key={index}
                         ml='xs'
                         px='xs'
                         size='lg'
                         rightSection={removeButton}
-                        onClick={() => removeSection(section)}
-                    > {section} </Badge>;
+                        onClick={() => removeSection(section)}>
+                        {section} </Badge>;
                 })} </Text>
             </Paper>
 
-            {forSections.length > 0 && <AddQuestions onSaveSuccess={onSaveSuccess} quizTitle={quizTitle} forSections={forSections} />}
+            {forSections.length > 0 &&
+                quizTitle !== '' &&
+                <AddQuestions onSaveSuccess={onSaveSuccess} quizTitle={quizTitle} forSections={forSections} />}
         </Stack>
     );
 }
