@@ -24,6 +24,7 @@ export default function Register() {
             type: 'student',
             course: '',
             section: '',
+            year: '',
             adminPasscode: ''
         },
     });

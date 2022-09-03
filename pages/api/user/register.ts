@@ -16,6 +16,7 @@ async function handler(req: NextApiRequest, token: JWT) {
         type,
         course,
         section,
+        year,
         adminPasscode,
     }: RegisterPayload = JSON.parse(req.body);
 
@@ -38,7 +39,8 @@ async function handler(req: NextApiRequest, token: JWT) {
                 section,
                 name,
                 image,
-                type
+                type,
+                year
             });
             await user.save();
             return user;
