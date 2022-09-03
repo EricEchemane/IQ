@@ -1,12 +1,11 @@
+import QuizAdapter, { getQuizzesByStudentIdPayload } from 'http_adapters/adapters/quiz.adapter';
 import useUserState, { UserStateType } from 'state_providers/student';
+import useHttpAdapter from 'http_adapters/useHttpAdapter';
 import React, { useEffect } from 'react';
 import Quizzes from './contents/Quizzes';
-import useHttpAdapter from 'http_adapters/useHttpAdapter';
-import QuizAdapter, { getQuizzesByStudentIdPayload } from 'http_adapters/adapters/quiz.adapter';
-import { Box } from '@mantine/core';
 
 export default function Contents({ activeTab }: { activeTab: string | null; }) {
-    const { state, dispatch }: UserStateType = useUserState();
+    const { state }: UserStateType = useUserState();
     const getQuizzesAdapter = useHttpAdapter<getQuizzesByStudentIdPayload>(QuizAdapter.getByStudentId);
 
     useEffect(() => {
@@ -21,11 +20,6 @@ export default function Contents({ activeTab }: { activeTab: string | null; }) {
     else if (activeTab === 'participants') {
         return <div>participants</div>;
     }
-    else {
-        return <>
-            <div>
-                Comming soon
-            </div>
-        </>;
-    }
+    // return <EditAccount />;
+    return <></>;
 }
