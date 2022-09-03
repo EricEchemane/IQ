@@ -64,6 +64,14 @@ export default function QuizViewEditMode({ question, index, quizId }
             });
             return;
         }
+        if (values.question.length < 5) {
+            showNotification({
+                title: 'Ooops!',
+                message: 'Question is too short',
+                color: 'red',
+            });
+            return;
+        }
         updateQuestionAdapter.execute({
             ...values,
             questionId: question._id,
