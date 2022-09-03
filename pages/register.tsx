@@ -43,7 +43,6 @@ export default function Register() {
     useEffect(() => {
         if (registerAdapter.data) {
             router.replace('/');
-            console.log(registerAdapter.data);
         }
         if (registerAdapter.error) {
             showNotification({
