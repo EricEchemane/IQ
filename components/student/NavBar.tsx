@@ -8,6 +8,7 @@ interface Props {
 }
 
 export default function NavBar({ course, section, year }: Props) {
+    course = course.split(' | ')[1];
     return (
         <Stack>
             <Stack spacing={0}>
