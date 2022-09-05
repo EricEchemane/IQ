@@ -1,4 +1,4 @@
-import { Box, Button, Group, PasswordInput, Radio, Select, Stack, TextInput, Title } from '@mantine/core';
+import { Box, Button, Group, NumberInput, PasswordInput, Radio, Select, Stack, TextInput, Title } from '@mantine/core';
 import { useForm } from '@mantine/form';
 import { signOut, useSession } from 'next-auth/react';
 import Head from 'next/head';
@@ -14,7 +14,6 @@ export const courses = [
 ]
     .sort().map(c => ({ value: c, label: c }));
 export const years = ['1', '2', '3', '4'].map(c => ({ value: c, label: c }));
-export const sections = ['A', 'B', 'C', 'D', 'E'].map(c => ({ value: c, label: c }));
 
 export default function Register() {
     const router = useRouter();
@@ -31,7 +30,7 @@ export default function Register() {
             image: session?.user?.image,
             type: 'student',
             course: '',
-            section: '',
+            section: 1,
             year: '',
             adminPasscode: ''
         },
@@ -115,13 +114,13 @@ export default function Register() {
                             placeholder="select your year"
                             data={years}
                         />
-                        <Select
-                            value={form.values.section}
-                            onChange={c => form.setFieldValue('section', c || '')}
-                            required
+                        <NumberInput
+                            placeholder="Section"
                             label="Section"
-                            placeholder="select your section"
-                            data={sections}
+                            required
+                            min={1}
+                            max={20}
+                            {...form.getInputProps('section')}
                         />
                     </Box>}
 
