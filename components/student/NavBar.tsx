@@ -13,7 +13,7 @@ export default function NavBar({ course, section, year }: Props) {
         <Stack>
             <Stack spacing={0}>
                 <Title order={6}> Course and section </Title>
-                <Text> {course.toUpperCase() + ' ' + year + section.toUpperCase()} </Text>
+                <Text> {course?.toUpperCase() + ' ' + year + section.toUpperCase()} </Text>
             </Stack>
         </Stack>
     );
