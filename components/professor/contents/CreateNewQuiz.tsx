@@ -1,20 +1,20 @@
-import { ActionIcon, Badge, Button, Group, Paper, Select, Stack, Text, TextInput, Title } from '@mantine/core';
+import { ActionIcon, Badge, Button, Group, NumberInput, Paper, Select, Stack, Text, TextInput, Title } from '@mantine/core';
 import React, { useState } from 'react';
 import AddQuestions from './AddQuestions';
 import { IconX } from '@tabler/icons';
-import { courses, sections, years } from 'pages/register';
+import { courses, years } from 'pages/register';
 
 export default function CreateNewQuiz({ onSaveSuccess }: { onSaveSuccess: Function; }) {
     const [quizTitle, setQuizTitle] = useState<string>('');
     const [course, setCourse] = useState<string>('');
     const [year, setYear] = useState<string>('');
-    const [section, setSection] = useState<string>('');
+    const [section, setSection] = useState<number>(1);
     const [forSections, setForSections] = useState<string[]>([]);
 
     const addSection = () => {
-        if (section.trim().length <= 0) return;
+        if (section <= 0) return;
         setForSections(sections => [...sections, `${course} ${year + section}`]);
-        setSection('');
+        setSection(1);
     };
     const removeSection = (section: string) => {
         setForSections(sections => sections.filter(s => s !== section));
@@ -47,20 +47,18 @@ export default function CreateNewQuiz({ onSaveSuccess }: { onSaveSuccess: Functi
                     label="For year"
                     placeholder="Select year"
                     data={years} />
-                <Select
+                <NumberInput
+                    placeholder="For section"
+                    label="Select section"
                     required
+                    min={1}
+                    max={20}
                     value={section}
-                    onChange={(v: string) => setSection(v)}
-                    label="For section"
-                    placeholder="Select section"
-                    data={sections} />
+                    onChange={(v: number) => setSection(v)}
+                />
                 <Button
                     variant='filled'
-                    disabled={
-                        course === '' ||
-                        year === '' ||
-                        section === ''
-                    }
+                    disabled={course === '' || year === ''}
                     onClick={addSection}>
                     Add
                 </Button>
