@@ -8,7 +8,10 @@ import { showNotification } from '@mantine/notifications';
 import useHttpAdapter from 'http_adapters/useHttpAdapter';
 import UserAdapter, { RegisterPayload } from 'http_adapters/adapters/user.adapter';
 
-export const courses = ['BSCS', 'BSIT', 'BSEd']
+export const courses = [
+    'Bachelor of Scinece in Information System | BSIS',
+    'Bachelor of Science in Computer Engineering | BSCPE'
+]
     .sort().map(c => ({ value: c, label: c }));
 export const years = ['1', '2', '3', '4'].map(c => ({ value: c, label: c }));
 export const sections = ['A', 'B', 'C', 'D', 'E'].map(c => ({ value: c, label: c }));
