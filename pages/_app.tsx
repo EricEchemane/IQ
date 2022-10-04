@@ -14,7 +14,7 @@ function MyApp({ Component, pageProps: { session, ...pageProps }, }: AppProps) {
         withNormalizeCSS
         theme={{
           /** Put your mantine theme override here */
-          colorScheme: 'light',
+          colorScheme: 'dark',
         }}
       >
         <NavigationProgress />
