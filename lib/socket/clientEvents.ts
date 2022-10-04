@@ -2,6 +2,7 @@ import { QuizRoom } from "./quizRoom";
 import { createRoomPayload, joinRoomPayload, quizResult, submitAnswerPayload } from "./types";
 
 export interface ClientEvents {
+    "message": (message: string) => void,
     "create:room": (
         payload: createRoomPayload,
         callback: (err: any, data: any) => void
