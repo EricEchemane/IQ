@@ -19,10 +19,12 @@ import {
 } from '@mantine/core';
 import AppHeader from './student/AppHeader';
 import NavBar from './student/NavBar';
-import { IconBallpen, IconUserCircle } from '@tabler/icons';
+import { IconBallpen } from '@tabler/icons';
 import Contents from './student/Contents';
 import { showNotification } from '@mantine/notifications';
 import { useRouter } from 'next/router';
+import UserAdapter from 'http_adapters/adapters/user.adapter';
+import useHttpAdapter from 'http_adapters/useHttpAdapter';
 
 export default function Student({ data }: any) {
     const router = useRouter();
@@ -32,6 +34,15 @@ export default function Student({ data }: any) {
     const [activeTab, setActiveTab] = useState<string | null>('quizes');
     const [quizCodeInputModal, setQuizCodeInputModal] = useState(false);
     const [quizCode, setQuizCode] = useState('');
+    const deleteAccountAdapter = useHttpAdapter(UserAdapter.deleteAccount);
+
+    const deleteAccount = async () => {
+        const confirmed = confirm("Are you sure you want to delete your account? This action cannot be undone. Click cancel if you change your mind");
+        if (confirmed) {
+            const data = await deleteAccountAdapter.execute();
+            if (data) signOut();
+        }
+    };
 
     useEffect(() => {
         dispatch({
@@ -83,6 +94,7 @@ export default function Student({ data }: any) {
             footer={
                 <Footer height={60} p="md">
                     <Group position='right'>
+                        <Button color="red" variant='subtle' onClick={deleteAccount}> Delete my account </Button>
                         <Button variant='subtle' onClick={() => signOut()}> Sign out </Button>
                         <Button onClick={() => setQuizCodeInputModal(true)}> Join a room </Button>
                     </Group>

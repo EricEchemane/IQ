@@ -19,6 +19,7 @@ import { IconList, IconPencilPlus, IconUsers } from '@tabler/icons';
 import Contents from './professor/Contents';
 import useHttpAdapter from 'http_adapters/useHttpAdapter';
 import QuizAdapter, { GetQuizzesPayload } from 'http_adapters/adapters/quiz.adapter';
+import UserAdapter from 'http_adapters/adapters/user.adapter';
 
 export const professorTabs = Object.freeze({
     view_quizes: 'view_quizes',
@@ -32,6 +33,15 @@ export default function Student({ data }: any) {
     const [opened, setOpened] = useState(false);
     const [activeTab, setActiveTab] = useState<string | null>(professorTabs.view_quizes);
     const getQuizzesAdapter = useHttpAdapter<GetQuizzesPayload>(QuizAdapter.get);
+    const deleteAccountAdapter = useHttpAdapter(UserAdapter.deleteAccount);
+
+    const deleteAccount = async () => {
+        const confirmed = confirm("Are you sure you want to delete your account? This action cannot be undone. Click cancel if you change your mind");
+        if (confirmed) {
+            const data = await deleteAccountAdapter.execute();
+            if (data) signOut();
+        }
+    };
 
     useEffect(() => {
         if (data) getQuizzesAdapter.execute({ userId: data._id });
@@ -93,6 +103,7 @@ export default function Student({ data }: any) {
             footer={
                 <Footer height={60} p="md">
                     <Group position='right'>
+                        <Button color="red" variant='subtle' onClick={deleteAccount}> Delete my account </Button>
                         <Button variant='subtle' onClick={() => signOut()}> Sign out </Button>
                     </Group>
                 </Footer>
