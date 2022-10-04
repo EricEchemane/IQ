@@ -87,6 +87,11 @@ export default function SocketHandler(req: NextApiRequest, res: SocketRes) {
                 return;
             }
 
+            if (quizRoom.isStarted) {
+                callback(new Error('Quiz has already started'), null);
+                return;
+            }
+
             const participantIndex = quizRoom.participate(user);
 
             socket.join(room);

@@ -20,16 +20,16 @@ async function handler(req: NextApiRequest, token: JWT) {
         adminPasscode,
     }: RegisterPayload = JSON.parse(req.body);
 
-    if (!year || year === '') {
+    if (type === "student" && (!year || year === '')) {
         throw new RequestError(400, "Year is required");
     }
-    if (!course || course === '') {
+    if (type === "student" && (!course || course === '')) {
         throw new RequestError(400, "Course is required");
     }
 
-    // if (process.env.NODE_ENV === 'production' && !email.endsWith('@dfcamclp.edu.ph')) {
-    //     throw new RequestError(403, "Only students from DFCAMCLP are allowed to register");
-    // }
+    if (process.env.NODE_ENV === 'production' && !email.endsWith('@dfcamclp.edu.ph')) {
+        throw new RequestError(403, "Only students from DFCAMCLP are allowed to register");
+    }
 
     const db = await connectToDatabase();
     if (!db) {
