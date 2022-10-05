@@ -11,7 +11,7 @@ export default function Quizzes(props: {
             {props.quizzes?.map((data: any, index) => (
                 <Paper key={index} withBorder p='md'>
                     <Stack>
-                        <Title order={4}> {data.quiz.title} </Title>
+                        <Title order={4}> {data.quiz?.title} </Title>
                         <Group>
                             <Text> Final Score: {data.final_score} </Text>
                             <Divider orientation='vertical' />
