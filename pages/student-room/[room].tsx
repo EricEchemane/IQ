@@ -1,16 +1,18 @@
 import {
-    Avatar, Badge, Button, Container,
+    Avatar, Badge, Box, Button, Container,
     Divider, Group, Indicator, Loader,
     Modal, Paper, Radio, Stack, Text, Title, useMantineTheme
 } from '@mantine/core';
 import { IconClock } from '@tabler/icons';
 import connectToDatabase from 'db/connectToDatabase';
 import { IUser } from 'entities/user.entity';
+import getRandomInt from 'lib/random-int';
 import { QuizRoom } from 'lib/socket/quizRoom';
 import { ClientSocket, quizResult } from 'lib/socket/types';
 import { GetServerSideProps } from 'next';
 import { getToken } from 'next-auth/jwt';
 import Head from 'next/head';
+import Image from 'next/image';
 import { useRouter } from 'next/router';
 import React, { useCallback, useEffect, useState } from 'react';
 import io from "socket.io-client";
@@ -224,10 +226,24 @@ export default function StudentRoom({ user }: { user: IUser; }) {
             {answerStatus === 'correct' && <>
                 <Text size={'xl'} color='green'> Correct! </Text>
                 <Text> Ranking: {outsideRanking} </Text>
+                <Box py={"2rem"}>
+                    <Image
+                        width={300}
+                        height={300}
+                        src={`/gifs/correct-${getRandomInt(0, 4)}.gif`}
+                        alt="correct answer gif image" />
+                </Box>
             </>}
             {answerStatus === 'wrong' && <>
                 <Text size={'xl'} color='red'> Wrong </Text>
                 <Text color='dimmed'> The correct answer is {quizRoom?.currentQuestion?.correct_choice} </Text>
+                <Box py={"2rem"}>
+                    <Image
+                        width={300}
+                        height={300}
+                        src={`/gifs/wrong-${getRandomInt(0, 4)}.gif`}
+                        alt="wrong answer gif image" />
+                </Box>
             </>}
         </Modal>
 
