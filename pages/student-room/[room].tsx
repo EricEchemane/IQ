@@ -162,7 +162,7 @@ export default function StudentRoom({ user }: { user: IUser; }) {
                                 <Text size='sm'> {user.email} </Text>
                                 <Divider orientation='vertical' />
                                 <Text size='sm'>
-                                    {user.course.toUpperCase()} {user.section.toUpperCase()}
+                                    {user.program.toUpperCase()} {user.section.toUpperCase()}
                                 </Text>
                             </Group>
                         </Stack>
