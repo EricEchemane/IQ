@@ -14,7 +14,7 @@ async function handler(req: NextApiRequest, token: JWT) {
         name,
         image,
         type,
-        course,
+        program,
         section,
         year,
         adminPasscode,
@@ -23,7 +23,7 @@ async function handler(req: NextApiRequest, token: JWT) {
     if (type === "student" && (!year || year === '')) {
         throw new RequestError(400, "Year is required");
     }
-    if (type === "student" && (!course || course === '')) {
+    if (type === "student" && (!program || program === '')) {
         throw new RequestError(400, "Course is required");
     }
 
@@ -42,7 +42,7 @@ async function handler(req: NextApiRequest, token: JWT) {
         case 'student':
             const user = new User({
                 email,
-                course,
+                program,
                 section,
                 name,
                 image,

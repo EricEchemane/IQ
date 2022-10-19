@@ -11,7 +11,7 @@ export interface IUser {
     email: string;
     name: string;
     image: string;
-    course: string;
+    program: string;
     section: string;
     year: string;
 }
@@ -37,7 +37,7 @@ const userSchema = new mongoose.Schema<IUser>({
         minlength: [3, 'Name must be at least 3 characters long'],
     },
     image: String,
-    course: String || null,
+    program: String || null,
     section: String || null,
     year: String || null,
 });

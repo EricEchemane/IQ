@@ -19,7 +19,7 @@ import {
 } from '@mantine/core';
 import AppHeader from './student/AppHeader';
 import NavBar from './student/NavBar';
-import { IconBallpen } from '@tabler/icons';
+import { IconBallpen, IconUserCircle } from '@tabler/icons';
 import Contents from './student/Contents';
 import { showNotification } from '@mantine/notifications';
 import { useRouter } from 'next/router';
@@ -77,9 +77,9 @@ export default function Student({ data }: any) {
                             <Tabs.Tab
                                 icon={<IconBallpen strokeWidth={1} />}
                                 value="quizes"> Quizzes </Tabs.Tab>
-                            {/* <Tabs.Tab
+                            <Tabs.Tab
                                 icon={<IconUserCircle strokeWidth={1} />}
-                                value="account"> Edit account </Tabs.Tab> */}
+                                value="account"> Edit account </Tabs.Tab>
                         </Tabs.List>
                     </Tabs>
                     <Button

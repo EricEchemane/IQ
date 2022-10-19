@@ -102,8 +102,8 @@ export default function Register() {
                             value={form.values.course}
                             onChange={c => form.setFieldValue('course', c || '')}
                             required
-                            label="Course"
-                            placeholder="select your course"
+                            label="Program"
+                            placeholder="select your program"
                             data={courses}
                         />
                         <Select
