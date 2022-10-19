@@ -9,7 +9,7 @@ export interface IStudentState {
     email: string;
     name: string;
     image: string;
-    course: string;
+    program: string;
     section: string;
     year: string;
     quizes: typeof Quiz[];

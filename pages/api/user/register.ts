@@ -20,11 +20,12 @@ async function handler(req: NextApiRequest, token: JWT) {
         adminPasscode,
     }: RegisterPayload = JSON.parse(req.body);
 
+
     if (type === "student" && (!year || year === '')) {
         throw new RequestError(400, "Year is required");
     }
     if (type === "student" && (!program || program === '')) {
-        throw new RequestError(400, "Course is required");
+        throw new RequestError(400, "Program is required");
     }
 
     if (process.env.NODE_ENV === 'production' && !email.endsWith('@dfcamclp.edu.ph')) {

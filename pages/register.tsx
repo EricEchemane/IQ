@@ -29,7 +29,7 @@ export default function Register() {
             name: session?.user?.name,
             image: session?.user?.image,
             type: 'student',
-            course: '',
+            program: '',
             section: 1,
             year: '',
             adminPasscode: ''
@@ -99,8 +99,8 @@ export default function Register() {
 
                     {form.values.type === 'student' && <Box>
                         <Select
-                            value={form.values.course}
-                            onChange={c => form.setFieldValue('course', c || '')}
+                            value={form.values.program}
+                            onChange={c => form.setFieldValue('program', c || '')}
                             required
                             label="Program"
                             placeholder="select your program"

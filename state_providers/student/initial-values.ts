@@ -4,7 +4,7 @@ export const photoPlaceHolderUrl = "https://media.istockphoto.com/vectors/person
 
 const initial_values: IStudentState = {
     _id: '',
-    course: '',
+    program: '',
     email: '',
     image: photoPlaceHolderUrl,
     name: '',
