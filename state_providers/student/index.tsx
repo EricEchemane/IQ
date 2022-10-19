@@ -18,6 +18,7 @@ export interface IStudentState {
 export enum UserActions {
     set_user = 'set_user',
     set_quizzes = 'set_quizzes',
+    update = 'update',
 }
 
 export interface UserAction {

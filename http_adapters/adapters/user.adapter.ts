@@ -11,10 +11,13 @@ export default class UserAdapter {
         url: "/api/user/register",
         method: "POST",
     };
-
     static deleteAccount: HttpAdapter = {
         url: "/api/user/delete",
         method: "DELETE",
+    };
+    static updateAccount: HttpAdapter = {
+        url: "/api/user/udpate",
+        method: "POST",
     };
 }
 
