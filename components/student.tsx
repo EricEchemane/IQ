@@ -82,6 +82,12 @@ export default function Student({ data }: any) {
                                 value="account"> Edit account </Tabs.Tab> */}
                         </Tabs.List>
                     </Tabs>
+                    <Button
+                        style={{ marginTop: 'auto' }}
+                        mt={'1rem'}
+                        color="red"
+                        variant='subtle'
+                        onClick={deleteAccount}> Delete my account </Button>
                 </Navbar>
             }
             // aside={
@@ -94,7 +100,6 @@ export default function Student({ data }: any) {
             footer={
                 <Footer height={60} p="md">
                     <Group position='right'>
-                        <Button color="red" variant='subtle' onClick={deleteAccount}> Delete my account </Button>
                         <Button variant='subtle' onClick={() => signOut()}> Sign out </Button>
                         <Button onClick={() => setQuizCodeInputModal(true)}> Join a room </Button>
                     </Group>
