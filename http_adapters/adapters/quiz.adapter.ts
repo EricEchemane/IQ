@@ -43,6 +43,8 @@ export default class QuizAdapter {
 
 export type CreateQuizPayload = {
     title: string;
+    program: string;
+    course: string;
     forSections: string[];
     questions: IQuestion[];
 };

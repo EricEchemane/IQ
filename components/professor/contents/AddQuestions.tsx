@@ -9,8 +9,10 @@ import React, { useEffect, useState } from 'react';
 import useProfessorState, { ProfessorActions, ProfessorStateType } from 'state_providers/professor';
 import AddedQuestions from './AddedQuestions';
 
-export default function AddQuestions({ quizTitle, forSections, onSaveSuccess }: {
+export default function AddQuestions({ quizTitle, forSections, onSaveSuccess, program, course }: {
     quizTitle: string;
+    course: string;
+    program: string;
     forSections: string[];
     onSaveSuccess: Function;
 }) {
@@ -67,7 +69,9 @@ export default function AddQuestions({ quizTitle, forSections, onSaveSuccess }: 
         createNewQuizAdapter.execute({
             forSections,
             title: quizTitle,
-            questions
+            questions,
+            program,
+            course
         });
     };
 

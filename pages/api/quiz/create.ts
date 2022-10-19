@@ -7,7 +7,7 @@ import { IQuiz } from 'entities/quiz.entity';
 import { IQuestion } from 'entities/question.entity';
 
 async function handler(req: NextApiRequest, token: JWT) {
-    const { forSections, title, questions }: CreateQuizPayload = JSON.parse(req.body);
+    const { forSections, title, questions, program, course }: CreateQuizPayload = JSON.parse(req.body);
 
     if (forSections.length === 0) {
         throw new RequestError(400, 'Requires atleast one section as the participant');
@@ -32,8 +32,10 @@ async function handler(req: NextApiRequest, token: JWT) {
 
     const quiz = new Quiz(<IQuiz>{
         title,
+        program,
+        course,
         author: user._id,
-        forSections
+        forSections,
     });
 
     questions.forEach(async (question) => {

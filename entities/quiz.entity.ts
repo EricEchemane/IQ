@@ -11,6 +11,8 @@ export interface IQuiz {
     date_created?: Date;
     default_question_timer?: 5;
     participants?: mongoose.Schema.Types.ObjectId[];
+    course: string;
+    program: string;
 }
 
 const quizSchema = new mongoose.Schema<IQuiz>({
@@ -51,7 +53,9 @@ const quizSchema = new mongoose.Schema<IQuiz>({
             },
             message: 'Requires atleast one section as the participant',
         }
-    }
+    },
+    course: { type: String, required: [true, 'Course is required'] },
+    program: { type: String, required: [true, 'Program is required'] },
 });
 
 export default quizSchema;

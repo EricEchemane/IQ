@@ -1,19 +1,26 @@
-import { ActionIcon, Badge, Button, Group, NumberInput, Paper, Select, Stack, Text, TextInput, Title } from '@mantine/core';
+import { ActionIcon, Autocomplete, Badge, Button, Group, NumberInput, Paper, Select, Stack, Text, TextInput, Title } from '@mantine/core';
 import React, { useState } from 'react';
 import AddQuestions from './AddQuestions';
 import { IconX } from '@tabler/icons';
-import { courses, years } from 'pages/register';
+import { years } from 'pages/register';
+import { courses } from './courses';
+
+export const programs = [
+    'Bachelor of Scinece in Information System | BSIS',
+    'Bachelor of Science in Computer Engineering | BSCPE'
+];
 
 export default function CreateNewQuiz({ onSaveSuccess }: { onSaveSuccess: Function; }) {
     const [quizTitle, setQuizTitle] = useState<string>('');
     const [course, setCourse] = useState<string>('');
+    const [program, setProgram] = useState<string>('');
     const [year, setYear] = useState<string>('');
     const [section, setSection] = useState<number>(1);
     const [forSections, setForSections] = useState<string[]>([]);
 
     const addSection = () => {
         if (section <= 0) return;
-        setForSections(sections => [...sections, `${course} ${year + section}`]);
+        setForSections(sections => [...sections, `${program} ${year + section}`]);
         setSection(1);
     };
     const removeSection = (section: string) => {
@@ -35,9 +42,16 @@ export default function CreateNewQuiz({ onSaveSuccess }: { onSaveSuccess: Functi
             <Group align='flex-end' spacing={5}>
                 <Select
                     required
+                    value={program}
+                    onChange={(v: string) => setProgram(v)}
+                    label="For program"
+                    placeholder="Select program"
+                    data={programs} />
+                <Autocomplete
+                    required
                     value={course}
                     onChange={(v: string) => setCourse(v)}
-                    label="For course"
+                    label="Course"
                     placeholder="Select course"
                     data={courses} />
                 <Select
@@ -58,7 +72,7 @@ export default function CreateNewQuiz({ onSaveSuccess }: { onSaveSuccess: Functi
                 />
                 <Button
                     variant='filled'
-                    disabled={course === '' || year === ''}
+                    disabled={program === '' || year === ''}
                     onClick={addSection}>
                     Add
                 </Button>
@@ -83,7 +97,7 @@ export default function CreateNewQuiz({ onSaveSuccess }: { onSaveSuccess: Functi
 
             {forSections.length > 0 &&
                 quizTitle !== '' &&
-                <AddQuestions onSaveSuccess={onSaveSuccess} quizTitle={quizTitle} forSections={forSections} />}
+                <AddQuestions onSaveSuccess={onSaveSuccess} quizTitle={quizTitle} forSections={forSections} program={program} course={course} />}
         </Stack>
     );
 }
