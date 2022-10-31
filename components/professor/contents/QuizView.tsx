@@ -22,7 +22,8 @@ export default function QuizViewEditMode({ question, index, quizId }
             choices: question.choices,
             correct_choice: question.correct_choice,
             points: question.points,
-            timer: question.timer
+            timer: question.timer,
+            type: question.type,
         }
     });
     const updateQuestionAdapter = useHttpAdapter<UpdateAQuestionPayload>(QuizAdapter.updateAQuestion);
@@ -56,7 +57,7 @@ export default function QuizViewEditMode({ question, index, quizId }
 
     const save = (values: typeof editForm.values) => {
         const hasCorrectChoice = values.choices.find(c => c === values.correct_choice);
-        if (!hasCorrectChoice) {
+        if (!hasCorrectChoice && values.type === 'multiple') {
             showNotification({
                 title: 'Ooops!',
                 message: 'Please provide the correct answer',
@@ -75,7 +76,8 @@ export default function QuizViewEditMode({ question, index, quizId }
         updateQuestionAdapter.execute({
             ...values,
             questionId: question._id,
-            quizId
+            quizId,
+            type: question.type
         });
     };
 
@@ -99,9 +101,10 @@ export default function QuizViewEditMode({ question, index, quizId }
                         {!isInEditMode
                             ?
                             <>
-                                {question.choices.map((c: any) => (
-                                    <Text key={c} color={c === question.correct_choice ? 'green' : 'dark'}> {c} </Text>
+                                {question.type === "multiple" && question.choices.map((c: any) => (
+                                    <Text key={c} color={c === question.correct_choice ? 'green' : 'red'}> {c} </Text>
                                 ))}
+                                {question.type === "enumeration" && <Text color='green'> {question.correct_choice} </Text>}
                                 <Text color='dimmed' size='sm' mt='sm'>
                                     {question.timer} seconds - {question.points} {question.points && question.points > 1 ? 'points' : 'point'}
                                 </Text>
@@ -115,7 +118,7 @@ export default function QuizViewEditMode({ question, index, quizId }
                                     {...editForm.getInputProps('question')}
                                 />
 
-                                {editForm.values.choices.map((c: any, index: number) => (
+                                {question.type === "multiple" && editForm.values.choices.map((c: any, index: number) => (
                                     <Group key={index} mb='md' spacing={5} align='flex-end'>
                                         <TextInput
                                             style={{ flex: 1 }}
@@ -150,7 +153,16 @@ export default function QuizViewEditMode({ question, index, quizId }
                                         </ActionIcon>
                                     </Group>
                                 ))}
-                                <Group position='right' mb='md' spacing={5} align='center'>
+
+                                {question.type === "enumeration" && <>
+                                    <TextInput
+                                        required
+                                        mb='md'
+                                        label="Correct answer"
+                                        {...editForm.getInputProps('correct_choice')} />
+                                </>}
+
+                                {question.type === "multiple" && <Group position='right' mb='md' spacing={5} align='center'>
                                     <Text size='xs'> {editForm.values.choices.length === 4 ? 'Maximum of 4 options' : 'Add another option'} </Text>
                                     <ActionIcon
                                         onClick={() => {
@@ -162,7 +174,7 @@ export default function QuizViewEditMode({ question, index, quizId }
                                         color="blue">
                                         <IconPlus />
                                     </ActionIcon>
-                                </Group>
+                                </Group>}
 
                                 <Group mb='md'>
                                     <NumberInput

@@ -6,6 +6,7 @@ export interface IQuestion {
     choices: string[];
     correct_choice: string;
     points?: number;
+    type: string;
 }
 
 const questionSchema = new mongoose.Schema<IQuestion>({
@@ -31,6 +32,11 @@ const questionSchema = new mongoose.Schema<IQuestion>({
     correct_choice: {
         type: String,
         required: [true, 'Correct choice is required'],
+    },
+    type: {
+        type: String,
+        enum: ['multiple', 'enumeration'],
+        default: 'multiple',
     },
     points: {
         type: Number,

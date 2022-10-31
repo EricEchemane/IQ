@@ -45,7 +45,8 @@ async function handler(req: NextApiRequest, token: JWT) {
             question: question.question,
             timer: question.timer === 'inherit' ? quiz.default_question_timer : question.timer,
             points: question.points ? question.points : 1,
-            forQuiz: quiz._id
+            forQuiz: quiz._id,
+            type: question.type,
         });
         quiz.questions.push(newQuestion);
     });

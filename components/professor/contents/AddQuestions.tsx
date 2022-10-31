@@ -1,4 +1,4 @@
-import { ActionIcon, Badge, Button, Group, NumberInput, Paper, Stack, Text, Textarea, TextInput, Title } from '@mantine/core';
+import { ActionIcon, Badge, Button, Group, NumberInput, Paper, Radio, Stack, Text, Textarea, TextInput, Title } from '@mantine/core';
 import { useForm } from '@mantine/form';
 import { showNotification } from '@mantine/notifications';
 import { IconCheck, IconPlus, IconX } from '@tabler/icons';
@@ -48,19 +48,21 @@ export default function AddQuestions({ quizTitle, forSections, onSaveSuccess, pr
             choices: ['option 1 (edit me)', 'option 2 (edit me)'],
             correct_choice: '',
             points: 1,
+            type: 'multiple'
         },
         validate: {
             question: question => question.trim().length < 5 ? 'Question must be at least 5 characters long' : null,
-            choices: choices => choices.length < 2 ? 'Requires atleast two choices' : null,
             correct_choice: (correct_choice, values) => {
                 if (!correct_choice) return 'Every question should have the correct answer';
                 const correctChoiceIsInTheChoices = values.choices.find(choice => choice === correct_choice);
-                if (!correctChoiceIsInTheChoices) return 'Answer key should be in the given choices';
+                if (!correctChoiceIsInTheChoices && values.type === 'multiple') return 'Answer key should be in the given choices';
             }
         }
     });
+
     const addQuestion = () => {
         setQuestions(q => {
+            console.log([...q, form.values]);
             return [...q, form.values];
         });
         form.reset();
@@ -82,6 +84,17 @@ export default function AddQuestions({ quizTitle, forSections, onSaveSuccess, pr
             <Paper p='md' shadow='md'>
                 <form onSubmit={form.onSubmit(addQuestion)}>
                     <Stack>
+                        <Radio.Group
+                            value={form.values.type}
+                            onChange={v => form.setFieldValue('type', v)}
+                            label="Select question type"
+                            required
+                            withAsterisk
+                        >
+                            <Radio value="multiple" label="Multiple Choice" />
+                            <Radio value="enumeration" label="Enumeration" />
+                        </Radio.Group>
+
                         <Textarea
                             style={{ flex: 1 }}
                             required
@@ -106,7 +119,7 @@ export default function AddQuestions({ quizTitle, forSections, onSaveSuccess, pr
                                 placeholder='1' />
                         </Group>
 
-                        <Stack spacing={8} mt='1rem'>
+                        {form.values.type === "multiple" && <Stack spacing={8} mt='1rem'>
                             <Group>
                                 <Text size='sm' weight='bold'> Answer key: </Text>
                                 <Badge size='lg' color={form.values.correct_choice ? 'blue' : 'yellow'}>
@@ -179,7 +192,15 @@ export default function AddQuestions({ quizTitle, forSections, onSaveSuccess, pr
                                 </ActionIcon>
 
                             </Group>
-                        </Stack>
+                        </Stack>}
+
+                        {form.values.type === "enumeration" && <>
+                            <TextInput
+                                required
+                                name='type'
+                                label="Correct answer"
+                                {...form.getInputProps('correct_choice')} />
+                        </>}
                     </Stack>
 
                     <Group grow mt='2rem'>
