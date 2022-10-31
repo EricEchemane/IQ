@@ -1,7 +1,7 @@
 import {
     Avatar, Badge, Box, Button, Container,
     Divider, Group, Indicator, Loader,
-    Modal, Paper, Radio, Stack, Text, Title, useMantineTheme
+    Modal, Paper, Radio, Stack, Text, TextInput, Title, useMantineTheme
 } from '@mantine/core';
 import { IconClock } from '@tabler/icons';
 import connectToDatabase from 'db/connectToDatabase';
@@ -195,7 +195,8 @@ export default function StudentRoom({ user }: { user: IUser; }) {
                         </Group>
                         <Badge> {quizRoom?.currentIndexOfQuestion + 1} of {quizRoom.quiz.questions.length} </Badge>
                     </Group>
-                    <Radio.Group
+
+                    {quizRoom.currentQuestion?.type === "multiple" && <Radio.Group
                         mt='md'
                         value={answer}
                         onChange={setAnswer}
@@ -207,7 +208,16 @@ export default function StudentRoom({ user }: { user: IUser; }) {
                         {quizRoom.currentQuestion?.choices.map((choice: string, index: number) => (
                             <Radio value={choice} label={choice} key={index} />
                         ))}
-                    </Radio.Group>
+                    </Radio.Group>}
+
+                    {quizRoom.currentQuestion?.type === "enumeration" && <>
+                        <Title mb='md' mt='md' order={3}> {quizRoom?.currentQuestion?.question} </Title>
+                        <TextInput
+                            onChange={event => setAnswer(event.target.value)}
+                            value={answer}
+                            label='Your answer' />
+                    </>}
+
                 </Paper>
             </>}
         </Container>
