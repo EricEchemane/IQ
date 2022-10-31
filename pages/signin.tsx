@@ -19,7 +19,7 @@ export default function Signin() {
     return (
         <>
             <Head> <title> Sign in - Ayq </title> </Head>
-            <Stack sx={{ maxWidth: 600 }} mx="auto" my='4rem'>
+            <Stack sx={{ maxWidth: 700 }} mx="auto" my='4rem'>
                 <Group position='center'>
                     <Image
                         width={100}
@@ -27,7 +27,7 @@ export default function Signin() {
                         src={'/favicon.png'}
                         alt='dfcamclp logo' />
                 </Group>
-                <Title align='center' mb={'md'}> Welcome to DFCAMLP </Title>
+                <Title order={2} align='center' mb={'md'}> Dr. Filemon C. Aguilar Memorial College Las Pinas </Title>
                 <Button
                     onClick={() => signIn('google')}
                     size='xl'
