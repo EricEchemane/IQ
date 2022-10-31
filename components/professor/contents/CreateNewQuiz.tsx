@@ -6,7 +6,7 @@ import { years } from 'pages/register';
 import { courses } from './courses';
 
 export const programs = [
-    'Bachelor of Scinece in Information System | BSIS',
+    'Bachelor of Science in Information System | BSIS',
     'Bachelor of Science in Computer Engineering | BSCPE'
 ];
 
