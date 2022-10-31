@@ -7,6 +7,7 @@ import React, { useEffect } from 'react';
 import { showNotification } from '@mantine/notifications';
 import useHttpAdapter from 'http_adapters/useHttpAdapter';
 import UserAdapter, { RegisterPayload } from 'http_adapters/adapters/user.adapter';
+import Image from 'next/image';
 
 export const courses = [
     'Bachelor of Scinece in Information System | BSIS',
@@ -71,7 +72,15 @@ export default function Register() {
 
             <Stack sx={{ maxWidth: 300 }} mx="auto" my='4rem'>
 
-                <Title align='center' order={2}> Register </Title>
+                <Group position='apart'>
+                    <Title align='center' order={2}> Register </Title>
+                    <Image
+                        width={60}
+                        height={60}
+                        src={'/favicon.png'}
+                        alt='dfcamclp logo' />
+                </Group>
+
 
                 <form onSubmit={form.onSubmit(handleRegister)}>
                     <TextInput
