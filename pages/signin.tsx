@@ -1,7 +1,8 @@
-import { Button, Stack, Title } from '@mantine/core';
+import { Button, Group, Stack, Title } from '@mantine/core';
 import { IconBrandGoogle } from '@tabler/icons';
 import { signIn, useSession } from 'next-auth/react';
 import Head from 'next/head';
+import Image from 'next/image';
 import { useRouter } from 'next/router';
 import React, { useEffect } from 'react';
 
@@ -18,8 +19,15 @@ export default function Signin() {
     return (
         <>
             <Head> <title> Sign in - Ayq </title> </Head>
-            <Stack sx={{ maxWidth: 300 }} mx="auto" my='4rem'>
-                <Title align='center' order={4}> Sign in </Title>
+            <Stack sx={{ maxWidth: 600 }} mx="auto" my='4rem'>
+                <Group position='center'>
+                    <Image
+                        width={100}
+                        height={100}
+                        src={'/favicon.png'}
+                        alt='dfcamclp logo' />
+                </Group>
+                <Title align='center' mb={'md'}> Welcome to DFCAMLP </Title>
                 <Button
                     onClick={() => signIn('google')}
                     size='xl'
