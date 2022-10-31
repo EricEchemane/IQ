@@ -8,7 +8,7 @@ export default function Quizzes(props: {
     return <>
         <Title order={3}> Your Quizzes </Title>
         <Stack my='lg'>
-            {props.quizzes?.map((data: any, index) => (
+            {props.quizzes?.length !== 0 && props.quizzes.map((data: any, index) => (
                 <Paper key={index} withBorder p='md'>
                     <Stack>
                         <Title order={4}> {data.quiz?.title} </Title>
@@ -20,6 +20,9 @@ export default function Quizzes(props: {
                     </Stack>
                 </Paper>
             ))}
+            {props.quizzes?.length === 0 && <>
+                <Text> You have not taken any quiz yet </Text>
+            </>}
         </Stack>
     </>;
 }
