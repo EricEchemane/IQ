@@ -238,8 +238,8 @@ export default function StudentRoom({ user }: { user: IUser; }) {
                 <Text> Ranking: {outsideRanking} </Text>
                 <Box py={"2rem"}>
                     <Image
-                        width={400}
-                        height={400}
+                        width={300}
+                        height={300}
                         src={`/gifs/correct-${getRandomInt(0, 16)}.gif`}
                         alt="correct answer gif image" />
                 </Box>
@@ -249,8 +249,8 @@ export default function StudentRoom({ user }: { user: IUser; }) {
                 <Text color='dimmed'> The correct answer is {quizRoom?.currentQuestion?.correct_choice} </Text>
                 <Box py={"2rem"}>
                     <Image
-                        width={400}
-                        height={400}
+                        width={300}
+                        height={300}
                         src={`/gifs/wrong-${getRandomInt(0, 16)}.gif`}
                         alt="wrong answer gif image" />
                 </Box>
