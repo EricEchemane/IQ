@@ -27,7 +27,7 @@ export default function Signin() {
                         src={'/favicon.png'}
                         alt='dfcamclp logo' />
                 </Group>
-                <Title order={2} align='center' mb={'md'}> Dr. Filemon C. Aguilar Memorial College Las Pinas </Title>
+                <Title order={2} align='center' mb={'md'}> Dr. Filemon C. Aguilar Memorial College Las Piñas </Title>
                 <Button
                     onClick={() => signIn('google')}
                     size='xl'
