@@ -13,6 +13,7 @@ import { GetServerSideProps } from 'next';
 import { getToken } from 'next-auth/jwt';
 import Head from 'next/head';
 import Image from 'next/image';
+import Link from 'next/link';
 import { useRouter } from 'next/router';
 import React, { useCallback, useEffect, useState } from 'react';
 import io from "socket.io-client";
@@ -269,7 +270,12 @@ export default function StudentRoom({ user }: { user: IUser; }) {
             title={<Text weight='bold' color='dimmed'> Quiz Results </Text>}
         >
             <Title> Your Ranking: {quizResults?.ranking} </Title>
-            <Title order={2} color='green'> Final Score: {quizResults?.finalScore} </Title>
+            <Title order={2} color='green' mb={'xl'}> Final Score: {quizResults?.finalScore} </Title>
+            <Group position='right'>
+                <Link passHref href={'/'}>
+                    <Button> Return Home </Button>
+                </Link>
+            </Group>
         </Modal>
     </>;
 }
