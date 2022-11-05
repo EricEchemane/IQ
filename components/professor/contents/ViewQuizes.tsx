@@ -1,4 +1,4 @@
-import { Accordion, ActionIcon, Button, Dialog, Group, Menu, Modal, Paper, Stack, Text, TextInput, Title, useMantineTheme } from '@mantine/core';
+import { Accordion, ActionIcon, Button, Dialog, Divider, Group, Menu, Modal, Paper, Stack, Text, TextInput, Title, useMantineTheme } from '@mantine/core';
 import { IconTrash, IconDots, IconEdit, IconBookUpload, IconBookDownload, IconCheck, IconArrowRight, IconUsers } from '@tabler/icons';
 import React, { useEffect, useState } from 'react';
 import useProfessorState, { ProfessorActions, ProfessorStateType } from 'state_providers/professor';
@@ -276,10 +276,18 @@ export default function ViewQuizes() {
                     <Title order={3} color='dimmed'> Final score </Title>
                 </Group>
                 {getParticipantsAdapter.data?.map((participant: any, index: number) => (
-                    <Group key={index} position='apart'>
-                        <Title order={4}> {participant.student.name} </Title>
-                        <Title order={4}> {participant.final_score} </Title>
-                    </Group>
+                    <Stack key={index}>
+                        <Group position='apart'>
+                            <Stack spacing={0}>
+                                <Title order={4}> {participant.student.name} </Title>
+                                <Text> {participant.student.email} </Text>
+                                <Text size='sm'> {participant.student.program} </Text>
+                                <Text size='sm'> Year & Section: {participant.student.year}-{participant.student.section} </Text>
+                            </Stack>
+                            <Title order={4}> {participant.final_score} </Title>
+                        </Group>
+                        <Divider />
+                    </Stack>
                 ))}
             </Modal>
 
