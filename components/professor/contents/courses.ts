@@ -82,3 +82,15 @@ export const BSIS_COURSES = [
     'BST 100 - Business Etiquette and Social Races Training',
     'ADV 03 - Professional Elective 4(IS Innovations and New Technologies)',
 ];
+
+
+export const getProgramAbbreviation = (program: string) => {
+    switch (program) {
+        case 'Bachelor of Science in Information System | BSIS':
+            return 'BSIS';
+        case 'Bachelor of Science in Computer Engineering | BSCPE':
+            return 'BSCPE';
+        default:
+            return '';
+    }
+};

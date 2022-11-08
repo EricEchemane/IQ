@@ -9,6 +9,7 @@ import QuizAdapter, { deleteQuizPayload, getParticipantsPayload, publishQuizPayl
 import { showNotification } from '@mantine/notifications';
 import { openConfirmModal } from '@mantine/modals';
 import { useRouter } from 'next/router';
+import { getProgramAbbreviation } from './courses';
 
 export default function ViewQuizes() {
     const theme = useMantineTheme();
@@ -163,6 +164,7 @@ export default function ViewQuizes() {
         }
     };
 
+
     return (
         <>
             <Stack>
@@ -173,6 +175,13 @@ export default function ViewQuizes() {
                         <Group align='flex-start'>
                             <Stack style={{ flex: 1 }}>
                                 <Title order={5}> {quiz.title} </Title>
+                                <Stack spacing={0}>
+                                    <Text size={'sm'}> {quiz.program} </Text>
+                                    <Text size={'sm'}> {quiz.course} </Text>
+                                    <Text size={'sm'}> For Sections: {
+                                        quiz.forSections.map((section: any) => `${getProgramAbbreviation(quiz.program)}  ${section}`).join(' | ')
+                                    } </Text>
+                                </Stack>
                                 <Group>
                                     <Text size='sm' mr='md'> Created on {moment(quiz.date_created).format('LL')} </Text>
                                     <Button
