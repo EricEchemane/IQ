@@ -26,7 +26,7 @@ export default function QuizRoomComponent({ user, quiz }: {
     quiz: IQuiz & { _id: string; };
 }) {
     const router = useRouter();
-    const { data: session } = useSession({
+    useSession({
         required: true,
         onUnauthenticated() {
             router.replace('/signin');
