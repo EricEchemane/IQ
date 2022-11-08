@@ -12,8 +12,12 @@ export default function Quizzes(props: {
                 <Paper key={index} withBorder p='md'>
                     <Stack>
                         <Title order={4}> {data.quiz?.title} </Title>
+                        <Stack spacing={0.5}>
+                            <Text size={'sm'}> {data.quiz?.program} </Text>
+                            <Text size={'sm'}> {data.quiz?.course} </Text>
+                        </Stack>
                         <Group>
-                            <Text> Final Score: {data.final_score} </Text>
+                            <Text> Final Score: {data.final_score} - Rank: {data.ranking} </Text>
                             <Divider orientation='vertical' />
                             <Text> Taken on: {moment(data.date_finished).format('LL')} </Text>
                         </Group>
