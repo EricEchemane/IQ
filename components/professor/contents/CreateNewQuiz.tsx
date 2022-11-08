@@ -20,7 +20,7 @@ export default function CreateNewQuiz({ onSaveSuccess }: { onSaveSuccess: Functi
 
     const addSection = () => {
         if (section <= 0) return;
-        setForSections(sections => [...sections, `${program} ${year + section}`]);
+        setForSections(sections => [...sections, `${program} ${year}-${section}`]);
         setSection(1);
     };
     const removeSection = (section: string) => {
