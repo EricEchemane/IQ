@@ -53,7 +53,8 @@ export class QuizRoom {
             answers: [],
             final_score: 0,
             number_of_correct_answers: 0,
-            student: user
+            student: user,
+            ranking: 0
         });
         // return the index of the participant
         return this.participants.length - 1;

@@ -193,6 +193,7 @@ export default function SocketHandler(req: NextApiRequest, res: SocketRes) {
                     quiz: quizRoom.quiz._id || '',
                     student: participant.student._id || '',
                     final_score: participant.final_score,
+                    ranking: quizRoom.getStudentRanking(participant.student._id || ''),
                 });
                 await quizParticipant.save();
             });

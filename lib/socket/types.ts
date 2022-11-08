@@ -40,5 +40,6 @@ export type participant = {
     answers: string[];
     student: IUser;
     final_score: number;
+    ranking: number;
     number_of_correct_answers: number;
 };

@@ -6,6 +6,7 @@ export interface IQuizParticipant {
     date_finished?: Date;
     answers: string[];
     final_score?: number;
+    ranking?: number;
 }
 
 const quizParticipantSchema = new mongoose.Schema<IQuizParticipant>({
@@ -14,6 +15,10 @@ const quizParticipantSchema = new mongoose.Schema<IQuizParticipant>({
         ref: "User",
     },
     final_score: {
+        type: Number,
+        default: 0,
+    },
+    ranking: {
         type: Number,
         default: 0,
     },
