@@ -278,11 +278,11 @@ export default function ViewQuizes() {
                 closeOnClickOutside={false}
                 opened={viewParticipantsModalIsOpen}
                 onClose={() => setViewParticipantsModalIsOpen(false)}
-                title={<Text weight='bold' color='dimmed'> Quiz Participants </Text>}
+                title={<Text color='dimmed'> Quiz Participants </Text>}
             >
                 <Group position='apart' mb='md'>
-                    <Title order={3} color='dimmed'> Student name </Title>
-                    <Title order={3} color='dimmed'> Final score </Title>
+                    <Title order={5} color='dimmed'> Student name </Title>
+                    <Title order={5} color='dimmed'> Score and Rank </Title>
                 </Group>
                 {getParticipantsAdapter.data?.map((participant: any, index: number) => (
                     <Stack key={index}>
@@ -293,7 +293,10 @@ export default function ViewQuizes() {
                                 <Text size='sm'> {participant.student.program} </Text>
                                 <Text size='sm'> Year & Section: {participant.student.year}-{participant.student.section} </Text>
                             </Stack>
-                            <Title order={4}> {participant.final_score} </Title>
+                            <Stack spacing={0} align={'flex-end'}>
+                                <Title order={5}> Rank: {participant.ranking} </Title>
+                                <Title order={5}> Score: {participant.final_score} </Title>
+                            </Stack>
                         </Group>
                         <Divider />
                     </Stack>
