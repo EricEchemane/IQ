@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import AddQuestions from './AddQuestions';
 import { IconX } from '@tabler/icons';
 import { years } from 'pages/register';
-import { courses } from './courses';
+import { BSCPE_COURSES, BSIS_COURSES } from './courses';
 
 export const programs = [
     'Bachelor of Science in Information System | BSIS',
@@ -17,6 +17,8 @@ export default function CreateNewQuiz({ onSaveSuccess }: { onSaveSuccess: Functi
     const [year, setYear] = useState<string>('');
     const [section, setSection] = useState<number>(1);
     const [forSections, setForSections] = useState<string[]>([]);
+
+    const courses = program === 'Bachelor of Science in Information System | BSIS' ? BSIS_COURSES : BSCPE_COURSES;
 
     const addSection = () => {
         if (section <= 0) return;
@@ -48,11 +50,12 @@ export default function CreateNewQuiz({ onSaveSuccess }: { onSaveSuccess: Functi
                     placeholder="Select program"
                     data={programs} />
                 <Autocomplete
+                    disabled={!program}
                     required
                     value={course}
                     onChange={(v: string) => setCourse(v)}
                     label="Course"
-                    placeholder="Select course"
+                    placeholder={program ? 'Select course' : 'Select program first'}
                     data={courses} />
                 <Select
                     required
