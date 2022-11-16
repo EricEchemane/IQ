@@ -82,12 +82,12 @@ export default function Student({ data }: any) {
                                 value="account"> Edit account </Tabs.Tab>
                         </Tabs.List>
                     </Tabs>
-                    <Button
+                    {/* <Button
                         style={{ marginTop: 'auto' }}
                         mt={'1rem'}
                         color="red"
                         variant='subtle'
-                        onClick={deleteAccount}> Delete my account </Button>
+                        onClick={deleteAccount}> Delete my account </Button> */}
                 </Navbar>
             }
             // aside={
