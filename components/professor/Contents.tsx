@@ -17,7 +17,7 @@ export default function Contents({ activeTab, onSaveSuccess }: {
             <Center style={{ height: '100%' }}>
                 <Stack align={'center'}>
                     <Image src='/arts/no-quizzes.svg' alt='no quizzes' width={200} height={200} />
-                    <Text color='dimmed' size={'lg'}> You have no quizes yet </Text>
+                    <Text color='dimmed' size={'lg'}> You have no quizzes yet </Text>
                 </Stack>
             </Center>
         </>;

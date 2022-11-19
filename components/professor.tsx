@@ -15,7 +15,7 @@ import {
     Title,
 } from '@mantine/core';
 import AppHeader from './professor/AppHeader';
-import { IconList, IconPencilPlus, IconUsers } from '@tabler/icons';
+import { IconList, IconPencilPlus } from '@tabler/icons';
 import Contents from './professor/Contents';
 import useHttpAdapter from 'http_adapters/useHttpAdapter';
 import QuizAdapter, { GetQuizzesPayload } from 'http_adapters/adapters/quiz.adapter';
@@ -85,7 +85,7 @@ export default function Student({ data }: any) {
                         <Tabs.List style={{ width: '100%' }}>
                             <Tabs.Tab
                                 icon={<IconList strokeWidth={1} />}
-                                value={professorTabs.view_quizes}> View quizes </Tabs.Tab>
+                                value={professorTabs.view_quizes}> View quizzes </Tabs.Tab>
                             <Tabs.Tab
                                 icon={<IconPencilPlus strokeWidth={1} />}
                                 value={professorTabs.create_new_quiz}> Create new quiz </Tabs.Tab>
