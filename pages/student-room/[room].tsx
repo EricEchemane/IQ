@@ -66,7 +66,7 @@ export default function StudentRoom({ user }: { user: IUser; }) {
             setAnswer('');
         });
         socket.on('reveal:correct-answer', (correctAnswer: string) => {
-            const answerIsCorrect = correctAnswer === outsideAnswer;
+            const answerIsCorrect = correctAnswer.toLowerCase() === outsideAnswer.toLowerCase();
             if (answerIsCorrect) setAnswerStatus('correct');
             else setAnswerStatus('wrong');
 
