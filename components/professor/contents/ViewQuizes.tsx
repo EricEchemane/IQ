@@ -1,6 +1,6 @@
-import { Accordion, ActionIcon, Button, Dialog, Divider, Group, Menu, Modal, Paper, Stack, Text, TextInput, Title, useMantineTheme } from '@mantine/core';
+import { Accordion, ActionIcon, Button, Dialog, Divider, Group, Menu, Modal, Paper, Select, Stack, Text, TextInput, Title, useMantineTheme } from '@mantine/core';
 import { IconTrash, IconDots, IconEdit, IconBookUpload, IconBookDownload, IconCheck, IconArrowRight, IconUsers } from '@tabler/icons';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import useProfessorState, { ProfessorActions, ProfessorStateType } from 'state_providers/professor';
 import moment from 'moment';
 import QuizView from './QuizView';
@@ -25,6 +25,9 @@ export default function ViewQuizes() {
     const unpublishQuizAdapter = useHttpAdapter<unpublishQuizPayload>(QuizAdapter.unpublish);
     const deleteQuizAdapter = useHttpAdapter<deleteQuizPayload>(QuizAdapter.delete);
     const getParticipantsAdapter = useHttpAdapter<getParticipantsPayload>(QuizAdapter.getParticipants);
+
+    const [participants, setParticipants] = useState([]);
+    const [section, setSection] = useState('');
 
     useEffect(() => {
         if (updateQuizTitleAdapter.data) {
@@ -156,6 +159,7 @@ export default function ViewQuizes() {
         const data = await getParticipantsAdapter.execute({ quizId });
         if (data.data.length > 0) {
             setViewParticipantsModalIsOpen(true);
+            setParticipants(data.data);
         } else {
             showNotification({
                 color: 'yellow',
@@ -284,23 +288,42 @@ export default function ViewQuizes() {
                     <Title order={5} color='dimmed'> Student name </Title>
                     <Title order={5} color='dimmed'> Score and Rank </Title>
                 </Group>
-                {getParticipantsAdapter.data?.map((participant: any, index: number) => (
-                    <Stack key={index}>
-                        <Group position='apart'>
-                            <Stack spacing={0}>
-                                <Title order={4}> {participant.student.name} </Title>
-                                <Text> {participant.student.email} </Text>
-                                <Text size='sm'> {participant.student.program} </Text>
-                                <Text size='sm'> Year & Section: {participant.student.year}-{participant.student.section} </Text>
-                            </Stack>
-                            <Stack spacing={0} align={'flex-end'}>
-                                <Title order={5}> Rank: {participant.ranking} </Title>
-                                <Title order={5}> Score: {participant.final_score} </Title>
-                            </Stack>
-                        </Group>
-                        <Divider />
-                    </Stack>
-                ))}
+
+                <Group my={'md'}>
+                    <Select
+                        placeholder='select section'
+                        size='xs'
+                        label='Group by section'
+                        data={Array.from({ length: 10 }).map((_, index) => ({
+                            value: (index + 1).toString(), label: (index + 1).toString()
+                        }))}
+                        onChange={section => {
+                            setParticipants(getParticipantsAdapter.data.filter((p: any) => p.student.section === section));
+                            setSection(section || '');
+                        }}
+                        value={section} />
+                </Group>
+
+                {participants && participants.length > 0
+                    ? participants.map((participant: any, index: number) => (
+                        <Stack key={index}>
+                            <Group position='apart'>
+                                <Stack spacing={0}>
+                                    <Title order={4}> {participant.student.name} </Title>
+                                    <Text> {participant.student.email} </Text>
+                                    <Text size='sm'> {participant.student.program} </Text>
+                                    <Text size='sm'> Year & Section: {participant.student.year}-{participant.student.section} </Text>
+                                </Stack>
+                                <Stack spacing={0} align={'flex-end'}>
+                                    <Title order={5}> Rank: {participant.ranking} </Title>
+                                    <Title order={5}> Score: {participant.final_score} </Title>
+                                </Stack>
+                            </Group>
+                            <Divider />
+                        </Stack>
+                    ))
+                    : <Title align='center' order={4}> No participant from section {section} </Title>
+                }
             </Modal>
 
             <Dialog
