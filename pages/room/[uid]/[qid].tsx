@@ -271,7 +271,7 @@ export default function QuizRoomComponent({ user, quiz }: {
             size={'550px'}
             overlayOpacity={0.55}
             overlayBlur={3}
-            overflow='inside'
+            overflow='outside'
             opened={quizSummary !== null}
             title={<Text weight='bold' color='dimmed'> Quiz Summary </Text>}
         >
