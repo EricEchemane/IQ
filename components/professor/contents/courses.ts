@@ -1,7 +1,7 @@
 export const BSCPE_COURSES = [
     'MAT 111E-Calculus',
     'MAT 100 - Mathematics in the Worl',
-    'CPE 111 - Computer Engineering as a Disciplin',
+    'CPE 111 - Computer Engineering as a Discipline',
     'NSTP 101 - National Service Training Program 1(NSTP',
     'NSCI 111E-Chemistry for Engineers(Lecture) ',
     'GE 104 - Purposive Communicatio',
