@@ -29,7 +29,8 @@ async function handler(req: NextApiRequest, token: JWT) {
     }
 
     if (process.env.NODE_ENV === 'production' && !email.endsWith('@dfcamclp.edu.ph')) {
-        throw new RequestError(403, "Only students from DFCAMCLP are allowed to register");
+        if (type === "student") throw new RequestError(403, "Only students from DFCAMCLP are allowed to register");
+        throw new RequestError(403, "ONLY PROFESSOR OF DFCAMCLP ARE ALLOWED TO REGISTER REGISTER");
     }
 
     const db = await connectToDatabase();
