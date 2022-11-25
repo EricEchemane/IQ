@@ -12,7 +12,7 @@ async function handler(req: NextApiRequest, token: JWT) {
     if (forSections.length === 0) {
         throw new RequestError(400, 'Requires atleast one section as the participant');
     }
-    if (title && title.replaceAll(' ', '').length < 5) {
+    if (title && title.length < 5) {
         throw new RequestError(400, 'Title must be at least 5 characters long');
     }
     if (!questions || !questions.length) {
