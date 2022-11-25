@@ -1,6 +1,6 @@
 import { useCallback, useState } from "react";
 import HttpAdapter from "./base.adapter";
-import { RequestError, SuccessfulRequest } from "./response_normalizer";
+import { RequestError } from "./response_normalizer";
 
 export default function useHttpAdapter<PayloadType>(adapter: HttpAdapter) {
 
