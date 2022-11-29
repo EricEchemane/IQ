@@ -10,7 +10,7 @@ import UserAdapter, { RegisterPayload } from 'http_adapters/adapters/user.adapte
 import Image from 'next/image';
 
 export const courses = [
-    'Bachelor of Scinece in Information System | BSIS',
+    'Bachelor of Science in Information System | BSIS',
     'Bachelor of Science in Computer Engineering | BSCPE'
 ]
     .sort().map(c => ({ value: c, label: c }));
